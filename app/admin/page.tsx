@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react"; // Fixed: Added useRef
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getDatabase, ref, onValue, push, serverTimestamp } from "firebase/database";
-import { auth } from "@/lib/firebase"; 
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
+import { ref, onValue, push, serverTimestamp } from "firebase/database";
+import { auth, db } from "@/lib/firebase"; // Make sure this path exists
 import { 
   LayoutDashboard, 
   Image as ImageIcon, 
@@ -15,17 +15,37 @@ import {
   X, 
   Save, 
   Plus, 
-  Trash2, 
   TrendingUp, 
   Users, 
   Eye,
   Send, 
   User as UserIcon, 
-  Clock, 
   CheckCircle, 
   Search,
-  Activity
+  Activity,
+  LucideIcon // Import type for icons
 } from "lucide-react";
+
+// --- TYPES (Crucial for Build) ---
+interface StatCardProps {
+  title: string;
+  value: string;
+  icon: LucideIcon;
+  trend: number;
+}
+
+interface MessageData {
+  id: string;
+  text: string;
+  sender: string;
+  timestamp: number;
+}
+
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+}
 
 // --- COMPONENTS ---
 
@@ -92,7 +112,7 @@ const LoginScreen = () => {
 };
 
 // 2. DASHBOARD WIDGETS
-const StatCard = ({ title, value, icon: Icon, trend }) => (
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, trend }) => (
     <motion.div 
         whileHover={{ y: -5 }}
         className="bg-[#111] border border-white/10 p-6 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group"
@@ -114,22 +134,21 @@ const StatCard = ({ title, value, icon: Icon, trend }) => (
 
 // 3. MESSAGING CONSOLE (REAL-TIME)
 const MessagesInbox = () => {
-    const [messages, setMessages] = useState<any[]>([]);
+    const [messages, setMessages] = useState<MessageData[]>([]);
     const [replyText, setReplyText] = useState("");
     const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // 1. Listen to Realtime Database
     useEffect(() => {
-        const db = getDatabase();
         const chatRef = ref(db, 'support_chats');
 
         const unsubscribe = onValue(chatRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                const loadedMessages = Object.entries(data).map(([key, value]: [string, any]) => ({
+                const loadedMessages = Object.entries(data).map(([key, value]) => ({
                     id: key,
-                    ...value
+                    ...(value as Omit<MessageData, 'id'>)
                 }));
                 // Sort by timestamp
                 loadedMessages.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
@@ -153,7 +172,6 @@ const MessagesInbox = () => {
         e.preventDefault();
         if (!replyText.trim()) return;
 
-        const db = getDatabase();
         const chatRef = ref(db, 'support_chats');
         
         await push(chatRef, {
@@ -174,7 +192,6 @@ const MessagesInbox = () => {
 
     return (
         <div className="h-[75vh] flex bg-[#111] border border-white/10 rounded-2xl overflow-hidden animate-in fade-in duration-500 shadow-2xl">
-            
             {/* LEFT SIDEBAR: ACTIVE SESSIONS */}
             <div className="w-80 border-r border-white/10 flex flex-col hidden md:flex bg-[#0a0a0a]">
                 <div className="p-6 border-b border-white/10">
@@ -190,7 +207,6 @@ const MessagesInbox = () => {
                 </div>
 
                 <div className="flex-1 overflow-y-auto">
-                    {/* Active Thread */}
                     <div className="p-4 border-b border-white/5 bg-[#1a1a1a]/50 border-l-2 border-l-[#D4F93C] cursor-pointer hover:bg-[#1a1a1a] transition-colors">
                         <div className="flex justify-between mb-1">
                             <span className="text-white font-bold text-sm">Website Visitor</span>
@@ -203,8 +219,6 @@ const MessagesInbox = () => {
 
             {/* RIGHT SIDE: CHAT WINDOW */}
             <div className="flex-1 flex flex-col bg-[#050505] relative">
-                
-                {/* Chat Header */}
                 <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#111]/80 backdrop-blur-md z-10">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-700 to-gray-900 flex items-center justify-center border border-white/10">
@@ -220,7 +234,6 @@ const MessagesInbox = () => {
                     </div>
                 </div>
 
-                {/* Messages Area */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth">
                     {loading ? (
                         <div className="flex justify-center mt-10"><div className="w-6 h-6 border-2 border-[#D4F93C] border-t-transparent rounded-full animate-spin"/></div>
@@ -260,7 +273,6 @@ const MessagesInbox = () => {
                     <div ref={messagesEndRef} />
                 </div>
 
-                {/* Input Area */}
                 <div className="p-4 bg-[#111] border-t border-white/10">
                     <form onSubmit={handleSendReply} className="relative flex items-center gap-4">
                         <input 
@@ -319,8 +331,6 @@ const GalleryManager = () => (
                 <Plus size={16} /> Upload Media
             </button>
         </div>
-        
-        {/* Empty State / Mock Data */}
         <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-white/10 rounded-2xl bg-[#111]">
              <ImageIcon size={48} className="text-gray-600 mb-4" />
              <p className="text-gray-400 text-sm">No media items found</p>
@@ -332,7 +342,7 @@ const GalleryManager = () => (
 // --- MAIN ADMIN LAYOUT ---
 
 export default function AdminPage() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -354,9 +364,9 @@ export default function AdminPage() {
   
   if (!user) return <LoginScreen />;
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { id: "dashboard", label: "Overview", icon: LayoutDashboard },
-    { id: "messages", label: "Messages", icon: MessageSquare }, // Moved up priority
+    { id: "messages", label: "Messages", icon: MessageSquare },
     { id: "hero", label: "Hero Section", icon: Eye },
     { id: "gallery", label: "Gallery Media", icon: ImageIcon },
     { id: "settings", label: "Settings", icon: Settings },
@@ -467,12 +477,10 @@ export default function AdminPage() {
             <div className="max-w-7xl mx-auto">
                 {activeTab === "dashboard" && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-bottom-5 fade-in duration-500">
-                        {/* ZERO STATE ANALYTICS */}
                         <StatCard title="Total Visits" value="0" icon={Users} trend={0} />
                         <StatCard title="Projects" value="0" icon={ImageIcon} trend={0} />
                         <StatCard title="Enquiries" value="0" icon={MessageSquare} trend={0} />
                         
-                        {/* GRAPH PLACEHOLDER (ZERO DATA) */}
                         <div className="col-span-1 md:col-span-2 bg-[#111] border border-white/10 rounded-2xl p-6 h-64 flex flex-col justify-center items-center text-gray-600 relative overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-0" />
                             <Activity size={48} className="mb-4 opacity-20" />

@@ -50,59 +50,19 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                 </Link>
             </motion.div>
 
-            {/* ZONE 2: LIVE FEED TICKER (Floating Center) */}
-            <motion.div 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: "circOut" }}
-                className="hidden lg:flex pointer-events-auto absolute left-1/2 -translate-x-1/2 top-8"
-            >
-                <div className="flex items-center gap-4 px-5 py-2 rounded-full bg-[#0a0a0f]/80 backdrop-blur-md border border-white/10 shadow-2xl">
-                    <div className="flex items-center gap-2 border-r border-white/10 pr-4">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
-                        </span>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-white">Live_Feed</span>
-                    </div>
-                    
-                    <div className="w-64 h-4 overflow-hidden relative mask-linear-fade">
-                        <motion.div 
-                            animate={{ x: ["100%", "-100%"] }}
-                            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                            className="absolute inset-0 flex items-center whitespace-nowrap gap-8"
-                        >
-                            {[
-                                "Formula 1 Paddock Club Setup [ACTIVE]", 
-                                "Bahrain Fintech Bay Summit [DEPLOYED]", 
-                                "Royal Wedding Fabrication [IN_PROGRESS]", 
-                                "National Day Main Stage [LIVE]"
-                            ].map((event, i) => (
-                                <span key={i} className="text-[9px] font-mono text-white/70 uppercase tracking-wider flex items-center gap-2">
-                                    <Activity size={8} className="text-emerald-500" />
-                                    {event}
-                                </span>
-                            ))}
-                        </motion.div>
-                        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0a0a0f]/80 to-transparent" />
-                        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#0a0a0f]/80 to-transparent" />
-                    </div>
-                </div>
-            </motion.div>
-
             {/* ZONE 3: ACTIONS (Top Right) */}
             <motion.div 
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
-                className="pointer-events-auto flex items-center gap-3"
+                className="pointer-events-auto flex items-center gap-3 ml-auto"
             >
                 {/* Menu Link */}
                 <Link 
                     href="/about"
                     className="hidden md:flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-all group"
                 >
-                    <span className="text-[10px] font-bold uppercase tracking-widest">About Agency</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest">About Colours</span>
                 </Link>
 
                 {/* Initiate Button */}
@@ -113,7 +73,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                     <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-white to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="relative z-10 flex items-center gap-2">
                         <Zap size={12} className="fill-black" />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Initiate</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest">Talk To US</span>
                     </div>
                 </button>
             </motion.div>
