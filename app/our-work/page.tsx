@@ -97,8 +97,8 @@ const PORTFOLIO = [
 
 const CATEGORIES = ["All", "Events", "Exhibitions", "Interiors", "Mall Kiosk"];
 
-// Custom smooth easing curve
-const customEase = [0.22, 1, 0.36, 1];
+// Custom smooth easing curve (FIXED: Added "as const" for TypeScript)
+const customEase = [0.22, 1, 0.36, 1] as const;
 
 // Context for App-wide Language State
 const LangContext = createContext({ isAr: false, toggleLang: () => {}, t: TEXT_EN });
@@ -259,6 +259,7 @@ export default function GalleryPage() {
                         const title = isAr ? project.titleAr : project.title;
                         const subtitle = isAr ? project.subAr : project.subtitle;
                         
+                        // Layout logic
                         let spanClass = "col-span-1 row-span-1";
                         if (i === 0) spanClass = "md:col-span-2 md:row-span-2";
                         else if (i === 3) spanClass = "md:col-span-2 row-span-1";
@@ -289,7 +290,7 @@ export default function GalleryPage() {
                                 <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
                                     <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out flex items-end justify-between">
                                         <div>
-                                            <span className="text-[9px] font-mono text-blue-400 mb-2 block tracking-widest uppercase">{t.index} // 0{i + 1}</span>
+                                            <span className="text-[9px] font-mono text-emerald-400 mb-2 block tracking-widest uppercase">{t.index} // 0{i + 1}</span>
                                             <h3 className="text-lg md:text-xl font-bold uppercase text-white tracking-widest">{t.viewConcept}</h3>
                                             <p className="text-[10px] text-white/50 mt-1">{title}</p>
                                         </div>
@@ -305,8 +306,8 @@ export default function GalleryPage() {
             </motion.div>
         </section>
 
-        {/* 6. GREAT FOOTER */}
-        <section className="relative pt-32 pb-12 md:pt-40 md:pb-16 border-t border-white/10 bg-black z-20 text-center overflow-hidden px-6 flex flex-col">
+        {/* 6. FOOTER CTA */}
+        <section className="relative py-32 md:py-40 border-t border-white/10 bg-black z-20 text-center overflow-hidden px-6 flex flex-col">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
             
             <div className="relative z-10 max-w-4xl mx-auto flex-grow flex flex-col items-center justify-center mb-24">
@@ -381,7 +382,7 @@ function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                     >
                         <div className="flex items-center justify-between p-6 md:p-8 border-b border-white/10 bg-white/5">
                             <div className="flex items-center gap-3">
-                                <Monitor size={16} className="text-blue-400 animate-pulse" />
+                                <Monitor size={16} className="text-emerald-400 animate-pulse" />
                                 <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-[0.2em] text-white/80">{t.secureUplink}</span>
                             </div>
                             <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
@@ -393,9 +394,9 @@ function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                             <p className="text-white/50 text-xs md:text-sm mb-8 md:mb-10 font-light leading-relaxed">
                                 {t.contactDesc}
                             </p>
-                            <div onClick={handleCopy} className="group relative h-20 md:h-24 bg-black border border-white/20 rounded-xl md:rounded-2xl flex items-center justify-between px-5 md:px-8 cursor-pointer hover:border-blue-500/50 transition-all duration-300 shadow-lg">
+                            <div onClick={handleCopy} className="group relative h-20 md:h-24 bg-black border border-white/20 rounded-xl md:rounded-2xl flex items-center justify-between px-5 md:px-8 cursor-pointer hover:border-emerald-500/50 transition-all duration-300 shadow-lg">
                                 <div className="flex items-center gap-4 md:gap-5 overflow-hidden">
-                                    <div className={`shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors ${copied ? 'bg-blue-500/20 text-blue-400' : 'bg-white/10 text-white'}`}>
+                                    <div className={`shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors ${copied ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-white'}`}>
                                         {copied ? <Check size={18} /> : <Mail size={18} />}
                                     </div>
                                     <div className="flex flex-col gap-1 truncate">
@@ -404,8 +405,8 @@ function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                                     </div>
                                 </div>
                                 <div className={`hidden sm:flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity ${isAr ? 'pr-4' : 'pl-4'}`}>
-                                    <span className="text-[9px] md:text-[10px] font-bold uppercase text-blue-400 tracking-widest whitespace-nowrap">{copied ? t.copied : t.copy}</span>
-                                    <Copy size={16} className="text-blue-400 shrink-0" />
+                                    <span className="text-[9px] md:text-[10px] font-bold uppercase text-emerald-400 tracking-widest whitespace-nowrap">{copied ? t.copied : t.copy}</span>
+                                    <Copy size={16} className="text-emerald-400 shrink-0" />
                                 </div>
                             </div>
                         </div>
