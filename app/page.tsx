@@ -12,7 +12,7 @@ import {
     ArrowRight, Mail, X, Send, Bot, 
     Sparkles, User, ChevronLeft, ChevronRight,
     Zap, ArrowUpRight, MapPin, Phone, Instagram, Facebook,
-    LayoutGrid, Info, Globe
+    LayoutGrid, Info, Globe, ChevronDown
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -29,15 +29,16 @@ const TEXT_EN = {
     about: "About Colours",
     gallery: "Our Work",
     talk: "Talk To Us",
-    vision: "The Vision",
     comms: "Communications",
     hq: "Global HQ",
-    base: "Base Location",
+    base: "Bahrain Location",
+    saudiBase: "Saudi Location",
+    saudiAddress: "Bldg: 7073, Street : Abaad Ibn Abbar, Sinaiyah Al awaziyah, Khobar, Kingdom of Saudi Arabia",
     address: "Unit 7, Building 2568, Road 4450, Block 744, Manama, Kingdom of Bahrain",
     directLine: "Direct Line",
-    email: "Electronic Mail",
+    email: "email",
     trusted: "Trusted Partners",
-    explore: "Explore Case Study",
+    explore: "CLICK HERE TO KNOW MORE",
     activeForm: "Active Form",
     sysUplink: "System_Uplink_v2.0",
     uplink: "Direct Uplink",
@@ -60,7 +61,9 @@ const TEXT_EN = {
     aiGreeting: "Systems online. I am the Colours Interface. How can we engineer your next experience?",
     aiReply: "Signal received. I've flagged this for our creative directors. Would you like to upload a project brief?",
     enterCmd: "Enter command...",
-    langToggle: "عربي"
+    langToggle: "عربي",
+    viewMap: "View Map",
+    hideMap: "Hide Map"
 };
 
 const TEXT_AR = {
@@ -73,15 +76,16 @@ const TEXT_AR = {
     about: "عن كلرز",
     gallery: "أعمالنا",
     talk: "تحدث إلينا",
-    vision: "الرؤية",
     comms: "الاتصالات",
     hq: "المقر العالمي",
-    base: "الموقع الرئيسي",
+    base: "موقع البحرين",
+    saudiBase: "موقع السعودية",
+    saudiAddress: "مبنى: 7073، شارع: عباد بن عبار، الصناعية العوازية، الخبر، المملكة العربية السعودية",
     address: "الوحدة 7، مبنى 2568، طريق 4450، مجمع 744، المنامة، مملكة البحرين",
     directLine: "الخط المباشر",
     email: "البريد الإلكتروني",
     trusted: "شركاء موثوقون",
-    explore: "استكشاف المشروع",
+    explore: "انقر هنا لمعرفة المزيد",
     activeForm: "النموذج النشط",
     sysUplink: "رابط_النظام_الإصدار_2.0",
     uplink: "اتصال مباشر",
@@ -104,7 +108,9 @@ const TEXT_AR = {
     aiGreeting: "الأنظمة متصلة. أنا واجهة كلرز. كيف يمكننا هندسة تجربتك القادمة؟",
     aiReply: "تم استلام الإشارة. لقد قمنا بتحويل هذا إلى مديرينا المبدعين. هل ترغب في تحميل موجز المشروع؟",
     enterCmd: "أدخل الأمر...",
-    langToggle: "EN"
+    langToggle: "EN",
+    viewMap: "عرض الخريطة",
+    hideMap: "إخفاء الخريطة"
 };
 
 // -- Content Configuration (4 items repeated to maintain perfect 3D circle) --
@@ -112,15 +118,15 @@ const SERVICES = [
   { id: 1, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#E11D48", image: "/insta/events.jpeg", link: "/events" },
   { id: 2, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#8B5CF6", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
   { id: 3, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#3B82F6", image: "/insta/interiors.jpeg", link: "/interiors" },
-  { id: 4, title: "MALL KIOSK", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" },
+  { id: 4, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" },
   { id: 5, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#E11D48", image: "/insta/events.jpeg", link: "/events" },
   { id: 6, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#8B5CF6", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
   { id: 7, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#3B82F6", image: "/insta/interiors.jpeg", link: "/interiors" },
-  { id: 8, title: "MALL KIOSK", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" },
+  { id: 8, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" },
   { id: 9, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#E11D48", image: "/insta/events.jpeg", link: "/events" },
   { id: 10, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#8B5CF6", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
   { id: 11, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#3B82F6", image: "/insta/interiors.jpeg", link: "/interiors" },
-  { id: 12, title: "MALL KIOSK", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" }
+  { id: 12, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" }
 ];
 
 const CLIENTS = [
@@ -134,26 +140,6 @@ const CLIENTS = [
     { name: "Marassi", logo: "/logos/marassi.png" },
     { name: "Edamah", logo: "/logos/edamah.png" },
     { name: "Bahrain Marina", logo: "/logos/marina.png" }
-];
-
-const STORIES_EN = [
-    "Orchestrating unforgettable corporate narratives. We map venue constraints and crowd flow to deliver flawless execution where absolute precision meets breathtaking spectacle.",
-    "Architectural brand statements. Bespoke stand design and premium manufacturing utilizing our dedicated in-house carpentry and metal fabrication teams.",
-    "Transforming empty shells into breathing commercial ecosystems. Comprehensive floor planning, MEP engineering, and uncompromising interior architecture.",
-    "High-traffic retail activations engineered for maximum consumer engagement. Immersive temporary spaces designed to launch products and drive immediate action.",
-    "Commanding visual dominance. Large-format cinematic brand broadcasting and striking visual design that ensures your message pierces through the noise.",
-    "Ergonomic, modern office environments that foster elite productivity. Procurement of premium finishes alongside in-house bespoke joinery.",
-    "Durable, 360-degree retail structures engineered for high-traffic corridors. Rapid, stealthy installations executed outside operating hours for zero disruption."
-];
-
-const STORIES_AR = [
-    "تنسيق قصص مؤسسية لا تُنسى. نقوم بتخطيط قيود المكان وتدفق الجماهير لتقديم تنفيذ لا تشوبه شائبة حيث تلتقي الدقة المطلقة بالمشهد المذهل.",
-    "تصريحات معمارية للعلامة التجارية. تصميم أجنحة مخصص وتصنيع متميز باستخدام فرق النجارة وتصنيع المعادن المتخصصة لدينا.",
-    "تحويل المساحات الفارغة إلى أنظمة تجارية نابضة بالحياة. تخطيط شامل، وهندسة متكاملة، وتصميم داخلي لا تشوبه شائبة.",
-    "تنشيط التجزئة عالية الإقبال والمصممة لأقصى درجات تفاعل المستهلك. مساحات مؤقتة غامرة مصممة لإطلاق المنتجات.",
-    "الهيمنة البصرية المطلقة. بث العلامة التجارية السينمائي واسع النطاق والتصميم البصري المذهل الذي يضمن بروز رسالتك.",
-    "بيئات مكتبية حديثة ومريحة تعزز الإنتاجية العالية. تنفيذ تشطيبات فاخرة إلى جانب النجارة الداخلية المخصصة.",
-    "هياكل تجزئة متينة بزاوية 360 درجة مصممة للممرات عالية الحركة. تركيبات سريعة وسرية يتم تنفيذها خارج ساعات العمل لضمان عدم الانقطاع."
 ];
 
 const ANGLE_STEP = 360 / SERVICES.length; 
@@ -181,44 +167,70 @@ export default function Home() {
 
   return (
     <LangContext.Provider value={{ isAr, toggleLang, t }}>
-        <main className={`h-screen w-full bg-[#050508] text-white relative overflow-hidden selection:bg-emerald-500/30 ${isAr ? 'font-sans' : 'font-sans'}`} dir={isAr ? "rtl" : "ltr"}>
+        <main className={`h-screen w-full bg-[#020204] text-white relative overflow-hidden selection:bg-emerald-500/30 ${isAr ? 'font-sans' : 'font-sans'}`} dir={isAr ? "rtl" : "ltr"}>
         
-        {/* Scrollbar Hide Utility Class injected directly */}
+        {/* CSS INJECTIONS FOR SCROLLBAR & PREMIUM DOTS */}
         <style dangerouslySetInnerHTML={{__html: `
             .scrollbar-hide::-webkit-scrollbar { display: none; }
             .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+            
+            /* Ultra Bright Premium Dots Engine */
+            .premium-dots {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 2px, transparent 2px);
+    background-size: 32px 32px;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.1));
+}
         `}} />
 
         <AnimatePresence mode="wait">
-            {bootPhase < 3 ? (
+          {bootPhase < 3 ? (
                 <motion.div 
                     key="loader"
-                    exit={{ opacity: 0, scale: 1.05 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                    className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#050508]"
+                    exit={{ opacity: 0, scale: 1.05, filter: "blur(15px)" }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#020204] overflow-hidden"
                 >
+                    {/* DEEP DARK BACKGROUND WITH VIBRANT BLUE & VIOLET ORBS */}
+                    <div className="absolute inset-0 z-0 pointer-events-none">
+                        <motion.div 
+                            animate={{ 
+                                x: ["-10%", "10%", "-10%"],
+                                y: ["-10%", "10%", "-10%"],
+                                scale: [1, 1.2, 1]
+                            }}
+                            transition={{ duration: 15, ease: "easeInOut", repeat: Infinity }}
+                            className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-violet-600/30 blur-[120px] rounded-full mix-blend-screen saturate-[200%] will-change-transform"
+                        />
+                        <motion.div 
+                            animate={{ 
+                                x: ["10%", "-10%", "10%"],
+                                y: ["10%", "-10%", "10%"],
+                                scale: [1.2, 1, 1.2]
+                            }}
+                            transition={{ duration: 18, ease: "easeInOut", repeat: Infinity }}
+                            className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/30 blur-[120px] rounded-full mix-blend-screen saturate-[200%] will-change-transform"
+                        />
+                    </div>
+
+                    {/* Cinematic Grain Texture */}
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay pointer-events-none z-0" />
+
+                    {/* MEDIUM BREATHING LOGO */}
                     <motion.div 
-                        initial={{ opacity: 0, y: 15 }} 
-                        animate={{ opacity: 1, y: 0 }} 
-                        transition={{ duration: 1.0, ease: "easeOut" }}
-                        className="flex flex-col items-center gap-8 w-full max-w-sm px-6"
+                        initial={{ opacity: 0, scale: 0.9 }} 
+                        animate={{ opacity: 1, scale: [1, 1.02, 1] }} 
+                        transition={{ 
+                            opacity: { duration: 1.2, ease: "easeOut" },
+                            scale: { duration: 4, ease: "easeInOut", repeat: Infinity }
+                        }}
+                        className="relative z-10 flex flex-col items-center justify-center w-full px-6 h-full"
                         dir="ltr"
                     >
-                        <div className="w-48 md:w-64 relative will-change-transform">
-                            <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]" />
-                        </div>
-                        
-                        <div className="w-32 md:w-48 h-[2px] bg-white/10 rounded-full overflow-hidden relative">
-                            <motion.div 
-                                initial={{ width: "0%" }}
-                                animate={{ width: "100%" }}
-                                transition={{ duration: 2.8, ease: "easeInOut" }}
-                                className="absolute left-0 top-0 bottom-0 bg-emerald-500 shadow-[0_0_15px_#10b981] will-change-transform"
-                            />
+                        <div className="w-48 sm:w-64 md:w-80 lg:w-96 relative will-change-transform">
+                            {/* Bright white logo with a refined, ethereal glowing shadow */}
+                            <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_40px_rgba(255,255,255,0.6)]" />
                         </div>
                     </motion.div>
-                    
-                    <motion.div animate={{ top: ["0%", "100%"] }} transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }} className="absolute inset-x-0 h-[1px] bg-white/5" />
                 </motion.div>
             ) : (
                 <motion.div key="main-ui" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }} className="h-full w-full relative">
@@ -261,7 +273,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                 >
                     <div className="relative z-10 flex items-center gap-2">
                         <Globe size={14} className="text-white/70 group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.langToggle}</span>
+                        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
                     </div>
                 </button>
 
@@ -298,49 +310,52 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
     );
 }
 
-// --- 1. DYNAMIC VIBRANT GRID BACKGROUND TEXT ---
+// --- 1. NEW HIGHLY SATURATED BRIGHT BACKGROUND ENGINE ---
 const BackgroundLayer = React.memo(({ activeColor, activeIndex }: { activeColor: string, activeIndex: number }) => {
     const { isAr } = useContext(LangContext);
     const title = isAr ? SERVICES[activeIndex].titleAr : SERVICES[activeIndex].title;
 
     return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-[#08080a]">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-[#020204]">
+            
+            {/* HIGHLY SATURATED BASE COLOR INJECTION */}
             <motion.div 
                 animate={{ backgroundColor: activeColor }}
-                transition={{ duration: 1.2, ease: "easeInOut" }}
-                className="absolute inset-0 opacity-[0.30] saturate-150 will-change-[background-color] mix-blend-color-dodge"
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+                className="absolute inset-0 opacity-[0.6] saturate-[300%] mix-blend-color-dodge will-change-[background-color]"
             />
-            <div 
-                className="absolute inset-0 z-0 opacity-60 mix-blend-screen pointer-events-none" 
-                style={{ 
-                    backgroundImage: `
-                        linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px), 
-                        linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px)
-                    `, 
-                    backgroundSize: '3rem 3rem',
-                    backgroundPosition: 'center center'
-                }} 
-            />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeIndex}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 0.15, scale: 1 }}
-                        exit={{ opacity: 0, scale: 1.05 }}
-                        transition={{ duration: 1.0, ease: "circOut" }}
-                        className="absolute font-black uppercase tracking-tighter whitespace-nowrap select-none will-change-transform"
-                        style={{ 
-                            fontSize: "28vw", 
-                            color: "transparent", 
-                            WebkitTextStroke: `3px ${activeColor}` 
-                        }}
-                    >
-                        {title}
-                    </motion.div>
-                </AnimatePresence>
+            
+            {/* BUTTER SMOOTH ANIMATED ORBS FOR EXTRA BRIGHTNESS */}
+            <div className="absolute inset-0 z-0 opacity-100 mix-blend-screen overflow-hidden pointer-events-none">
+                <motion.div 
+                    animate={{ 
+                        backgroundColor: activeColor,
+                        x: ['-5%', '10%', '-5%'],
+                        y: ['-10%', '5%', '-10%'],
+                        scale: [1, 1.15, 1]
+                    }}
+                    transition={{ duration: 25, ease: "easeInOut", repeat: Infinity }}
+                    className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full blur-[140px] opacity-60 mix-blend-screen will-change-transform"
+                />
+                <motion.div 
+                    animate={{ 
+                        backgroundColor: activeColor,
+                        x: ['10%', '-5%', '10%'],
+                        y: ['10%', '-10%', '10%'],
+                        scale: [1.1, 0.95, 1.1]
+                    }}
+                    transition={{ duration: 30, ease: "easeInOut", repeat: Infinity }}
+                    className="absolute -bottom-[20%] -right-[10%] w-[80vw] h-[80vw] rounded-full blur-[130px] opacity-50 mix-blend-screen will-change-transform"
+                />
             </div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.85)_100%)] z-0 pointer-events-none" />
+
+            {/* BRIGHT PREMIUM DOTS */}
+            <div className="absolute inset-0 premium-dots z-0 opacity-95 pointer-events-none mix-blend-screen" />
+
+            
+            
+            {/* EXTREME VIGNETTE FOR DEPTH (Protects readability) */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.98)_110%)] z-0 pointer-events-none" />
         </div>
     );
 });
@@ -353,10 +368,12 @@ function Carousel3D() {
   const [isMobile, setIsMobile] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
+  // State for Expanding Map
+  const [isMapExpanded, setIsMapExpanded] = useState(false);
+  
   const autoplayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const wheelAccumulator = useRef(0);
   
-  // Custom drag scrolling implementation for Trusted Partners
   const tickerRef = useRef<HTMLDivElement>(null);
   const [isTickerHovered, setIsTickerHovered] = useState(false);
   const [isDraggingTicker, setIsDraggingTicker] = useState(false);
@@ -393,7 +410,6 @@ function Carousel3D() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, rotationSpring, isAr]);
 
-  // Smooth Auto-Scroll logic for the Trusted Partners Ticker (Pauses on hover/drag)
   useEffect(() => {
       let animationId: number;
       const scrollTicker = () => {
@@ -452,7 +468,6 @@ function Carousel3D() {
     resumeAutoplay();
   };
 
-  // Drag logic for Ticker
   const onTickerMouseDown = (e: React.MouseEvent) => {
       setIsDraggingTicker(true);
       setIsTickerHovered(true);
@@ -474,7 +489,6 @@ function Carousel3D() {
   };
 
   const activeColor = SERVICES[activeIndex].color;
-  const currentStory = isAr ? (STORIES_AR[activeIndex % STORIES_AR.length] || "") : (STORIES_EN[activeIndex % STORIES_EN.length] || "");
   const activeSubtitle = isAr ? SERVICES[activeIndex].subAr : SERVICES[activeIndex].subtitle;
   const activeTitle = isAr ? SERVICES[activeIndex].titleAr : SERVICES[activeIndex].title;
 
@@ -485,120 +499,106 @@ function Carousel3D() {
     >
       <BackgroundLayer activeColor={activeColor} activeIndex={activeIndex} />
 
-   {/* --- CINEMATIC LEFT PANEL (STORY) --- */}
-      <div className={`absolute top-[22%] md:top-[28%] ${isAr ? 'right-4 md:right-12' : 'left-4 md:left-12'} z-40 max-w-[300px] md:max-w-[420px] pointer-events-none hidden sm:block`}>
-        <AnimatePresence mode="wait">
-            <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, filter: "blur(10px)", x: isAr ? 40 : -40 }}
-                animate={{ opacity: 1, filter: "blur(0px)", x: 0 }}
-                exit={{ opacity: 0, filter: "blur(10px)", x: isAr ? -40 : 40 }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="relative flex flex-col gap-4 p-6 md:p-8 rounded-2xl bg-[#050508]/80 backdrop-blur-2xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden"
-            >
-                {/* Dynamic Glowing Orb Background */}
-                <motion.div 
-                    initial={{ opacity: 0, scale: 0.5 }} 
-                    animate={{ opacity: 0.15, scale: 1 }} 
-                    transition={{ delay: 0.3, duration: 1.5, ease: "easeOut" }}
-                    className={`absolute -top-20 ${isAr ? '-right-20' : '-left-20'} w-56 h-56 rounded-full blur-[60px] pointer-events-none`}
-                    style={{ backgroundColor: activeColor }}
-                />
-                
-                {/* Top/Bottom High-Tech Accent Lines */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 w-full h-[2px] opacity-40" style={{ background: `linear-gradient(to ${isAr ? 'left' : 'right'}, transparent, ${activeColor}, transparent)` }} />
-
-                <div className="relative z-10 flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                        {/* Pulsing Status Dot */}
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: activeColor }}></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: activeColor }}></span>
-                        </span>
-                        <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-[0.4em] text-white/50">
-                            {t.vision}
-                        </span>
-                    </div>
-                   
-                </div>
-
-                <h3 
-                    className="relative z-10 text-4xl md:text-5xl font-black tracking-tighter uppercase text-white leading-[0.85] drop-shadow-2xl"
-                    style={{ WebkitTextStroke: '1px rgba(255,255,255,0.05)' }}
-                >
-                    {activeSubtitle}
-                </h3>
-                
-                {/* Advanced Typing Effect Reveal */}
-                <div className={`relative z-10 mt-3 ${isAr ? 'pr-4 border-r-2' : 'pl-4 border-l-2'}`} style={{ borderColor: `${activeColor}50` }}>
-                    <p className="text-xs md:text-sm font-light text-white/70 leading-[1.8] tracking-wide min-h-[6.5rem]">
-                        {currentStory.split(" ").map((word, i) => (
-                            <motion.span
-                                key={`${activeIndex}-${i}`}
-                                initial={{ opacity: 0, filter: "blur(5px)", y: 4 }}
-                                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                                transition={{ duration: 0.4, delay: i * 0.03, ease: "easeOut" }}
-                                className={`inline-block ${isAr ? 'ml-[5px]' : 'mr-[5px]'}`}
-                            >
-                                {word}
-                            </motion.span>
-                        ))}
-                    </p>
-                </div>
-            </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* --- CINEMATIC RIGHT PANEL (CONTACT WIDGET FROM PDF) --- */}
-      <div className={`absolute top-[22%] md:top-[28%] ${isAr ? 'left-4 md:left-12' : 'right-4 md:right-12'} z-40 max-w-[300px] md:max-w-[380px] pointer-events-auto hidden lg:flex flex-col ${isAr ? 'items-start text-left' : 'items-end text-right'}`}>
+      {/* --- CINEMATIC RIGHT PANEL (CONTACT WIDGET) --- */}
+      {/* Positioned higher (top-[12%]) to ensure it has space to expand without going down out of bounds */}
+      <div className={`absolute top-[12%] md:top-[16%] ${isAr ? 'left-4 md:left-12' : 'right-4 md:right-12'} z-40 max-w-[340px] md:max-w-[420px] w-full pointer-events-auto hidden lg:flex flex-col ${isAr ? 'items-start text-left' : 'items-end text-right'}`}>
         <AnimatePresence mode="wait">
             <motion.div
                 key="contact-hq"
                 initial={{ opacity: 0, x: isAr ? -40 : 40 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, ease: "circOut", delay: 0.2 }}
-                className={`flex flex-col gap-6 w-full p-8 rounded-3xl bg-black/40 backdrop-blur-2xl border border-white/5 shadow-2xl ${isAr ? 'items-start' : 'items-end'}`}
+                className={`flex flex-col w-full p-6 md:p-8 rounded-[2rem] bg-[#050508]/80 backdrop-blur-2xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] ${isAr ? 'items-start' : 'items-end'}`}
             >
-                <div className={`flex flex-col gap-1 mb-2 ${isAr ? 'items-start' : 'items-end'}`}>
-                    <span className="text-[10px] md:text-xs font-mono tracking-[0.5em] text-white/40 uppercase">{t.comms}</span>
-                    <h3 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none text-white drop-shadow-lg">
-                        {t.hq}
-                    </h3>
+                
+                {/* SPACE-SAVING EXPANDING MAP ACCORDION */}
+                <div className="w-full bg-[#020203] rounded-xl border border-white/10 overflow-hidden mb-5 shadow-lg group">
+                    <button 
+                        onClick={() => setIsMapExpanded(!isMapExpanded)}
+                        className={`w-full flex items-center justify-between p-3.5 md:p-4 bg-white/5 hover:bg-white/10 transition-colors ${isAr ? 'flex-row-reverse' : ''}`}
+                    >
+                        <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
+                            <MapPin size={14} className="text-white/50" style={{ color: isMapExpanded ? activeColor : undefined }} />
+                            <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-white/80" style={{ color: isMapExpanded ? activeColor : undefined }}>
+                                {isMapExpanded ? t.hideMap : t.viewMap}
+                            </span>
+                        </div>
+                        <ChevronDown size={14} className={`text-white/50 transition-transform duration-300 ${isMapExpanded ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                        {isMapExpanded && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 180, opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.4, ease: "easeInOut" }}
+                                className="relative w-full border-t border-white/10 overflow-hidden"
+                            >
+                                {/* Active Color Map Overlay (keeps it thematic) */}
+                                <div className="absolute inset-0 opacity-[0.25] mix-blend-screen transition-colors duration-1000 z-10 pointer-events-none" style={{ backgroundColor: activeColor }} />
+                                
+                                {/* Static Google Map Embed (with premium dark mode CSS filters) */}
+                                <iframe 
+                                    width="100%" 
+                                    height="100%" 
+                                    frameBorder="0" 
+                                    style={{ border: 0, filter: 'invert(100%) hue-rotate(180deg) contrast(1.2) grayscale(0.2)' }} 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11438.3188593444!2d50.584347!3d26.223504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49af66d2146e27%3A0x6b446ea95d2c5e5!2sManama%2C%20Bahrain!5e0!3m2!1sen!2sus!4v1713000000000!5m2!1sen!2sus" 
+                                    allowFullScreen={false}
+                                    aria-hidden="false" 
+                                    tabIndex={-1}
+                                    className="pointer-events-none" // Acts like a static map
+                                />
+
+                                {/* Internal Vignette */}
+                                <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] pointer-events-none z-20" />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
-                <div className={`flex flex-col gap-6 py-3 w-full transition-colors duration-1000 ${isAr ? 'border-l-[3px] pl-6 items-start' : 'border-r-[3px] pr-6 items-end'}`} style={{ borderRightColor: !isAr ? activeColor : 'transparent', borderLeftColor: isAr ? activeColor : 'transparent' }}>
+                {/* DATA DETAILS LIST */}
+                <div className={`flex flex-col gap-4 w-full transition-colors duration-1000 ${isAr ? 'border-l-[3px] pl-6 items-start' : 'border-r-[3px] pr-6 items-end'}`} style={{ borderRightColor: !isAr ? activeColor : 'transparent', borderLeftColor: isAr ? activeColor : 'transparent' }}>
                     
-                    <div className={`flex flex-col gap-2 group cursor-default ${isAr ? 'items-start' : 'items-end'}`}>
+                    {/* BAHRAIN LOCATION */}
+                    <div className={`flex flex-col gap-1 group ${isAr ? 'items-start' : 'items-end'}`}>
                         <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <span className="text-[11px] md:text-xs font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.base}</span>
-                            <MapPin size={14} className="text-white/50" />
+                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.base}</span>
                         </div>
-                        <span className="text-[11px] md:text-xs text-white/70 font-mono leading-relaxed max-w-[240px]">
+                        <Link href="https://maps.app.goo.gl/1hjew3B1hCtoKq496" target="_blank" className="text-[10px] md:text-[11px] text-white/70 hover:text-white transition-colors font-mono leading-relaxed max-w-[260px]">
                             {t.address}
-                        </span>
+                        </Link>
                     </div>
 
-                    <div className={`flex flex-col gap-2 group cursor-default ${isAr ? 'items-start' : 'items-end'}`}>
+                    {/* SAUDI LOCATION */}
+                    <div className={`flex flex-col gap-1 group ${isAr ? 'items-start' : 'items-end'}`}>
                         <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <span className="text-[11px] md:text-xs font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.directLine}</span>
-                            <Phone size={14} className="text-white/50" />
+                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.saudiBase}</span>
                         </div>
-                        <span className="text-[11px] md:text-xs text-white/90 font-mono" dir="ltr">
+                        <Link href="https://maps.app.goo.gl/vZ5XGjFBtwAcrE8D7" target="_blank" className="text-[10px] md:text-[11px] text-white/70 hover:text-white transition-colors font-mono leading-relaxed max-w-[260px]">
+                            {t.saudiAddress}
+                        </Link>
+                    </div>
+
+                    <div className={`flex flex-col gap-1 group cursor-default ${isAr ? 'items-start' : 'items-end'}`}>
+                        <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
+                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.directLine}</span>
+                        </div>
+                        <span className="text-[10px] md:text-[11px] text-white/90 font-mono" dir="ltr">
                             +973 17295917
                         </span>
                     </div>
 
-                    <div className={`flex flex-col gap-2 group cursor-default ${isAr ? 'items-start' : 'items-end'}`}>
+                    <div className={`flex flex-col gap-1 group cursor-default ${isAr ? 'items-start' : 'items-end'}`}>
                         <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <span className="text-[11px] md:text-xs font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.email}</span>
-                            <Mail size={14} className="text-white/50" />
+                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.email}</span>
                         </div>
-                        <span className="text-[11px] md:text-xs text-white/90 font-mono">
+                        <span className="text-[10px] md:text-[11px] text-white/90 font-mono">
                             info@coloursbahrain.com
                         </span>
                     </div>
 
-                    <div className="flex items-center gap-4 mt-4">
+                    <div className="flex items-center gap-4 mt-2">
                         <Link href="https://www.instagram.com/colours.bahrain/" target="_blank" className="text-white/50 hover:text-white transition-colors p-3 bg-white/5 rounded-full hover:bg-white/20 hover:scale-110 shadow-lg">
                             <Instagram size={16} />
                         </Link>
@@ -707,13 +707,10 @@ function Carousel3D() {
                 >
                      <div className="flex items-center gap-14 md:gap-24 whitespace-nowrap px-4 md:px-12 py-2 w-max cursor-grab active:cursor-grabbing">
                         {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
-                            <div key={i} className="flex items-center gap-4 opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer group hover:scale-105 pointer-events-auto">
-                                <div className="relative h-8 md:h-10 flex items-center justify-center pointer-events-none">
+                            <div key={i} className="flex items-center justify-center opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer group hover:scale-110 pointer-events-auto">
+                                <div className="relative h-10 md:h-14 flex items-center justify-center pointer-events-none">
                                     <img src={client.logo} alt={client.name} className="max-h-full w-auto object-contain drop-shadow-xl pointer-events-none" />
                                 </div>
-                                <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] text-white/80 group-hover:text-emerald-400 transition-colors drop-shadow-lg pointer-events-none">
-                                    {client.name}
-                                </span>
                             </div>
                         ))}
                      </div>
@@ -798,7 +795,7 @@ const CarouselItem = React.memo(({ item, index, isActive, cardWidth, radius, ang
                             
                             <div className="flex items-center justify-between w-full border-t border-white/20 pt-5 md:pt-6">
                                 <div className={`group/btn flex items-center justify-between w-full backdrop-blur-md border text-white px-5 py-3 md:px-6 md:py-4 rounded-xl transition-all duration-500 shadow-2xl ${isAr ? 'flex-row-reverse' : ''} ${isActive ? 'bg-white/10 border-white/20 group-hover:bg-white group-hover:text-black' : 'bg-transparent border-transparent'}`}>
-                                    <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">{t.explore}</span>
+                                    <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em]">{t.explore}</span>
                                     <div className="w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center overflow-hidden relative transition-colors duration-500 bg-black/10 group-hover:bg-black/5">
                                         <ArrowUpRight size={14} className={`text-current transition-transform duration-500 absolute ${isAr ? 'group-hover/btn:-translate-x-4 group-hover/btn:-translate-y-4' : 'group-hover/btn:translate-x-4 group-hover/btn:-translate-y-4'} group-hover:translate-x-4 group-hover:-translate-y-4`} />
                                         <ArrowUpRight size={14} className={`text-current transition-transform duration-500 absolute ${isAr ? 'translate-x-4 translate-y-4' : '-translate-x-4 translate-y-4'} group-hover/btn:translate-x-0 group-hover/btn:translate-y-0 group-hover:translate-x-0 group-hover:translate-y-0`} />

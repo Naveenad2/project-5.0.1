@@ -278,10 +278,10 @@ export default function AboutPage() {
         </Link>
 
         <div className="pointer-events-auto flex items-center gap-4 md:gap-6">
-            <button onClick={toggleLang} className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors group">
-                <Globe size={16} className="group-hover:text-emerald-400 transition-colors" />
-                <span className="text-[10px] font-bold uppercase tracking-widest mt-[1px]">{isAr ? "EN" : "عربي"}</span>
-            </button>
+          <button onClick={toggleLang} className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors group">
+    <Globe size={14} className="md:w-4 md:h-4 group-hover:text-emerald-400 transition-colors" />
+    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+</button>
             <div className="w-24 sm:w-32 md:w-44 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
                 <ColoursLogoHeader className="w-full h-auto fill-white" />
             </div>

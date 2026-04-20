@@ -179,13 +179,10 @@ export default function EventsPage() {
 
                 <div className="pointer-events-auto flex items-center gap-4 md:gap-6">
                     {/* Arabic Toggle */}
-                    <button 
-                        onClick={toggleLang} 
-                        className="flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-2.5 border border-white/30 rounded-full text-white transition-all hover:bg-white/10 group"
-                    >
-                        <Globe size={16} className="group-hover:text-rose-400 transition-colors" />
-                        <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest mt-[1px]">{isAr ? "English" : "عربي"}</span>
-                    </button>
+                   <button onClick={toggleLang} className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors group">
+    <Globe size={14} className="md:w-4 md:h-4 group-hover:text-emerald-400 transition-colors" />
+    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+</button>
 
                     <div className="w-24 md:w-32 opacity-100 drop-shadow-2xl">
                         <ColoursLogoHeader className="w-full h-auto fill-white" />

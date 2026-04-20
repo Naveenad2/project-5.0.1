@@ -172,13 +172,10 @@ export default function GalleryPage() {
 
             <div className="pointer-events-auto flex items-center gap-4 md:gap-6">
                 {/* UPGRADED: More visible language toggle button */}
-                <button 
-                    onClick={toggleLang} 
-                    className="flex items-center gap-2 px-4 py-2.5 md:px-5 md:py-2.5 bg-white/10 hover:bg-white/20 border border-white/30 rounded-full text-white transition-all shadow-lg backdrop-blur-md group"
-                >
-                    <Globe size={16} className="group-hover:text-blue-300 transition-colors" />
-                    <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest mt-[1px]">{isAr ? "English" : "عربي"}</span>
-                </button>
+               <button onClick={toggleLang} className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors group">
+    <Globe size={14} className="md:w-4 md:h-4 group-hover:text-emerald-400 transition-colors" />
+    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+</button>
 
                 <div className="w-24 sm:w-32 md:w-40 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
                     <ColoursLogoHeader className="w-full h-auto fill-white" />
