@@ -79,6 +79,8 @@ const TEXT_EN = {
     physCoords: "Physical Coordinates",
     bahrainHq: "Bahrain HQ",
     online: "ONLINE",
+    philosophy: "Philosophy",
+    overview: "We engineer high-impact corporate and public experiences. From exclusive VIP summits to massive live festivals, our division orchestrates every detail with absolute precision, transforming standard gatherings into breathtaking cinematic memories.",
 
     // Footer & Modal
     readyToDeploy: "Ready to deploy?",
@@ -142,6 +144,8 @@ const TEXT_AR = {
     physCoords: "الإحداثيات المادية",
     bahrainHq: "مقر البحرين",
     online: "متصل",
+    philosophy: "فلسفتنا",
+    overview: "نحن نهندس تجارب مؤسسية وعامة عالية التأثير. من مؤتمرات كبار الشخصيات الحصرية إلى المهرجانات الحية الضخمة، ينسق قسمنا كل التفاصيل بدقة متناهية، ويحول التجمعات العادية إلى ذكريات سينمائية مذهلة.",
 
     readyToDeploy: "مستعد للبدء؟",
     initProject: "بدء المشروع",
@@ -344,9 +348,9 @@ export default function AboutPage() {
                                 <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-emerald-500/50 group-hover:text-emerald-400 transition-colors">
                                     <cap.icon size={20} className="text-white/60 group-hover:text-emerald-400 transition-colors" />
                                 </div>
-                                <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-white">{(t as any)[cap.idTitle]}</h3>
+                                <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-white">{(t as never)[cap.idTitle]}</h3>
                             </div>
-                            <p className={`text-[10px] md:text-xs text-white/40 uppercase tracking-wide ${isAr ? 'mr-14' : 'ml-14'}`}>{(t as any)[cap.idDesc]}</p>
+                            <p className={`text-[10px] md:text-xs text-white/40 uppercase tracking-wide ${isAr ? 'mr-14' : 'ml-14'}`}>{(t as never)[cap.idDesc]}</p>
                         </div>
                     ))}
                 </div>
@@ -492,8 +496,8 @@ export default function AboutPage() {
                           <div className={`flex flex-col md:flex-row md:items-center gap-4 md:gap-8 ${isAr ? 'mr-4' : 'ml-4'}`}>
                               <span className="text-4xl md:text-5xl font-black text-white/10 group-hover:text-white/20 font-mono transition-colors">{proc.step}</span>
                               <div>
-                                  <h3 className="text-lg md:text-xl font-bold uppercase tracking-widest text-white mb-2">{(t as any)[proc.idTitle]}</h3>
-                                  <p className="text-sm text-white/50 leading-relaxed font-light">{(t as any)[proc.idDesc]}</p>
+                                  <h3 className="text-lg md:text-xl font-bold uppercase tracking-widest text-white mb-2">{(t as never)[proc.idTitle]}</h3>
+                                  <p className="text-sm text-white/50 leading-relaxed font-light">{(t as never)[proc.idDesc]}</p>
                               </div>
                           </div>
                       </motion.div>
