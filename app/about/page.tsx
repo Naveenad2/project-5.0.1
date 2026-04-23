@@ -9,12 +9,14 @@ import {
     AnimatePresence
 } from "framer-motion";
 import { 
-    ArrowLeft, Target, Users, Trophy, Zap, 
-    Hexagon, Sparkles, Aperture, MousePointer2, 
-    Fingerprint, X, Mail, Copy, Check, Phone,
-    Facebook, Instagram, Monitor, Box, ArrowUpRight, 
-    MapPin, CornerDownRight, Command, Globe,
-    Eye, Flag, Leaf, Globe2, Lightbulb
+    ArrowLeft, LayoutGrid, ArrowUpRight, 
+    Globe, Compass, Asterisk, Target, 
+    Users, Trophy, Zap, Hexagon, Sparkles, 
+    Aperture, MousePointer2, Fingerprint, X, 
+    Mail, Copy, Check, Phone, Facebook, 
+    Instagram, Monitor, Box, MapPin, 
+    CornerDownRight, Command, Eye, Flag, 
+    Leaf, Globe2, Lightbulb
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -32,12 +34,6 @@ const TEXT_EN = {
     desc: "A dynamic, full-service event management agency based in Bahrain. With 17 years of experience, we deliver end-to-end brand experiences across the GCC.",
     scroll: "Scroll to Explore",
     
-    // Stats
-    stat1: "Years in Operation",
-    stat2: "GCC Projects",
-    stat3: "In-House Experts",
-    stat4: "Industry Awards",
-
     // Capabilities
     cap1: "Event Build", cap1Desc: "Design & Build Event Setups",
     cap2: "Project Management", cap2Desc: "Event & Project Management",
@@ -107,11 +103,6 @@ const TEXT_AR = {
     deliver: "تنفيذ.",
     desc: "وكالة ديناميكية متكاملة الخدمات لإدارة الفعاليات مقرها البحرين. بخبرة تمتد لـ 17 عاماً، نقدم تجارب شاملة في جميع أنحاء دول مجلس التعاون الخليجي.",
     scroll: "قم بالتمرير للاستكشاف",
-    
-    stat1: "سنوات في العمل",
-    stat2: "مشاريع خليجية",
-    stat3: "خبراء داخليين",
-    stat4: "جوائز الصناعة",
 
     cap1: "بناء الفعاليات", cap1Desc: "تصميم وبناء تجهيزات الفعاليات",
     cap2: "إدارة المشاريع", cap2Desc: "إدارة الفعاليات والمشاريع",
@@ -164,12 +155,22 @@ const TEXT_AR = {
     copied: "تم النسخ"
 };
 
-// --- DATA CONFIGURATION ---
-const STATS_DATA = [
-    { id: "stat1", value: "17", icon: Zap, color: "text-emerald-400", suffix: "" },
-    { id: "stat2", value: "500", icon: Target, color: "text-blue-400", suffix: "+" },
-    { id: "stat3", value: "50", icon: Users, color: "text-purple-400", suffix: "+" },
-    { id: "stat4", value: "18", icon: Trophy, color: "text-yellow-400", suffix: "" },
+// --- DATA CONFIGURATION & ANIMATIONS ---
+
+const THEME_COLOR = "#E11D48"; // Rose Red
+const HERO_IMAGE = "/insta/events.jpeg";
+
+const CAPABILITIES_IMAGES = [
+    "/insta/image2.png", 
+    "/insta/image3.png", 
+    "/insta/image4.png", 
+    "/insta/image5.png"
+];
+
+const GALLERY_IMAGES = [
+    "/insta/image1.png", "/insta/image2.png", "/insta/image3.png",
+    "/insta/image4.png", "/insta/image5.png", "/insta/image6.png",
+    "/insta/image7.png"
 ];
 
 const CAPABILITIES_DATA = [
@@ -185,24 +186,17 @@ const PROCESS_DATA = [
     { step: "03", idTitle: "step3", idDesc: "step3Desc" }
 ];
 
-const GALLERY_IMAGES = [
-    "/insta/image1.png", "/insta/image2.png", "/insta/image3.png",
-    "/insta/image4.png", "/insta/image5.png", "/insta/image6.png",
-    "/insta/image7.png"
-];
-
-// Exact file names from user's upload
 const CLIENTS = [
-    { name: "Bahrain EDB", logo: "./logos/ebd.png" },
-    { name: "Gulf Air", logo: "./logos/gulfair.png" },
-    { name: "DO & CO", logo: "./logos/DOCO.png" },
+    { name: "Bahrain EDB", logo: "/logos/ebd.png" },
+    { name: "Gulf Air", logo: "/logos/gulfair.png" },
+    { name: "DO & CO", logo: "/logos/DOCO.png" },
     { name: "The Avenues", logo: "/logos/avenues.png" },
     { name: "Seef Mall", logo: "/logos/seef.png" },
     { name: "BIC", logo: "/logos/bic.png" },
     { name: "Tamkeen", logo: "/logos/tamkeen.png" },
     { name: "Marassi", logo: "/logos/marassi.png" },
     { name: "Edamah", logo: "/logos/edamah.png" },
-    { name: "Bahrain Marina", logo: "/logos/Marina.png" }
+    { name: "Bahrain Marina", logo: "/logos/marina.png" }
 ];
 
 const CONTACT_INFO = {
@@ -213,11 +207,18 @@ const CONTACT_INFO = {
     facebook: "https://www.facebook.com/ColoursEventsBahrain?_rdc=1&_rdr"
 };
 
+// Animation Variants restored
+const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as const } }
+};
+
 // Context for App-wide Language State
 const LangContext = createContext({ isAr: false, toggleLang: () => {}, t: TEXT_EN });
 
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const [showContact, setShowContact] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
   const [isAr, setIsAr] = useState(false);
@@ -278,10 +279,10 @@ export default function AboutPage() {
         </Link>
 
         <div className="pointer-events-auto flex items-center gap-4 md:gap-6">
-          <button onClick={toggleLang} className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors group">
-    <Globe size={14} className="md:w-4 md:h-4 group-hover:text-emerald-400 transition-colors" />
-    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
-</button>
+            <button onClick={toggleLang} className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors group">
+                <Globe size={14} className="md:w-4 md:h-4 group-hover:text-emerald-400 transition-colors" />
+                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+            </button>
             <div className="w-24 sm:w-32 md:w-44 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
                 <ColoursLogoHeader className="w-full h-auto fill-white" />
             </div>
@@ -440,37 +441,23 @@ export default function AboutPage() {
           </div>
       </section>
 
-      {/* 4. STATS SECTION */}
-      <section className="relative z-20 border-y border-white/10 bg-black/40 backdrop-blur-xl">
-          <div className="max-w-[1800px] mx-auto px-6 md:px-12 lg:px-24">
-              <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-white/10">
-                  {STATS_DATA.map((stat, i) => (
-                      <motion.div 
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ delay: i * 0.1, duration: 0.6 }}
-                        className="py-10 md:py-16 px-6 md:px-8 group cursor-default relative overflow-hidden"
-                      >
-                          <div className="flex items-center gap-2 mb-3 opacity-60 group-hover:opacity-100 transition-opacity">
-                              <stat.icon size={14} className={stat.color} />
-                              <span className="text-[8px] md:text-[10px] font-mono uppercase tracking-[0.2em] text-white/80">{(t as any)[stat.id]}</span>
-                          </div>
-                          <div className="flex items-baseline">
-                              <span className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tighter text-white drop-shadow-md">
-                                  {stat.value}
-                              </span>
-                              <span className="text-2xl md:text-3xl text-emerald-500/80 font-mono mx-1">{stat.suffix}</span>
-                          </div>
-                      </motion.div>
-                  ))}
-              </div>
+     {/* 4. OVERVIEW (Stats Removed) */}
+      <section className="relative z-20 py-10 md:py-16 px-6 md:px-12 lg:px-24 shrink-0 bg-black/40 backdrop-blur-sm">
+          <div className="max-w-[1200px] mx-auto flex flex-col text-center items-center">
+              <motion.div 
+                  initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                  className="flex flex-col items-center"
+              >
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] mb-8 text-emerald-500">{t.philosophy}</span>
+                  <p className="text-2xl md:text-4xl font-light text-white/90 leading-snug md:leading-snug max-w-4xl">
+                      {t.overview}
+                  </p>
+              </motion.div>
           </div>
       </section>
 
       {/* 5. PHILOSOPHY / PROCESS SECTION */}
-      <section className="relative py-24 md:py-40 px-6 md:px-12 lg:px-24 z-10 bg-[#050508]">
+    <section className="relative py-12 md:py-24 px-6 md:px-12 lg:px-24 z-10 bg-[#050508]">
           <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
               <motion.div 
                   initial={{ opacity: 0, x: isAr ? 30 : -30 }}
@@ -600,24 +587,27 @@ export default function AboutPage() {
          </div>
       </section>
 
-      {/* 7.5 TRUSTED PARTNERS TICKER */}
+      {/* 7.5 TRUSTED PARTNERS TICKER (Logos Only) */}
       <section className="relative py-12 md:py-20 border-t border-white/10 bg-black z-20 overflow-hidden">
+          <style dangerouslySetInnerHTML={{__html: `
+            .mask-linear-fade {
+                mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+                -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            }
+          `}} />
           <div className="max-w-[1800px] mx-auto flex items-center">
-                <div className={`hidden md:flex items-center gap-3 z-20 bg-transparent shrink-0 ${isAr ? 'pl-8 pr-12 border-l border-white/10' : 'pr-8 pl-12 border-r border-white/10'}`}>
+                <div className={`hidden md:flex items-center gap-3 z-20 bg-black shrink-0 ${isAr ? 'pl-8 pr-12 border-l border-white/10' : 'pr-8 pl-12 border-r border-white/10'}`}>
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_#10b981]" />
                     <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/80 whitespace-nowrap">{t.trustedPartners}</span>
                 </div>
 
                 <div className="flex-1 overflow-hidden relative mask-linear-fade w-full">
-                     <motion.div animate={{ x: isAr ? ["-50%", "0%"] : ["0%", "-50%"] }} transition={{ repeat: Infinity, duration: 40, ease: "linear" }} className="flex items-center gap-14 md:gap-24 whitespace-nowrap will-change-transform">
+                     <motion.div animate={{ x: isAr ? ["-50%", "0%"] : ["0%", "-50%"] }} transition={{ repeat: Infinity, duration: 40, ease: "linear" }} className="flex items-center gap-12 md:gap-24 whitespace-nowrap will-change-transform">
                         {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
-                            <div key={i} className="flex items-center gap-4 opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500 cursor-default group hover:scale-105">
-                                <div className="relative h-8 md:h-10 flex items-center justify-center">
-                                    <img src={client.logo} alt={client.name} className="max-h-full w-auto object-contain drop-shadow-xl" />
+                            <div key={i} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-500 cursor-default group hover:scale-110 pointer-events-auto shrink-0">
+                                <div className="relative h-10 md:h-16 flex items-center justify-center pointer-events-none">
+                                    <Image src={client.logo} alt={client.name} width={160} height={64} className="h-full w-auto max-w-[120px] md:max-w-[160px] object-contain drop-shadow-xl pointer-events-none" />
                                 </div>
-                                <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] text-white/80 group-hover:text-emerald-400 transition-colors drop-shadow-lg">
-                                    {client.name}
-                                </span>
                             </div>
                         ))}
                      </motion.div>
@@ -626,7 +616,7 @@ export default function AboutPage() {
       </section>
 
       {/* 8. FOOTER CTA */}
-      <section className="relative py-24 md:py-32 border-t border-white/10 bg-black z-20 text-center overflow-hidden px-6 flex flex-col">
+      <section className="relative py-24 md:py-32 border-t border-white/10 bg-[#050508] z-20 text-center overflow-hidden px-6 flex flex-col">
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
          
          <div className="relative z-10 max-w-4xl mx-auto mb-20 md:mb-32">

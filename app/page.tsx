@@ -142,6 +142,14 @@ const CLIENTS = [
     { name: "Bahrain Marina", logo: "/logos/marina.png" }
 ];
 
+// Clickable Location Info Array for the sliding ticker
+const LOCATIONS = [
+    { icon: MapPin, label: "BHR", text: "Unit 7, Bldg 2568, Rd 4450, Blk 744, Manama", link: "https://maps.app.goo.gl/1hjew3B1hCtoKq496" },
+    { icon: MapPin, label: "KSA", text: "Bldg: 7073, Abaad Ibn Abbar, Khobar", link: "https://maps.app.goo.gl/vZ5XGjFBtwAcrE8D7" },
+    { icon: Phone, label: "DIR", text: "+973 17295917", link: "tel:+97317295917" },
+    { icon: Mail, label: "MAIL", text: "info@coloursbahrain.com", link: "mailto:info@coloursbahrain.com" }
+];
+
 const ANGLE_STEP = 360 / SERVICES.length; 
 
 // Context for App-wide Language State
@@ -156,11 +164,20 @@ export default function Home() {
   const toggleLang = () => setIsAr(!isAr);
   const t = isAr ? TEXT_AR : TEXT_EN;
 
+  // Session-Aware Boot Logic
   useEffect(() => {
+    const hasBooted = sessionStorage.getItem("app_has_booted");
+    if (hasBooted) {
+        setBootPhase(3); // Skip loader if already visited
+        return;
+    }
     const timers = [
         setTimeout(() => setBootPhase(1), 400),
         setTimeout(() => setBootPhase(2), 2000),
-        setTimeout(() => setBootPhase(3), 3600),
+        setTimeout(() => {
+            setBootPhase(3);
+            sessionStorage.setItem("app_has_booted", "true");
+        }, 3600),
     ];
     return () => timers.forEach(t => clearTimeout(t));
   }, []);
@@ -169,17 +186,23 @@ export default function Home() {
     <LangContext.Provider value={{ isAr, toggleLang, t }}>
         <main className={`h-screen w-full bg-[#020204] text-white relative overflow-hidden selection:bg-emerald-500/30 ${isAr ? 'font-sans' : 'font-sans'}`} dir={isAr ? "rtl" : "ltr"}>
         
-        {/* CSS INJECTIONS FOR SCROLLBAR & PREMIUM DOTS */}
+        {/* CSS INJECTIONS FOR SCROLLBAR, PREMIUM DOTS & MASKING */}
         <style dangerouslySetInnerHTML={{__html: `
             .scrollbar-hide::-webkit-scrollbar { display: none; }
             .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
             
-            /* Ultra Bright Premium Dots Engine */
+            /* Bright Premium Dots Engine */
             .premium-dots {
-    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 2px, transparent 2px);
-    background-size: 32px 32px;
-    filter: drop-shadow(0 0 2px rgba(255,255,255,0.1));
-}
+                background-image: radial-gradient(circle, rgba(255,255,255,0.6) 2px, transparent 2px);
+                background-size: 32px 32px;
+                filter: drop-shadow(0 0 4px rgba(255,255,255,0.4));
+            }
+
+            /* Cinematic Edge Fade for Tickers */
+            .mask-linear-fade {
+                mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+                -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            }
         `}} />
 
         <AnimatePresence mode="wait">
@@ -227,7 +250,6 @@ export default function Home() {
                         dir="ltr"
                     >
                         <div className="w-48 sm:w-64 md:w-80 lg:w-96 relative will-change-transform">
-                            {/* Bright white logo with a refined, ethereal glowing shadow */}
                             <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_40px_rgba(255,255,255,0.6)]" />
                         </div>
                     </motion.div>
@@ -245,64 +267,64 @@ export default function Home() {
   );
 }
 
-// --- COMPONENT: DECONSTRUCTED NAVBAR ---
+// --- COMPONENT: DECONSTRUCTED FULLY RESPONSIVE NAVBAR ---
 function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
     const { isAr, toggleLang, t } = useContext(LangContext);
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-50 px-5 py-6 md:px-10 md:py-8 flex items-start justify-between pointer-events-none">
+        <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none">
             
             {/* BRAND LOGO */}
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "circOut" }} className="pointer-events-auto">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "circOut" }} className="pointer-events-auto shrink-0">
                 <Link href="/" className="group relative block">
-                    <div className="w-28 sm:w-32 md:w-44 relative z-10 transition-transform duration-500 group-hover:scale-105">
+                    <div className="w-24 sm:w-32 md:w-44 relative z-10 transition-transform duration-500 group-hover:scale-105">
                         <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
                     </div>
                 </Link>
             </motion.div>
 
-            {/* NAV BUTTONS */}
+            {/* NAV BUTTONS (Horizontally Scrollable on Mobile) */}
             <motion.div 
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
-                className="pointer-events-auto flex items-center gap-2 md:gap-3"
+                className="pointer-events-auto flex items-center justify-end sm:justify-end gap-1.5 sm:gap-2 md:gap-3 overflow-x-auto scrollbar-hide w-full max-w-[70%] sm:max-w-none ml-auto"
             >
                 {/* LANGUAGE TOGGLE BUTTON */}
                 <button 
                     onClick={toggleLang}
-                    className="flex group relative px-4 py-2.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
+                    className="flex shrink-0 group relative px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
                 >
-                    <div className="relative z-10 flex items-center gap-2">
-                        <Globe size={14} className="text-white/70 group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+                    <div className="relative z-10 flex items-center gap-1.5 md:gap-2">
+                        <Globe size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
                     </div>
                 </button>
 
                 <Link 
                     href="/about"
-                    className="hidden sm:flex group relative px-4 py-2.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
+                    className="flex shrink-0 group relative px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
                 >
-                    <div className="relative z-10 flex items-center gap-2">
-                        <Info size={14} className="text-white/70 group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.about}</span>
+                    <div className="relative z-10 flex items-center gap-1.5 md:gap-2">
+                        <Info size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.about}</span>
                     </div>
                 </Link>
 
                 <Link 
                     href="/our-work"
-                    className="hidden sm:flex group relative px-4 py-2.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
+                    className="flex shrink-0 group relative px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
                 >
-                    <div className="relative z-10 flex items-center gap-2">
-                        <LayoutGrid size={14} className="text-white/70 group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.gallery}</span>
+                    <div className="relative z-10 flex items-center gap-1.5 md:gap-2">
+                        <LayoutGrid size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.gallery}</span>
                     </div>
                 </Link>
 
                 <button 
                     onClick={onOpenContact}
-                    className="flex items-center gap-2 px-5 py-2.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30 group"
+                    className="flex shrink-0 items-center gap-1.5 md:gap-2 px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30 group"
                 >
-                    <Zap size={14} className="text-white/70 group-hover:text-emerald-400 transition-colors" />
-                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.talk}</span>
+                    <Zap size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
+                    <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.talk}</span>
                 </button>
             </motion.div>
 
@@ -310,11 +332,8 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
     );
 }
 
-// --- 1. NEW HIGHLY SATURATED BRIGHT BACKGROUND ENGINE ---
-const BackgroundLayer = React.memo(({ activeColor, activeIndex }: { activeColor: string, activeIndex: number }) => {
-    const { isAr } = useContext(LangContext);
-    const title = isAr ? SERVICES[activeIndex].titleAr : SERVICES[activeIndex].title;
-
+// --- 1. HIGHLY SATURATED BRIGHT BACKGROUND ENGINE (NO TEXT) ---
+const BackgroundLayer = React.memo(({ activeColor }: { activeColor: string, activeIndex: number }) => {
     return (
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 bg-[#020204]">
             
@@ -322,7 +341,7 @@ const BackgroundLayer = React.memo(({ activeColor, activeIndex }: { activeColor:
             <motion.div 
                 animate={{ backgroundColor: activeColor }}
                 transition={{ duration: 1.5, ease: "easeInOut" }}
-                className="absolute inset-0 opacity-[0.6] saturate-[300%] mix-blend-color-dodge will-change-[background-color]"
+                className="absolute inset-0 opacity-[0.75] saturate-[400%] mix-blend-color-dodge will-change-[background-color]"
             />
             
             {/* BUTTER SMOOTH ANIMATED ORBS FOR EXTRA BRIGHTNESS */}
@@ -335,7 +354,7 @@ const BackgroundLayer = React.memo(({ activeColor, activeIndex }: { activeColor:
                         scale: [1, 1.15, 1]
                     }}
                     transition={{ duration: 25, ease: "easeInOut", repeat: Infinity }}
-                    className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full blur-[140px] opacity-60 mix-blend-screen will-change-transform"
+                    className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full blur-[140px] opacity-70 mix-blend-screen will-change-transform"
                 />
                 <motion.div 
                     animate={{ 
@@ -345,40 +364,100 @@ const BackgroundLayer = React.memo(({ activeColor, activeIndex }: { activeColor:
                         scale: [1.1, 0.95, 1.1]
                     }}
                     transition={{ duration: 30, ease: "easeInOut", repeat: Infinity }}
-                    className="absolute -bottom-[20%] -right-[10%] w-[80vw] h-[80vw] rounded-full blur-[130px] opacity-50 mix-blend-screen will-change-transform"
+                    className="absolute -bottom-[20%] -right-[10%] w-[80vw] h-[80vw] rounded-full blur-[130px] opacity-60 mix-blend-screen will-change-transform"
                 />
             </div>
 
             {/* BRIGHT PREMIUM DOTS */}
-            <div className="absolute inset-0 premium-dots z-0 opacity-95 pointer-events-none mix-blend-screen" />
-
+            <div className="absolute inset-0 premium-dots z-0 opacity-80 pointer-events-none mix-blend-screen" />
             
-            
-            {/* EXTREME VIGNETTE FOR DEPTH (Protects readability) */}
+            {/* EXTREME VIGNETTE FOR DEPTH */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.98)_110%)] z-0 pointer-events-none" />
         </div>
     );
 });
 BackgroundLayer.displayName = "BackgroundLayer";
 
+// --- CUSTOM INTERACTIVE TICKER COMPONENT ---
+function InteractiveTicker({ children, direction = 1, speed = 1, isAr = false, innerClassName = "" }: any) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeftPos, setScrollLeftPos] = useState(0);
+
+    useEffect(() => {
+        let animationId: number;
+        const scroll = () => {
+            if (containerRef.current && !isHovered && !isDragging) {
+                const container = containerRef.current;
+                const dir = isAr ? -direction : direction; 
+                container.scrollLeft += dir * speed;
+                
+                // Snap to half point seamlessly (since items are duplicated 4x)
+                if (dir > 0 && container.scrollLeft >= container.scrollWidth / 2) {
+                    container.scrollLeft = 1; // offset prevents jitter
+                } else if (dir < 0 && container.scrollLeft <= 0) {
+                    container.scrollLeft = (container.scrollWidth / 2) - 1;
+                }
+            }
+            animationId = requestAnimationFrame(scroll);
+        };
+        animationId = requestAnimationFrame(scroll);
+        return () => cancelAnimationFrame(animationId);
+    }, [isHovered, isDragging, isAr, direction, speed]);
+
+    const handleWheel = (e: React.WheelEvent) => {
+        if (containerRef.current) {
+            containerRef.current.scrollLeft += (e.deltaY > 0 || e.deltaX > 0) ? 40 : -40;
+        }
+    };
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsDragging(true);
+        if (containerRef.current) {
+            setStartX(e.pageX - containerRef.current.offsetLeft);
+            setScrollLeftPos(containerRef.current.scrollLeft);
+        }
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging || !containerRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - containerRef.current.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        containerRef.current.scrollLeft = scrollLeftPos - walk;
+    };
+
+    return (
+        <div 
+            ref={containerRef}
+            className="flex-1 overflow-x-auto relative scrollbar-hide cursor-grab active:cursor-grabbing w-full"
+            onWheel={handleWheel}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => { setIsHovered(false); setIsDragging(false); }}
+            onMouseDown={handleMouseDown}
+            onMouseUp={() => setIsDragging(false)}
+            onMouseMove={handleMouseMove}
+            onTouchStart={() => setIsHovered(true)}
+            onTouchEnd={() => setIsHovered(false)}
+        >
+            <div className={innerClassName}>
+                {children}
+            </div>
+        </div>
+    );
+}
+
 // --- MAIN CAROUSEL COMPONENT ---
 function Carousel3D() {
-  const { isAr, t } = useContext(LangContext);
+  const { isAr } = useContext(LangContext);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
-  // State for Expanding Map
-  const [isMapExpanded, setIsMapExpanded] = useState(false);
-  
   const autoplayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const wheelAccumulator = useRef(0);
-  
-  const tickerRef = useRef<HTMLDivElement>(null);
-  const [isTickerHovered, setIsTickerHovered] = useState(false);
-  const [isDraggingTicker, setIsDraggingTicker] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeftPos, setScrollLeftPos] = useState(0);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -409,24 +488,6 @@ function Carousel3D() {
     }, 5000); 
     return () => clearInterval(interval);
   }, [isAutoPlaying, rotationSpring, isAr]);
-
-  useEffect(() => {
-      let animationId: number;
-      const scrollTicker = () => {
-          if (tickerRef.current && !isTickerHovered && !isDraggingTicker) {
-              tickerRef.current.scrollLeft += (isAr ? -0.8 : 0.8);
-              
-              if (!isAr && tickerRef.current.scrollLeft >= tickerRef.current.scrollWidth / 2) {
-                  tickerRef.current.scrollLeft = 0;
-              } else if (isAr && tickerRef.current.scrollLeft <= 0) {
-                  tickerRef.current.scrollLeft = tickerRef.current.scrollWidth / 2;
-              }
-          }
-          animationId = requestAnimationFrame(scrollTicker);
-      };
-      animationId = requestAnimationFrame(scrollTicker);
-      return () => cancelAnimationFrame(animationId);
-  }, [isTickerHovered, isDraggingTicker, isAr]);
 
   const pauseAutoplay = () => {
       setIsAutoPlaying(false);
@@ -468,26 +529,6 @@ function Carousel3D() {
     resumeAutoplay();
   };
 
-  const onTickerMouseDown = (e: React.MouseEvent) => {
-      setIsDraggingTicker(true);
-      setIsTickerHovered(true);
-      if(tickerRef.current) {
-          setStartX(e.pageX - tickerRef.current.offsetLeft);
-          setScrollLeftPos(tickerRef.current.scrollLeft);
-      }
-  };
-  const onTickerMouseLeaveOrUp = () => {
-      setIsDraggingTicker(false);
-      setIsTickerHovered(false);
-  };
-  const onTickerMouseMove = (e: React.MouseEvent) => {
-      if (!isDraggingTicker || !tickerRef.current) return;
-      e.preventDefault();
-      const x = e.pageX - tickerRef.current.offsetLeft;
-      const walk = (x - startX) * 2;
-      tickerRef.current.scrollLeft = scrollLeftPos - walk;
-  };
-
   const activeColor = SERVICES[activeIndex].color;
   const activeSubtitle = isAr ? SERVICES[activeIndex].subAr : SERVICES[activeIndex].subtitle;
   const activeTitle = isAr ? SERVICES[activeIndex].titleAr : SERVICES[activeIndex].title;
@@ -499,125 +540,11 @@ function Carousel3D() {
     >
       <BackgroundLayer activeColor={activeColor} activeIndex={activeIndex} />
 
-      {/* --- CINEMATIC RIGHT PANEL (CONTACT WIDGET) --- */}
-      {/* Positioned higher (top-[12%]) to ensure it has space to expand without going down out of bounds */}
-      <div className={`absolute top-[12%] md:top-[16%] ${isAr ? 'left-4 md:left-12' : 'right-4 md:right-12'} z-40 max-w-[340px] md:max-w-[420px] w-full pointer-events-auto hidden lg:flex flex-col ${isAr ? 'items-start text-left' : 'items-end text-right'}`}>
-        <AnimatePresence mode="wait">
-            <motion.div
-                key="contact-hq"
-                initial={{ opacity: 0, x: isAr ? -40 : 40 }} animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "circOut", delay: 0.2 }}
-                className={`flex flex-col w-full p-6 md:p-8 rounded-[2rem] bg-[#050508]/80 backdrop-blur-2xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] ${isAr ? 'items-start' : 'items-end'}`}
-            >
-                
-                {/* SPACE-SAVING EXPANDING MAP ACCORDION */}
-                <div className="w-full bg-[#020203] rounded-xl border border-white/10 overflow-hidden mb-5 shadow-lg group">
-                    <button 
-                        onClick={() => setIsMapExpanded(!isMapExpanded)}
-                        className={`w-full flex items-center justify-between p-3.5 md:p-4 bg-white/5 hover:bg-white/10 transition-colors ${isAr ? 'flex-row-reverse' : ''}`}
-                    >
-                        <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <MapPin size={14} className="text-white/50" style={{ color: isMapExpanded ? activeColor : undefined }} />
-                            <span className="text-[10px] md:text-xs font-black tracking-widest uppercase text-white/80" style={{ color: isMapExpanded ? activeColor : undefined }}>
-                                {isMapExpanded ? t.hideMap : t.viewMap}
-                            </span>
-                        </div>
-                        <ChevronDown size={14} className={`text-white/50 transition-transform duration-300 ${isMapExpanded ? 'rotate-180' : ''}`} />
-                    </button>
-                    
-                    <AnimatePresence>
-                        {isMapExpanded && (
-                            <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: 180, opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.4, ease: "easeInOut" }}
-                                className="relative w-full border-t border-white/10 overflow-hidden"
-                            >
-                                {/* Active Color Map Overlay (keeps it thematic) */}
-                                <div className="absolute inset-0 opacity-[0.25] mix-blend-screen transition-colors duration-1000 z-10 pointer-events-none" style={{ backgroundColor: activeColor }} />
-                                
-                                {/* Static Google Map Embed (with premium dark mode CSS filters) */}
-                                <iframe 
-                                    width="100%" 
-                                    height="100%" 
-                                    frameBorder="0" 
-                                    style={{ border: 0, filter: 'invert(100%) hue-rotate(180deg) contrast(1.2) grayscale(0.2)' }} 
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11438.3188593444!2d50.584347!3d26.223504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49af66d2146e27%3A0x6b446ea95d2c5e5!2sManama%2C%20Bahrain!5e0!3m2!1sen!2sus!4v1713000000000!5m2!1sen!2sus" 
-                                    allowFullScreen={false}
-                                    aria-hidden="false" 
-                                    tabIndex={-1}
-                                    className="pointer-events-none" // Acts like a static map
-                                />
-
-                                {/* Internal Vignette */}
-                                <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] pointer-events-none z-20" />
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* DATA DETAILS LIST */}
-                <div className={`flex flex-col gap-4 w-full transition-colors duration-1000 ${isAr ? 'border-l-[3px] pl-6 items-start' : 'border-r-[3px] pr-6 items-end'}`} style={{ borderRightColor: !isAr ? activeColor : 'transparent', borderLeftColor: isAr ? activeColor : 'transparent' }}>
-                    
-                    {/* BAHRAIN LOCATION */}
-                    <div className={`flex flex-col gap-1 group ${isAr ? 'items-start' : 'items-end'}`}>
-                        <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.base}</span>
-                        </div>
-                        <Link href="https://maps.app.goo.gl/1hjew3B1hCtoKq496" target="_blank" className="text-[10px] md:text-[11px] text-white/70 hover:text-white transition-colors font-mono leading-relaxed max-w-[260px]">
-                            {t.address}
-                        </Link>
-                    </div>
-
-                    {/* SAUDI LOCATION */}
-                    <div className={`flex flex-col gap-1 group ${isAr ? 'items-start' : 'items-end'}`}>
-                        <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.saudiBase}</span>
-                        </div>
-                        <Link href="https://maps.app.goo.gl/vZ5XGjFBtwAcrE8D7" target="_blank" className="text-[10px] md:text-[11px] text-white/70 hover:text-white transition-colors font-mono leading-relaxed max-w-[260px]">
-                            {t.saudiAddress}
-                        </Link>
-                    </div>
-
-                    <div className={`flex flex-col gap-1 group cursor-default ${isAr ? 'items-start' : 'items-end'}`}>
-                        <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.directLine}</span>
-                        </div>
-                        <span className="text-[10px] md:text-[11px] text-white/90 font-mono" dir="ltr">
-                            +973 17295917
-                        </span>
-                    </div>
-
-                    <div className={`flex flex-col gap-1 group cursor-default ${isAr ? 'items-start' : 'items-end'}`}>
-                        <div className={`flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
-                            <span className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-widest transition-colors duration-500" style={{ color: activeColor }}>{t.email}</span>
-                        </div>
-                        <span className="text-[10px] md:text-[11px] text-white/90 font-mono">
-                            info@coloursbahrain.com
-                        </span>
-                    </div>
-
-                    <div className="flex items-center gap-4 mt-2">
-                        <Link href="https://www.instagram.com/colours.bahrain/" target="_blank" className="text-white/50 hover:text-white transition-colors p-3 bg-white/5 rounded-full hover:bg-white/20 hover:scale-110 shadow-lg">
-                            <Instagram size={16} />
-                        </Link>
-                        <Link href="https://www.facebook.com/ColoursEventsBahrain" target="_blank" className="text-white/50 hover:text-white transition-colors p-3 bg-white/5 rounded-full hover:bg-white/20 hover:scale-110 shadow-lg">
-                            <Facebook size={16} />
-                        </Link>
-                    </div>
-
-                </div>
-            </motion.div>
-        </AnimatePresence>
-      </div>
-
       {/* SWIPE CATCHER & 3D CAROUSEL STAGE */}
+      {/* Removed full-screen hover handlers so mouse resting doesn't stop auto-play */}
       <motion.div 
         className="absolute inset-0 flex items-center justify-center z-10 -mt-16 md:-mt-24 touch-none cursor-grab active:cursor-grabbing"
         style={{ transformStyle: "preserve-3d" }}
-        onMouseEnter={pauseAutoplay}
-        onMouseLeave={resumeAutoplay}
         onPanStart={handlePanStart}
         onPan={handlePan}
         onPanEnd={handlePanEnd}
@@ -635,20 +562,22 @@ function Carousel3D() {
             <CarouselItem 
               key={item.id} item={item} index={i} isActive={i === activeIndex}
               cardWidth={CARD_WIDTH} radius={RADIUS} angleStep={ANGLE_STEP}
+              onHoverStart={pauseAutoplay} onHoverEnd={resumeAutoplay}
             />
           ))}
         </motion.div>
       </motion.div>
 
-      {/* BOTTOM HUD UI & NAVIGATION */}
+      {/* BOTTOM HUD UI & NAVIGATION (DUAL TICKERS) */}
       <div className="absolute bottom-0 w-full z-50 pointer-events-none">
         
-        <div className="absolute bottom-0 inset-x-0 h-48 md:h-64 bg-gradient-to-t from-black via-black/90 to-transparent z-[-1]" />
+        {/* Gradient Backdrop for Text Readability */}
+        <div className="absolute bottom-0 inset-x-0 h-56 md:h-72 bg-gradient-to-t from-black via-black/90 to-transparent z-[-1]" />
 
-        <div className="max-w-[1800px] mx-auto pb-6 md:pb-12 flex flex-col gap-6 md:gap-8">
+        <div className="max-w-[1800px] mx-auto flex flex-col">
             
-            <div className="flex items-end justify-center w-full gap-4 md:gap-8 relative px-6 md:px-12">
-                
+            {/* CAROUSEL CONTROLS */}
+            <div className="flex items-end justify-center w-full gap-4 md:gap-8 relative px-6 md:px-12 pb-4 md:pb-6">
                 <button onClick={prev} className={`absolute ${isAr ? 'right-6 lg:right-[30%]' : 'left-6 lg:left-[30%]'} pointer-events-auto group w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-[0_0_30px_rgba(0,0,0,0.8)]`}>
                     <ChevronLeft size={24} className={`transition-transform ${isAr ? 'group-hover:translate-x-1 rotate-180' : 'group-hover:-translate-x-1'}`} />
                 </button>
@@ -678,54 +607,72 @@ function Carousel3D() {
                 <button onClick={next} className={`absolute ${isAr ? 'left-6 lg:left-[30%]' : 'right-6 lg:right-[30%]'} pointer-events-auto group w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-[0_0_30px_rgba(0,0,0,0.8)]`}>
                     <ChevronRight size={24} className={`transition-transform ${isAr ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} />
                 </button>
-
             </div>
 
-            {/* MOUSE SCROLLABLE TRUSTED PARTNERS TICKER */}
-            <div className={`w-full border-t border-white/10 pt-4 md:pt-6 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-6 md:pr-12' : 'pl-6 md:pl-12'}`}>
-                
+            {/* 1. INTERACTIVE GLOBAL NETWORK TICKER */}
+            <div className={`w-full border-t border-white/10 py-2.5 md:py-3 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-4 md:pr-12' : 'pl-4 md:pl-12'}`}>
+                 <div className={`hidden md:flex items-center gap-2.5 z-20 bg-transparent shrink-0 ${isAr ? 'pl-6 border-l border-white/10' : 'pr-6 border-r border-white/10'}`}>
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_#3b82f6]" />
+                    <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-white/70 whitespace-nowrap">GLOBAL NETWORK</span>
+                </div>
+                <div className="flex-1 overflow-hidden relative mask-linear-fade w-full">
+                    {/* Integrated custom drag/scroll ticker */}
+                    <InteractiveTicker direction={-1} speed={0.8} isAr={isAr} innerClassName="flex items-center gap-6 md:gap-12 whitespace-nowrap w-max pr-12">
+                        {[...LOCATIONS, ...LOCATIONS, ...LOCATIONS, ...LOCATIONS].map((loc, i) => {
+                            const innerContent = (
+                                <>
+                                    <div className="p-1.5 md:p-2 bg-white/5 rounded-full border border-white/10 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20 transition-all duration-300">
+                                        <loc.icon size={10} className="md:w-[12px] md:h-[12px] text-white/60 group-hover:text-emerald-400 transition-colors" />
+                                    </div>
+                                    <span className="text-[8px] md:text-[9px] font-bold text-white uppercase tracking-widest">{loc.label}:</span>
+                                    <span className="text-[8px] md:text-[9px] text-white/70 font-mono group-hover:text-white transition-colors">{loc.text}</span>
+                                    {loc.link && <ArrowUpRight size={10} className="text-white/30 group-hover:text-emerald-400 -ml-1 transition-colors" />}
+                                </>
+                            );
+
+                            return loc.link ? (
+                                <a key={i} href={loc.link} target={loc.link.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" className="flex items-center gap-2 md:gap-3 opacity-80 hover:opacity-100 transition-all duration-300 group hover:scale-[1.02] cursor-pointer shrink-0">
+                                    {innerContent}
+                                </a>
+                            ) : (
+                                <div key={i} className="flex items-center gap-2 md:gap-3 opacity-80 hover:opacity-100 transition-all duration-300 group shrink-0">
+                                    {innerContent}
+                                </div>
+                            );
+                        })}
+                    </InteractiveTicker>
+                </div>
+            </div>
+
+            {/* 2. TRUSTED PARTNERS TICKER */}
+            <div className={`w-full border-t border-white/10 py-5 md:py-8 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-4 md:pr-12' : 'pl-4 md:pl-12'}`}>
                 <div className={`hidden md:flex items-center gap-3 z-20 bg-transparent shrink-0 ${isAr ? 'pl-8 border-l border-white/10' : 'pr-8 border-r border-white/10'}`}>
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_#10b981]" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/80 whitespace-nowrap">{t.trusted}</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/80 whitespace-nowrap">TRUSTED PARTNERS</span>
                 </div>
 
-                {/* SCROLLABLE TRACK (Interactive Drag & Auto-Scroll) */}
-                <div 
-                    ref={tickerRef}
-                    className="flex-1 overflow-x-auto relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                    onWheel={(e) => {
-                        e.stopPropagation(); 
-                        if (tickerRef.current) tickerRef.current.scrollLeft += e.deltaY;
-                    }}
-                    onMouseEnter={() => setIsTickerHovered(true)}
-                    onMouseLeave={() => setIsTickerHovered(false)}
-                    onTouchStart={() => setIsTickerHovered(true)}
-                    onTouchEnd={() => setIsTickerHovered(false)}
-                    onMouseDown={onTickerMouseDown}
-                    onMouseUp={onTickerMouseLeaveOrUp}
-                    onMouseMove={onTickerMouseMove}
-                >
-                     <div className="flex items-center gap-14 md:gap-24 whitespace-nowrap px-4 md:px-12 py-2 w-max cursor-grab active:cursor-grabbing">
+                <div className="flex-1 overflow-hidden relative mask-linear-fade w-full">
+                     {/* Integrated custom drag/scroll ticker */}
+                     <InteractiveTicker direction={1} speed={1} isAr={isAr} innerClassName="flex items-center gap-12 md:gap-24 whitespace-nowrap w-max pr-24">
                         {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
-                            <div key={i} className="flex items-center justify-center opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer group hover:scale-110 pointer-events-auto">
-                                <div className="relative h-10 md:h-14 flex items-center justify-center pointer-events-none">
-                                    <img src={client.logo} alt={client.name} className="max-h-full w-auto object-contain drop-shadow-xl pointer-events-none" />
+                            <div key={i} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-500 cursor-default group hover:scale-110 pointer-events-auto shrink-0">
+                                <div className="relative h-10 md:h-16 flex items-center justify-center pointer-events-none">
+                                    <img src={client.logo} alt={client.name} className="h-full w-auto max-w-[120px] md:max-w-[160px] object-contain drop-shadow-xl pointer-events-none" />
                                 </div>
                             </div>
                         ))}
-                     </div>
+                     </InteractiveTicker>
                 </div>
-                
-                <div className={`absolute top-0 w-16 md:w-32 h-full pointer-events-none z-10 ${isAr ? 'left-0 bg-gradient-to-r from-black to-transparent' : 'right-0 bg-gradient-to-l from-black to-transparent'}`} />
             </div>
+
         </div>
       </div>
     </div>
   );
 }
 
-// -- UPGRADED UI: MEMOIZED CARD ITEM --
-const CarouselItem = React.memo(({ item, index, isActive, cardWidth, radius, angleStep }: any) => {
+// -- UPGRADED UI: MEMOIZED & REDUCED CARD ITEM --
+const CarouselItem = React.memo(({ item, index, isActive, cardWidth, radius, angleStep, onHoverStart, onHoverEnd }: any) => {
     const { isAr, t } = useContext(LangContext);
     const angle = index * angleStep;
 
@@ -746,6 +693,8 @@ const CarouselItem = React.memo(({ item, index, isActive, cardWidth, radius, ang
         >
             <Link 
                 href={item.link || "#"} 
+                onMouseEnter={onHoverStart}
+                onMouseLeave={onHoverEnd}
                 className={`block w-full h-full relative group transition-transform duration-500 ${isActive ? 'cursor-pointer hover:scale-[1.03]' : 'pointer-events-none'}`}
                 style={{ transformStyle: 'preserve-3d' }}
             >
@@ -779,26 +728,28 @@ const CarouselItem = React.memo(({ item, index, isActive, cardWidth, radius, ang
                         />
                     )}
 
+                    {/* CENTERED AND PERFECTLY ALIGNED TEXT */}
                     <div 
-                        className={`absolute inset-0 z-30 flex flex-col justify-end p-6 md:p-8 transition-all duration-[600ms] ease-out delay-100 ${isActive ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-8 pointer-events-none'}`}
+                        className={`absolute inset-0 z-30 flex flex-col justify-center p-5 md:p-6 transition-all duration-[600ms] ease-out delay-100 ${isActive ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-8 pointer-events-none'}`}
                         style={{ transform: "translateZ(40px)" }}
                     >
-                        <div className="w-full flex flex-col items-start drop-shadow-2xl">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="h-[2px] w-6" style={{ backgroundColor: item.color }} />
-                                <span className="text-[9px] md:text-[11px] font-black text-white uppercase tracking-[0.3em]">{subtitle}</span>
+                        <div className="w-full flex flex-col items-center text-center drop-shadow-2xl">
+                            <div className={`flex items-center justify-center gap-2.5 mb-2.5 ${isAr ? 'flex-row-reverse' : ''}`}>
+                                <div className="h-[2px] w-5 md:w-6" style={{ backgroundColor: item.color }} />
+                                <span className="text-[8px] md:text-[10px] font-black text-white uppercase tracking-[0.3em]">{subtitle}</span>
+                                <div className="h-[2px] w-5 md:w-6" style={{ backgroundColor: item.color }} />
                             </div>
                             
-                            <h2 className="text-4xl md:text-5xl font-black text-white leading-[0.85] tracking-tighter uppercase mb-6 drop-shadow-xl">
+                            <h2 className="text-3xl md:text-4xl font-black text-white leading-[0.9] tracking-tighter uppercase mb-4 md:mb-5 drop-shadow-xl">
                                 {title}
                             </h2>
                             
-                            <div className="flex items-center justify-between w-full border-t border-white/20 pt-5 md:pt-6">
-                                <div className={`group/btn flex items-center justify-between w-full backdrop-blur-md border text-white px-5 py-3 md:px-6 md:py-4 rounded-xl transition-all duration-500 shadow-2xl ${isAr ? 'flex-row-reverse' : ''} ${isActive ? 'bg-white/10 border-white/20 group-hover:bg-white group-hover:text-black' : 'bg-transparent border-transparent'}`}>
-                                    <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em]">{t.explore}</span>
-                                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center overflow-hidden relative transition-colors duration-500 bg-black/10 group-hover:bg-black/5">
-                                        <ArrowUpRight size={14} className={`text-current transition-transform duration-500 absolute ${isAr ? 'group-hover/btn:-translate-x-4 group-hover/btn:-translate-y-4' : 'group-hover/btn:translate-x-4 group-hover/btn:-translate-y-4'} group-hover:translate-x-4 group-hover:-translate-y-4`} />
-                                        <ArrowUpRight size={14} className={`text-current transition-transform duration-500 absolute ${isAr ? 'translate-x-4 translate-y-4' : '-translate-x-4 translate-y-4'} group-hover/btn:translate-x-0 group-hover/btn:translate-y-0 group-hover:translate-x-0 group-hover:translate-y-0`} />
+                            <div className="flex items-center justify-center w-full border-t border-white/20 pt-4 md:pt-5">
+                                <div className={`group/btn inline-flex items-center justify-center gap-3 backdrop-blur-md border text-white px-5 py-2.5 md:px-6 md:py-3 rounded-xl transition-all duration-500 shadow-2xl ${isAr ? 'flex-row-reverse' : ''} ${isActive ? 'bg-white/10 border-white/20 group-hover:bg-white group-hover:text-black' : 'bg-transparent border-transparent'}`}>
+                                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em]">{t.explore}</span>
+                                    <div className="w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center overflow-hidden relative transition-colors duration-500 bg-black/10 group-hover:bg-black/5">
+                                        <ArrowUpRight size={12} className={`text-current transition-transform duration-500 absolute ${isAr ? 'group-hover/btn:-translate-x-4 group-hover/btn:-translate-y-4' : 'group-hover/btn:translate-x-4 group-hover/btn:-translate-y-4'} group-hover:translate-x-4 group-hover:-translate-y-4`} />
+                                        <ArrowUpRight size={12} className={`text-current transition-transform duration-500 absolute ${isAr ? 'translate-x-4 translate-y-4' : '-translate-x-4 translate-y-4'} group-hover/btn:translate-x-0 group-hover/btn:translate-y-0 group-hover:translate-x-0 group-hover:translate-y-0`} />
                                     </div>
                                 </div>
                             </div>
