@@ -139,7 +139,7 @@ const CLIENTS = [
     { name: "Tamkeen", logo: "/logos/tamkeen.png" },
     { name: "Marassi", logo: "/logos/marassi.png" },
     { name: "Edamah", logo: "/logos/edamah.png" },
-    { name: "Bahrain Marina", logo: "/logos/marina.png" }
+    { name: "Bahrain Marina", logo: "/logos/Marina.png" }
 ];
 
 // Clickable Location Info Array for the sliding ticker
