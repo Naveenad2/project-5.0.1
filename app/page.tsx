@@ -12,7 +12,7 @@ import {
     ArrowRight, Mail, X, Send, Bot, 
     Sparkles, User, ChevronLeft, ChevronRight,
     Zap, ArrowUpRight, MapPin, Phone, Instagram, Facebook,
-    LayoutGrid, Info, Globe, ChevronDown
+    LayoutGrid, Info, Globe, ChevronDown, Menu
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -130,16 +130,17 @@ const SERVICES = [
 ];
 
 const CLIENTS = [
-    { name: "Bahrain EDB", logo: "/logos/ebd.png" },
-    { name: "Gulf Air", logo: "/logos/gulfair.png" },
+    { name: "Bahrain EDB", logo: "/logos/edb.svg" },
+    { name: "Gulf Air", logo: "/logos/gulfair.svg" },
     { name: "DO & CO", logo: "/logos/DOCO.png" },
-    { name: "The Avenues", logo: "/logos/avenues.png" },
+    { name: "The Avenues", logo: "/logos/avenues.svg" },
     { name: "Seef Mall", logo: "/logos/seef.png" },
-    { name: "BIC", logo: "/logos/bic.png" },
+    { name: "BIC", logo: "/logos/bic.svg" },
     { name: "Tamkeen", logo: "/logos/tamkeen.png" },
     { name: "Marassi", logo: "/logos/marassi.png" },
-    { name: "Edamah", logo: "/logos/edamah.png" },
-    { name: "Bahrain Marina", logo: "/logos/Marina.png" }
+    { name: "Edamah", logo: "/logos/edamah.svg" },
+    { name: "Alba", logo: "/logos/alba.svg" },
+    { name: "Bapco", logo: "/logos/bapco.svg" }
 ];
 
 // Clickable Location Info Array for the sliding ticker
@@ -267,9 +268,10 @@ export default function Home() {
   );
 }
 
-// --- COMPONENT: DECONSTRUCTED FULLY RESPONSIVE NAVBAR ---
+// --- COMPONENT: RESPONSIVE NAVBAR ---
 function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
     const { isAr, toggleLang, t } = useContext(LangContext);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
         <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none">
@@ -283,51 +285,91 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                 </Link>
             </motion.div>
 
-            {/* NAV BUTTONS (Horizontally Scrollable on Mobile) */}
+            {/* DESKTOP NAV BUTTONS */}
             <motion.div 
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
-                className="pointer-events-auto flex items-center justify-end sm:justify-end gap-1.5 sm:gap-2 md:gap-3 overflow-x-auto scrollbar-hide w-full max-w-[70%] sm:max-w-none ml-auto"
+                className="pointer-events-auto hidden md:flex items-center justify-end gap-3 w-full ml-auto"
             >
                 {/* LANGUAGE TOGGLE BUTTON */}
                 <button 
                     onClick={toggleLang}
-                    className="flex shrink-0 group relative px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
+                    className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
                 >
-                    <div className="relative z-10 flex items-center gap-1.5 md:gap-2">
-                        <Globe size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+                    <div className="relative z-10 flex items-center gap-2">
+                        <Globe size={16} className="group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
                     </div>
                 </button>
 
                 <Link 
                     href="/about"
-                    className="flex shrink-0 group relative px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
+                    className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
                 >
-                    <div className="relative z-10 flex items-center gap-1.5 md:gap-2">
-                        <Info size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.about}</span>
+                    <div className="relative z-10 flex items-center gap-2">
+                        <Info size={16} className="group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.about}</span>
                     </div>
                 </Link>
 
                 <Link 
                     href="/our-work"
-                    className="flex shrink-0 group relative px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
+                    className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
                 >
-                    <div className="relative z-10 flex items-center gap-1.5 md:gap-2">
-                        <LayoutGrid size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.gallery}</span>
+                    <div className="relative z-10 flex items-center gap-2">
+                        <LayoutGrid size={16} className="group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.gallery}</span>
                     </div>
                 </Link>
 
                 <button 
                     onClick={onOpenContact}
-                    className="flex shrink-0 items-center gap-1.5 md:gap-2 px-2.5 py-1.5 md:px-5 md:py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30 group"
+                    className="flex shrink-0 items-center gap-2 px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30 group"
                 >
-                    <Zap size={14} className="md:w-[16px] md:h-[16px] group-hover:text-emerald-400 transition-colors" />
-                    <span className="text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.talk}</span>
+                    <Zap size={16} className="group-hover:text-emerald-400 transition-colors" />
+                    <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.talk}</span>
                 </button>
             </motion.div>
 
+            {/* MOBILE NAV COLLAPSE TOGGLE */}
+            <motion.div
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
+                className="pointer-events-auto flex md:hidden items-center"
+            >
+                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-3 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors shadow-lg">
+                    {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+                </button>
+            </motion.div>
+
+            {/* MOBILE MENU DROPDOWN */}
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-[72px] right-4 bg-black/90 backdrop-blur-2xl border border-white/10 p-4 rounded-2xl flex flex-col gap-3 pointer-events-auto shadow-[0_20px_40px_rgba(0,0,0,0.8)] min-w-[220px]"
+                        dir={isAr ? "rtl" : "ltr"}
+                    >
+                        <button onClick={() => { toggleLang(); setIsMenuOpen(false); }} className="flex items-center gap-3 px-4 py-3.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors w-full">
+                            <Globe size={16} className="text-white/50" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+                        </button>
+                        <Link href="/about" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors w-full">
+                            <Info size={16} className="text-white/50" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.about}</span>
+                        </Link>
+                        <Link href="/our-work" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors w-full">
+                            <LayoutGrid size={16} className="text-white/50" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.gallery}</span>
+                        </Link>
+                        <button onClick={() => { onOpenContact(); setIsMenuOpen(false); }} className="flex items-center gap-3 px-4 py-3.5 bg-emerald-500/20 border border-emerald-500/50 text-white rounded-xl hover:bg-emerald-500/30 transition-colors w-full">
+                            <Zap size={16} className="text-emerald-400" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.talk}</span>
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 }
@@ -541,7 +583,6 @@ function Carousel3D() {
       <BackgroundLayer activeColor={activeColor} activeIndex={activeIndex} />
 
       {/* SWIPE CATCHER & 3D CAROUSEL STAGE */}
-      {/* Removed full-screen hover handlers so mouse resting doesn't stop auto-play */}
       <motion.div 
         className="absolute inset-0 flex items-center justify-center z-10 -mt-16 md:-mt-24 touch-none cursor-grab active:cursor-grabbing"
         style={{ transformStyle: "preserve-3d" }}
@@ -609,16 +650,15 @@ function Carousel3D() {
                 </button>
             </div>
 
-            {/* 1. INTERACTIVE GLOBAL NETWORK TICKER */}
-            <div className={`w-full border-t border-white/10 py-2.5 md:py-3 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-4 md:pr-12' : 'pl-4 md:pl-12'}`}>
+            {/* 1. STATIC GLOBAL NETWORK TICKER */}
+            <div className={`w-full border-t border-white/10 py-3 md:py-4 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-4 md:pr-12' : 'pl-4 md:pl-12'}`}>
                  <div className={`hidden md:flex items-center gap-2.5 z-20 bg-transparent shrink-0 ${isAr ? 'pl-6 border-l border-white/10' : 'pr-6 border-r border-white/10'}`}>
                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_#3b82f6]" />
                     <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-white/70 whitespace-nowrap">GLOBAL NETWORK</span>
                 </div>
-                <div className="flex-1 overflow-hidden relative mask-linear-fade w-full">
-                    {/* Integrated custom drag/scroll ticker */}
-                    <InteractiveTicker direction={-1} speed={0.8} isAr={isAr} innerClassName="flex items-center gap-6 md:gap-12 whitespace-nowrap w-max pr-12">
-                        {[...LOCATIONS, ...LOCATIONS, ...LOCATIONS, ...LOCATIONS].map((loc, i) => {
+                <div className="flex-1 overflow-x-auto scrollbar-hide w-full">
+                    <div className={`flex items-center gap-6 md:gap-10 whitespace-nowrap w-max md:w-full md:flex-wrap md:justify-end px-2 md:px-6`}>
+                        {LOCATIONS.map((loc, i) => {
                             const innerContent = (
                                 <>
                                     <div className="p-1.5 md:p-2 bg-white/5 rounded-full border border-white/10 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20 transition-all duration-300">
@@ -640,27 +680,28 @@ function Carousel3D() {
                                 </div>
                             );
                         })}
-                    </InteractiveTicker>
+                    </div>
                 </div>
             </div>
 
             {/* 2. TRUSTED PARTNERS TICKER */}
-            <div className={`w-full border-t border-white/10 py-5 md:py-8 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-4 md:pr-12' : 'pl-4 md:pl-12'}`}>
+            <div className={`w-full border-t border-white/10 py-4 md:py-5 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-4 md:pr-12' : 'pl-4 md:pl-12'}`}>
                 <div className={`hidden md:flex items-center gap-3 z-20 bg-transparent shrink-0 ${isAr ? 'pl-8 border-l border-white/10' : 'pr-8 border-r border-white/10'}`}>
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_#10b981]" />
                     <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/80 whitespace-nowrap">TRUSTED PARTNERS</span>
                 </div>
 
                 <div className="flex-1 overflow-hidden relative mask-linear-fade w-full">
-                     {/* Integrated custom drag/scroll ticker */}
                      <InteractiveTicker direction={1} speed={1} isAr={isAr} innerClassName="flex items-center gap-12 md:gap-24 whitespace-nowrap w-max pr-24">
-                        {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
+                        {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => {
+                            const isSvg = client.logo.toLowerCase().endsWith('.svg');
+                            return (
                             <div key={i} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-500 cursor-default group hover:scale-110 pointer-events-auto shrink-0">
-                                <div className="relative h-10 md:h-16 flex items-center justify-center pointer-events-none">
-                                    <img src={client.logo} alt={client.name} className="h-full w-auto max-w-[120px] md:max-w-[160px] object-contain drop-shadow-xl pointer-events-none" />
+                                <div className={`relative flex items-center justify-center pointer-events-none ${isSvg ? 'h-14 md:h-24 max-w-[140px] md:max-w-[200px]' : 'h-8 md:h-12 max-w-[90px] md:max-w-[130px]'}`}>
+                                    <img src={client.logo} alt={client.name} className="h-full w-auto object-contain drop-shadow-xl pointer-events-none" />
                                 </div>
                             </div>
-                        ))}
+                        )})}
                      </InteractiveTicker>
                 </div>
             </div>

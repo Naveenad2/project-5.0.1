@@ -16,11 +16,13 @@ import {
     Mail, Copy, Check, Phone, Facebook, 
     Instagram, Monitor, Box, MapPin, 
     CornerDownRight, Command, Eye, Flag, 
-    Leaf, Globe2, Lightbulb
+    Leaf, Globe2, Lightbulb, Menu, Info,
+    Bot, User, Send, ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { ColoursLogoHeader } from "@/components/ui/ColoursLogoHeader";
+import React from "react";
 
 // --- BILINGUAL DICTIONARY ---
 const TEXT_EN = {
@@ -78,6 +80,9 @@ const TEXT_EN = {
     secureLine: "Secure Line",
     physCoords: "Physical Coordinates",
     bahrainHq: "Bahrain HQ",
+    saudiBase: "Saudi Location",
+    saudiAddress: "Bldg: 7073, Street : Abaad Ibn Abbar, Sinaiyah Al awaziyah, Khobar, KSA",
+    address: "Unit 7, Building 2568, Road 4450, Block 744, Manama, Kingdom of Bahrain",
     online: "ONLINE",
     philosophy: "Philosophy",
     overview: "We engineer high-impact corporate and public experiences. From exclusive VIP summits to massive live festivals, our division orchestrates every detail with absolute precision, transforming standard gatherings into breathtaking cinematic memories.",
@@ -143,6 +148,9 @@ const TEXT_AR = {
     secureLine: "الخط الآمن",
     physCoords: "الإحداثيات المادية",
     bahrainHq: "مقر البحرين",
+    saudiBase: "موقع السعودية",
+    saudiAddress: "مبنى: 7073، شارع: عباد بن عبار، الصناعية العوازية، الخبر، المملكة العربية السعودية",
+    address: "الوحدة 7، مبنى 2568، طريق 4450، مجمع 744، المنامة، مملكة البحرين",
     online: "متصل",
     philosophy: "فلسفتنا",
     overview: "نحن نهندس تجارب مؤسسية وعامة عالية التأثير. من مؤتمرات كبار الشخصيات الحصرية إلى المهرجانات الحية الضخمة، ينسق قسمنا كل التفاصيل بدقة متناهية، ويحول التجمعات العادية إلى ذكريات سينمائية مذهلة.",
@@ -190,17 +198,19 @@ const PROCESS_DATA = [
     { step: "03", idTitle: "step3", idDesc: "step3Desc" }
 ];
 
+// UPDATED LOGOS ARRAY WITH SVGS
 const CLIENTS = [
-    { name: "Bahrain EDB", logo: "/logos/ebd.png" },
-    { name: "Gulf Air", logo: "/logos/gulfair.png" },
+    { name: "Bahrain EDB", logo: "/logos/edb.svg" },
+    { name: "Gulf Air", logo: "/logos/gulfair.svg" },
     { name: "DO & CO", logo: "/logos/DOCO.png" },
-    { name: "The Avenues", logo: "/logos/avenues.png" },
+    { name: "The Avenues", logo: "/logos/avenues.svg" },
     { name: "Seef Mall", logo: "/logos/seef.png" },
-    { name: "BIC", logo: "/logos/bic.png" },
+    { name: "BIC", logo: "/logos/bic.svg" },
     { name: "Tamkeen", logo: "/logos/tamkeen.png" },
     { name: "Marassi", logo: "/logos/marassi.png" },
-    { name: "Edamah", logo: "/logos/edamah.png" },
-    { name: "Bahrain Marina", logo: "/logos/Marina.png" }
+    { name: "Edamah", logo: "/logos/edamah.svg" },
+    { name: "Alba", logo: "/logos/alba.svg" },
+    { name: "Bapco", logo: "/logos/bapco.svg" }
 ];
 
 const CONTACT_INFO = {
@@ -211,7 +221,7 @@ const CONTACT_INFO = {
     facebook: "https://www.facebook.com/ColoursEventsBahrain?_rdc=1&_rdr"
 };
 
-// Animation Variants restored
+// Animation Variants
 const fadeUp = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as const } }
@@ -219,6 +229,77 @@ const fadeUp = {
 
 // Context for App-wide Language State
 const LangContext = createContext({ isAr: false, toggleLang: () => {}, t: TEXT_EN });
+
+// --- CUSTOM INTERACTIVE TICKER COMPONENT ---
+function InteractiveTicker({ children, direction = 1, speed = 1, isAr = false, innerClassName = "" }: any) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeftPos, setScrollLeftPos] = useState(0);
+
+    useEffect(() => {
+        let animationId: number;
+        const scroll = () => {
+            if (containerRef.current && !isHovered && !isDragging) {
+                const container = containerRef.current;
+                const dir = isAr ? -direction : direction; 
+                container.scrollLeft += dir * speed;
+                
+                // Snap to half point seamlessly (since items are duplicated 4x)
+                if (dir > 0 && container.scrollLeft >= container.scrollWidth / 2) {
+                    container.scrollLeft = 1; // offset prevents jitter
+                } else if (dir < 0 && container.scrollLeft <= 0) {
+                    container.scrollLeft = (container.scrollWidth / 2) - 1;
+                }
+            }
+            animationId = requestAnimationFrame(scroll);
+        };
+        animationId = requestAnimationFrame(scroll);
+        return () => cancelAnimationFrame(animationId);
+    }, [isHovered, isDragging, isAr, direction, speed]);
+
+    const handleWheel = (e: React.WheelEvent) => {
+        if (containerRef.current) {
+            containerRef.current.scrollLeft += (e.deltaY > 0 || e.deltaX > 0) ? 40 : -40;
+        }
+    };
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsDragging(true);
+        if (containerRef.current) {
+            setStartX(e.pageX - containerRef.current.offsetLeft);
+            setScrollLeftPos(containerRef.current.scrollLeft);
+        }
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging || !containerRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - containerRef.current.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        containerRef.current.scrollLeft = scrollLeftPos - walk;
+    };
+
+    return (
+        <div 
+            ref={containerRef}
+            className="flex-1 overflow-x-auto relative scrollbar-hide cursor-grab active:cursor-grabbing w-full"
+            onWheel={handleWheel}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => { setIsHovered(false); setIsDragging(false); }}
+            onMouseDown={handleMouseDown}
+            onMouseUp={() => setIsDragging(false)}
+            onMouseMove={handleMouseMove}
+            onTouchStart={() => setIsHovered(true)}
+            onTouchEnd={() => setIsHovered(false)}
+        >
+            <div className={innerClassName}>
+                {children}
+            </div>
+        </div>
+    );
+}
 
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -269,28 +350,20 @@ export default function AboutPage() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-emerald-900/10 blur-[120px] rounded-full mix-blend-screen opacity-50 will-change-transform" />
       </div>
 
-      {/* 2. HUD NAVIGATION */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-5 py-6 md:px-10 md:py-8 flex justify-between items-start pointer-events-none mix-blend-difference">
-        
-        <Link href="/" className="pointer-events-auto group flex items-center gap-3 opacity-80 hover:opacity-100 transition-opacity">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-xl flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                <ArrowLeft size={18} className={isAr ? "rotate-180" : ""} />
-            </div>
-            <div className="hidden sm:flex flex-col">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] leading-none mb-1 text-white">{t.return}</span>
-                <span className="text-[8px] font-mono text-white/50 leading-none">{t.mainGrid}</span>
-            </div>
-        </Link>
+      {/* 2. HUD NAVIGATION (RESPONSIVE) */}
+      <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none">
+          
+          {/* BRAND LOGO */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "circOut" }} className="pointer-events-auto shrink-0">
+              <Link href="/" className="group relative block">
+                  <div className="w-24 sm:w-32 md:w-44 relative z-10 transition-transform duration-500 group-hover:scale-105">
+                      <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+                  </div>
+              </Link>
+          </motion.div>
 
-        <div className="pointer-events-auto flex items-center gap-4 md:gap-6">
-            <button onClick={toggleLang} className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors group">
-                <Globe size={14} className="md:w-4 md:h-4 group-hover:text-emerald-400 transition-colors" />
-                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
-            </button>
-            <div className="w-24 sm:w-32 md:w-44 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-                <ColoursLogoHeader className="w-full h-auto fill-white" />
-            </div>
-        </div>
+          {/* DESKTOP NAV BUTTONS */}
+          <Navbar onOpenContact={() => setShowContact(true)} />
 
       </nav>
 
@@ -509,7 +582,7 @@ export default function AboutPage() {
       {/* 6. EDITORIAL BENTO GALLERY */}
       <GallerySection />
 
-      {/* 7. GLOBAL NETWORK */}
+      {/* 7. GLOBAL NETWORK (UPDATED WITH MAP AND ADDRESSES) */}
       <section className="relative py-24 md:py-40 px-6 md:px-12 lg:px-24 z-10 border-t border-white/10 bg-gradient-to-b from-black to-[#05050a] overflow-hidden">
          <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center relative z-20">
             
@@ -524,26 +597,48 @@ export default function AboutPage() {
                     <span className="text-[9px] font-mono text-emerald-500 mb-4 md:mb-6 block uppercase tracking-[0.2em]">{t.globalUplink}</span>
                     <h2 className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-12 md:mb-16">{t.hq}</h2>
                     
-                    <div className="space-y-8 md:space-y-12">
-                        <div className="group">
-                            <span className="text-[9px] md:text-[10px] font-mono text-white/40 uppercase tracking-widest mb-3 block">{t.secureLine}</span>
-                            <div className="flex items-center gap-4 md:gap-6">
-                                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-emerald-500/20 group-hover:border-emerald-500/50 transition-all duration-500">
-                                    <Phone size={20} className="text-white/80 group-hover:text-emerald-400 transition-colors" />
-                                </div>
-                                <p className="text-2xl md:text-3xl lg:text-4xl text-white font-light tracking-tight" dir="ltr">{CONTACT_INFO.phone}</p>
-                            </div>
-                        </div>
-
+                    <div className="space-y-8 md:space-y-10">
+                        {/* BAHRAIN LOCATION */}
                         <div className="group">
                             <span className="text-[9px] md:text-[10px] font-mono text-white/40 uppercase tracking-widest mb-3 block">{t.physCoords}</span>
                             <div className="flex items-start gap-4 md:gap-6">
                                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:border-blue-500/50 transition-all duration-500 shrink-0">
                                     <MapPin size={20} className="text-white/80 group-hover:text-blue-400 transition-colors" />
                                 </div>
-                                <p className="text-lg md:text-xl lg:text-2xl text-white/80 font-light leading-snug lg:w-3/4 pt-2">
-                                    {CONTACT_INFO.address}
-                                </p>
+                                <div>
+                                    <span className="text-[10px] font-bold text-white uppercase tracking-widest block mb-1">{t.bahrainHq}</span>
+                                    <p className="text-sm md:text-base lg:text-lg text-white/80 font-light leading-snug lg:w-3/4">
+                                        {t.address}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* SAUDI LOCATION */}
+                        <div className="group">
+                            <div className="flex items-start gap-4 md:gap-6">
+                                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-emerald-500/20 group-hover:border-emerald-500/50 transition-all duration-500 shrink-0">
+                                    <MapPin size={20} className="text-white/80 group-hover:text-emerald-400 transition-colors" />
+                                </div>
+                                <div>
+                                    <span className="text-[10px] font-bold text-white uppercase tracking-widest block mb-1">{t.saudiBase}</span>
+                                    <p className="text-sm md:text-base lg:text-lg text-white/80 font-light leading-snug lg:w-3/4">
+                                        {t.saudiAddress}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* PHONE */}
+                        <div className="group pt-4 border-t border-white/10">
+                            <span className="text-[9px] md:text-[10px] font-mono text-white/40 uppercase tracking-widest mb-3 block">{t.secureLine}</span>
+                            <div className="flex items-center gap-4 md:gap-6">
+                                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-rose-500/20 group-hover:border-rose-500/50 transition-all duration-500 shrink-0">
+                                    <Phone size={20} className="text-white/80 group-hover:text-rose-400 transition-colors" />
+                                </div>
+                                <a href={`tel:${CONTACT_INFO.phone.replace(/\s+/g, '')}`} className="text-2xl md:text-3xl lg:text-4xl text-white font-light tracking-tight hover:text-rose-400 transition-colors" dir="ltr">
+                                    {CONTACT_INFO.phone}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -555,44 +650,34 @@ export default function AboutPage() {
                 </div>
             </motion.div>
 
-            {/* Abstract Network Visualizer */}
+            {/* Static Google Map Visualizer */}
             <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1 }}
-                className="relative h-[400px] md:h-[600px] w-full flex items-center justify-center order-1 lg:order-2 pointer-events-none"
+                className="relative h-[300px] md:h-[500px] w-full flex items-center justify-center order-1 lg:order-2 overflow-hidden rounded-3xl border border-white/10 shadow-[0_0_80px_rgba(59,130,246,0.15)] group"
             >
-                {/* Responsive rings */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-30 md:opacity-100">
-                    {[1, 2, 3].map((i) => (
-                        <motion.div
-                            key={i}
-                            animate={{ rotate: 360, rotateX: [0, 45, 0], rotateY: [0, 45, 0] }}
-                            transition={{ duration: 20 + i * 5, repeat: Infinity, ease: "linear" }}
-                            className="absolute rounded-full border border-white/10"
-                            style={{ 
-                                width: `${(i * 30) + 20}%`, 
-                                height: `${(i * 30) + 20}%`,
-                                borderWidth: '1px',
-                                borderColor: `rgba(255,255,255,${0.1 - i * 0.02})`
-                            }}
-                        />
-                    ))}
-                </div>
-                
-                <div className="relative z-10 w-48 h-48 md:w-64 md:h-64 bg-black/80 backdrop-blur-xl border border-white/20 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(16,185,129,0.15)]">
-                    <Hexagon size={48} strokeWidth={0.5} className="text-white/60 mb-4 animate-spin-slow" />
-                    <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">{t.bahrainHq}</span>
-                    <span className="text-[8px] md:text-[9px] font-mono text-emerald-400 mt-1">{t.online}</span>
-                </div>
+                <div className="absolute inset-0 bg-blue-500/10 mix-blend-screen opacity-50 transition-opacity duration-1000 group-hover:opacity-0 z-10 pointer-events-none" />
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    frameBorder="0" 
+                    style={{ border: 0, filter: 'invert(100%) hue-rotate(180deg) contrast(1.2) grayscale(0.2)' }} 
+                    src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Bahrain+(Colours%20Events)&t=&z=10&ie=UTF8&iwloc=B&output=embed" 
+                    allowFullScreen={false}
+                    aria-hidden="false" 
+                    tabIndex={-1}
+                    className="relative z-0" 
+                />
+                <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] pointer-events-none z-20" />
             </motion.div>
 
          </div>
       </section>
 
       {/* 7.5 TRUSTED PARTNERS TICKER (Logos Only) */}
-      <section className="relative py-12 md:py-20 border-t border-white/10 bg-black z-20 overflow-hidden">
+      <section className="relative py-4 md:py-5 border-t border-white/10 bg-black z-20 overflow-hidden">
           <style dangerouslySetInnerHTML={{__html: `
             .mask-linear-fade {
                 mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
@@ -606,15 +691,17 @@ export default function AboutPage() {
                 </div>
 
                 <div className="flex-1 overflow-hidden relative mask-linear-fade w-full">
-                     <motion.div animate={{ x: isAr ? ["-50%", "0%"] : ["0%", "-50%"] }} transition={{ repeat: Infinity, duration: 40, ease: "linear" }} className="flex items-center gap-12 md:gap-24 whitespace-nowrap will-change-transform">
-                        {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
+                     <InteractiveTicker direction={1} speed={1} isAr={isAr} innerClassName="flex items-center gap-16 md:gap-32 whitespace-nowrap w-max pr-32">
+                        {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => {
+                            const isSvg = client.logo.toLowerCase().endsWith('.svg');
+                            return (
                             <div key={i} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-500 cursor-default group hover:scale-110 pointer-events-auto shrink-0">
-                                <div className="relative h-10 md:h-16 flex items-center justify-center pointer-events-none">
-                                    <Image src={client.logo} alt={client.name} width={160} height={64} className="h-full w-auto max-w-[120px] md:max-w-[160px] object-contain drop-shadow-xl pointer-events-none" />
+                                <div className={`relative flex items-center justify-center pointer-events-none ${isSvg ? 'h-14 md:h-24 max-w-[140px] md:max-w-[200px]' : 'h-8 md:h-12 max-w-[90px] md:max-w-[130px]'}`}>
+                                    <img src={client.logo} alt={client.name} className="h-full w-auto object-contain drop-shadow-xl pointer-events-none" />
                                 </div>
                             </div>
-                        ))}
-                     </motion.div>
+                        )})}
+                     </InteractiveTicker>
                 </div>
           </div>
       </section>
@@ -640,7 +727,7 @@ export default function AboutPage() {
 
          {/* Bottom Footer Credits */}
          <div className="relative z-10 max-w-[1800px] w-full mx-auto flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-white/10 text-white/40 text-[10px] uppercase tracking-widest">
-                <p>&copy; {new Date().getFullYear()} Colours. {t.rights}</p>
+                <p>© {new Date().getFullYear()} Colours. {t.rights}</p>
                 <div className="flex items-center gap-2">
                     <p>{t.developedBy}</p>
                 </div>
@@ -655,6 +742,95 @@ export default function AboutPage() {
 }
 
 // --- SUB-COMPONENTS ---
+
+function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
+    const { isAr, toggleLang, t } = useContext(LangContext);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    return (
+        <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none">
+            
+            {/* BRAND LOGO */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "circOut" }} className="pointer-events-auto shrink-0">
+                <Link href="/" className="group relative block">
+                    <div className="w-24 sm:w-32 md:w-44 relative z-10 transition-transform duration-500 group-hover:scale-105">
+                        <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+                    </div>
+                </Link>
+            </motion.div>
+
+            {/* DESKTOP NAV BUTTONS */}
+            <motion.div 
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
+                className="pointer-events-auto hidden md:flex items-center justify-end gap-3 w-full ml-auto"
+            >
+                <button onClick={toggleLang} className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30">
+                    <div className="relative z-10 flex items-center gap-2">
+                        <Globe size={16} className="group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+                    </div>
+                </button>
+                <Link href="/about" className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30">
+                    <div className="relative z-10 flex items-center gap-2">
+                        <Info size={16} className="group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.about}</span>
+                    </div>
+                </Link>
+                <Link href="/our-work" className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30">
+                    <div className="relative z-10 flex items-center gap-2">
+                        <LayoutGrid size={16} className="group-hover:text-emerald-400 transition-colors" />
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.gallery}</span>
+                    </div>
+                </Link>
+                <button onClick={onOpenContact} className="flex shrink-0 items-center gap-2 px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30 group">
+                    <Zap size={16} className="group-hover:text-emerald-400 transition-colors" />
+                    <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.talk}</span>
+                </button>
+            </motion.div>
+
+            {/* MOBILE NAV COLLAPSE TOGGLE */}
+            <motion.div
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
+                className="pointer-events-auto flex md:hidden items-center"
+            >
+                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-3 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors shadow-lg">
+                    {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+                </button>
+            </motion.div>
+
+            {/* MOBILE MENU DROPDOWN */}
+            <AnimatePresence>
+                {isMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-[72px] right-4 bg-black/90 backdrop-blur-2xl border border-white/10 p-4 rounded-2xl flex flex-col gap-3 pointer-events-auto shadow-[0_20px_40px_rgba(0,0,0,0.8)] min-w-[220px]"
+                        dir={isAr ? "rtl" : "ltr"}
+                    >
+                        <button onClick={() => { toggleLang(); setIsMenuOpen(false); }} className="flex items-center gap-3 px-4 py-3.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors w-full">
+                            <Globe size={16} className="text-white/50" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+                        </button>
+                        <Link href="/about" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors w-full">
+                            <Info size={16} className="text-white/50" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.about}</span>
+                        </Link>
+                        <Link href="/our-work" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors w-full">
+                            <LayoutGrid size={16} className="text-white/50" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.gallery}</span>
+                        </Link>
+                        <button onClick={() => { onOpenContact(); setIsMenuOpen(false); }} className="flex items-center gap-3 px-4 py-3.5 bg-emerald-500/20 border border-emerald-500/50 text-white rounded-xl hover:bg-emerald-500/30 transition-colors w-full">
+                            <Zap size={16} className="text-emerald-400" />
+                            <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">{t.talk}</span>
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </nav>
+    );
+}
 
 function GallerySection() {
     const { isAr, t } = useContext(LangContext);
@@ -801,5 +977,118 @@ function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                 </div>
             )}
         </AnimatePresence>
+    );
+}
+
+function TabButton({ isActive, onClick, icon: Icon, label, desc }: any) {
+    const { isAr } = useContext(LangContext);
+    return (
+        <button onClick={onClick} className={`w-full relative flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl transition-all duration-300 text-left group overflow-hidden border ${isActive ? 'bg-white/5 border-white/20 shadow-md' : 'hover:bg-white/5 border-transparent'}`}>
+            {isActive && <motion.div layoutId="activeTabGlow" className={`absolute top-0 bottom-0 w-1 md:w-1.5 bg-emerald-500 ${isAr ? 'right-0' : 'left-0'}`} />}
+            <div className={`relative z-10 p-2 md:p-2.5 rounded-lg transition-colors ${isActive ? 'bg-white text-black' : 'bg-white/5 text-white/60 group-hover:text-white'}`}><Icon size={16} className="md:w-5 md:h-5" /></div>
+            <div className={`relative z-10 flex flex-col ${isAr ? 'text-right' : 'text-left'}`}>
+                <span className={`text-[10px] md:text-xs font-black uppercase tracking-wider ${isActive ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>{label}</span>
+                <span className="text-[8px] md:text-[9px] text-white/40 font-mono mt-0.5">{desc}</span>
+            </div>
+        </button>
+    );
+}
+
+function EmailInterface() {
+    const { t } = useContext(LangContext);
+    return (
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="h-full flex flex-col justify-start md:justify-center max-w-xl mx-auto pb-6 md:pb-0">
+            <div className="mb-6 md:mb-10">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4 md:mb-6 shadow-inner"><Mail size={18} className="text-white md:w-5 md:h-5" /></div>
+                <h2 className="text-2xl md:text-4xl font-black tracking-tighter text-white mb-2 uppercase">{t.initProject}</h2>
+                <p className="text-xs md:text-sm text-white/50 tracking-wide font-light">{t.dossier}</p>
+            </div>
+            <form className="space-y-4 md:space-y-5" onSubmit={(e) => e.preventDefault()}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+                    <div className="space-y-1.5">
+                        <label className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.identity}</label>
+                        <input type="text" placeholder={t.nameOrg} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all placeholder:text-white/20" />
+                    </div>
+                    <div className="space-y-1.5">
+                        <label className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.coords}</label>
+                        <input type="email" placeholder={t.emailAddr} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all placeholder:text-white/20" />
+                    </div>
+                </div>
+                <div className="space-y-1.5">
+                    <label className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.brief}</label>
+                    <textarea rows={4} placeholder={t.outline} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all resize-none placeholder:text-white/20" />
+                </div>
+                <button className="w-full group bg-white text-black h-12 md:h-14 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] md:text-[11px] flex items-center justify-center gap-3 hover:bg-emerald-400 transition-all mt-6 shadow-[0_10px_20px_rgba(16,185,129,0.15)] hover:shadow-[0_15px_30px_rgba(16,185,129,0.3)]">
+                    <span>{t.transmit}</span><Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </button>
+            </form>
+        </motion.div>
+    );
+}
+
+function AIInterface() {
+    const { isAr, t } = useContext(LangContext);
+    const [messages, setMessages] = useState([{ role: 'ai', text: t.aiGreeting }]);
+    const [input, setInput] = useState("");
+    const [isTyping, setIsTyping] = useState(false);
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setMessages([{ role: 'ai', text: t.aiGreeting }]);
+    }, [t.aiGreeting]);
+
+    const handleSend = () => {
+        if (!input.trim()) return;
+        const newMsg = { role: 'user', text: input };
+        setMessages(prev => [...prev, newMsg]);
+        setInput("");
+        setIsTyping(true);
+        setTimeout(() => {
+            setIsTyping(false);
+            setMessages(prev => [...prev, { role: 'ai', text: t.aiReply }]);
+        }, 1500);
+    };
+
+    useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, [messages, isTyping]);
+
+    return (
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="h-full flex flex-col">
+            <div className="flex items-center justify-between mb-4 md:mb-6 border-b border-white/10 pb-4 md:pb-6 shrink-0">
+                <div className="flex items-center gap-3 md:gap-4">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-blue-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)]"><Sparkles size={16} className="text-white" /></div>
+                    <div>
+                        <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-wider">{t.neuralInt}</h3>
+                        <div className="flex items-center gap-1.5 md:gap-2 mt-0.5">
+                            <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-500 animate-pulse" />
+                            <span className="text-[8px] md:text-[9px] text-white/50 uppercase tracking-[0.2em] font-mono">{t.listening}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar mb-4">
+                {messages.map((msg, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                        <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'ai' ? 'bg-white/10 border border-white/10' : 'bg-white text-black shadow-md'}`}>
+                            {msg.role === 'ai' ? <Bot size={14} /> : <User size={14} />}
+                        </div>
+                        <div className={`p-3 md:p-4 rounded-2xl max-w-[85%] md:max-w-[80%] text-xs md:text-sm leading-relaxed ${msg.role === 'ai' ? (isAr ? 'bg-white/5 text-white/90 rounded-tr-none border border-white/10' : 'bg-white/5 text-white/90 rounded-tl-none border border-white/10') : (isAr ? 'bg-white text-black rounded-tl-none shadow-lg' : 'bg-white text-black rounded-tr-none shadow-lg')}`}>{msg.text}</div>
+                    </motion.div>
+                ))}
+                {isTyping && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-3">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/10"><Bot size={14} /></div>
+                        <div className={`bg-white/5 px-4 py-3 md:px-5 md:py-4 rounded-2xl border border-white/10 flex gap-1.5 items-center h-10 md:h-auto ${isAr ? 'rounded-tr-none' : 'rounded-tl-none'}`}>
+                            <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                            <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                            <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                        </div>
+                    </motion.div>
+                )}
+            </div>
+            <div className="relative mt-auto shrink-0 pb-2 md:pb-0">
+                <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} type="text" placeholder={t.enterCmd} className={`w-full bg-[#0a0a0f] border border-white/20 rounded-2xl py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-white/20 shadow-inner ${isAr ? 'pr-5 md:pr-6 pl-12 md:pl-14' : 'pl-5 md:pl-6 pr-12 md:pr-14'}`} />
+                <button onClick={handleSend} className={`absolute top-2 md:top-2.5 p-1.5 md:p-2 bg-white text-black rounded-xl hover:scale-105 active:scale-95 transition-transform shadow-md ${isAr ? 'left-2 md:left-3' : 'right-2 md:right-3'}`}><ArrowRight size={16} className={`md:w-[18px] md:h-[18px] ${isAr ? 'rotate-180' : ''}`} /></button>
+            </div>
+        </motion.div>
     );
 }
