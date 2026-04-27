@@ -71,10 +71,8 @@ const TEXT_EN = {
     index: "Index",
     viewConcept: "View Concept",
     
-    // Partners
+    // Partners & Network
     trustedPartners: "Trusted Partners",
-
-    // Network
     globalUplink: "03 // Global_Uplink",
     hq: "Headquarters",
     secureLine: "Secure Line",
@@ -87,7 +85,31 @@ const TEXT_EN = {
     philosophy: "Philosophy",
     overview: "We engineer high-impact corporate and public experiences. From exclusive VIP summits to massive live festivals, our division orchestrates every detail with absolute precision, transforming standard gatherings into breathtaking cinematic memories.",
 
-    // Footer & Modal
+    // Navigation & Omni Modal (Added to fix TypeScript Error)
+    about: "About Colours",
+    gallery: "Our Work",
+    talk: "Talk To Us",
+    uplink: "Direct Uplink",
+    traditional: "Traditional",
+    neural: "Neural Agent",
+    aiAssist: "AI Assistant",
+    serverOn: "Server Online",
+    latency: "Latency: 12ms \nEncryption: AES-256",
+    dossier: "Submit your dossier. Our strategy team will intercept.",
+    identity: "Identity",
+    nameOrg: "Name / Organization",
+    coords: "Coordinates",
+    emailAddr: "Email Address",
+    brief: "Briefing",
+    outline: "Outline mission parameters...",
+    transmit: "Transmit Data",
+    neuralInt: "Neural Interface",
+    listening: "Listening",
+    aiGreeting: "Systems online. I am the Colours Interface. How can we engineer your next experience?",
+    aiReply: "Signal received. I've flagged this for our creative directors. Would you like to upload a project brief?",
+    enterCmd: "Enter command...",
+
+    // Footer & Modal Configs
     readyToDeploy: "Ready to deploy?",
     initProject: "Initiate Project",
     developedBy: "Developed by WhitehillsIntl",
@@ -154,6 +176,29 @@ const TEXT_AR = {
     online: "متصل",
     philosophy: "فلسفتنا",
     overview: "نحن نهندس تجارب مؤسسية وعامة عالية التأثير. من مؤتمرات كبار الشخصيات الحصرية إلى المهرجانات الحية الضخمة، ينسق قسمنا كل التفاصيل بدقة متناهية، ويحول التجمعات العادية إلى ذكريات سينمائية مذهلة.",
+
+    about: "عن كلرز",
+    gallery: "أعمالنا",
+    talk: "تحدث إلينا",
+    uplink: "اتصال مباشر",
+    traditional: "تقليدي",
+    neural: "الوكيل العصبي",
+    aiAssist: "مساعد ذكي",
+    serverOn: "الخادم متصل",
+    latency: "زمن الاستجابة: 12ms \nالتشفير: AES-256",
+    dossier: "أرسل ملفك. سيقوم فريق الاستراتيجية لدينا بالاستلام.",
+    identity: "الهوية",
+    nameOrg: "الاسم / المنظمة",
+    coords: "الإحداثيات",
+    emailAddr: "البريد الإلكتروني",
+    brief: "الموجز",
+    outline: "حدد معالم المهمة...",
+    transmit: "إرسال البيانات",
+    neuralInt: "الواجهة العصبية",
+    listening: "يستمع",
+    aiGreeting: "الأنظمة متصلة. أنا واجهة كلرز. كيف يمكننا هندسة تجربتك القادمة؟",
+    aiReply: "تم استلام الإشارة. لقد قمنا بتحويل هذا إلى مديرينا المبدعين. هل ترغب في تحميل موجز المشروع؟",
+    enterCmd: "أدخل الأمر...",
 
     readyToDeploy: "مستعد للبدء؟",
     initProject: "بدء المشروع",
@@ -303,7 +348,6 @@ function InteractiveTicker({ children, direction = 1, speed = 1, isAr = false, i
 
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
   const [showContact, setShowContact] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
   const [isAr, setIsAr] = useState(false);
@@ -351,21 +395,7 @@ export default function AboutPage() {
       </div>
 
       {/* 2. HUD NAVIGATION (RESPONSIVE) */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none">
-          
-          {/* BRAND LOGO */}
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "circOut" }} className="pointer-events-auto shrink-0">
-              <Link href="/" className="group relative block">
-                  <div className="w-24 sm:w-32 md:w-44 relative z-10 transition-transform duration-500 group-hover:scale-105">
-                      <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
-                  </div>
-              </Link>
-          </motion.div>
-
-          {/* DESKTOP NAV BUTTONS */}
-          <Navbar onOpenContact={() => setShowContact(true)} />
-
-      </nav>
+      <Navbar onOpenContact={() => setShowContact(true)} />
 
       {/* 3. HERO SECTION */}
       <section className="relative min-h-[100svh] flex flex-col justify-center px-6 md:px-12 lg:px-24 z-10 pt-24 pb-12">
@@ -664,7 +694,7 @@ export default function AboutPage() {
                     height="100%" 
                     frameBorder="0" 
                     style={{ border: 0, filter: 'invert(100%) hue-rotate(180deg) contrast(1.2) grayscale(0.2)' }} 
-                    src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Bahrain+(Colours%20Events)&t=&z=10&ie=UTF8&iwloc=B&output=embed" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3579.5290680650974!2d50.51865957640523!3d26.212001589832264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49b01511f6291d%3A0xc31db3a6774eebbe!2sColours%20Events%20%26%20Exhibitions!5e0!3m2!1sen!2sbh!4v1713865449772!5m2!1sen!2sbh"
                     allowFullScreen={false}
                     aria-hidden="false" 
                     tabIndex={-1}
