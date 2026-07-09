@@ -1,16 +1,15 @@
 "use client";
 
-import { useRef, useState, useEffect, createContext, useContext } from "react";
+import { useRef, useState, useEffect, useCallback, createContext } from "react";
 import {
     motion,
     useScroll,
     useTransform,
-    useSpring,
     AnimatePresence
 } from "framer-motion";
 import {
     ArrowLeft, LayoutGrid, ArrowUpRight,
-    Globe, Compass, Asterisk
+    Globe, Compass, Asterisk, X, ChevronLeft, ChevronRight, Loader2
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -114,10 +113,79 @@ const CAPABILITIES_IMAGES = [
     "/insta/image5.png"
 ];
 
-const GALLERY_IMAGES = [
-    "/insta/image1.png", "/insta/image2.png", "/insta/image3.png",
-    "/insta/image4.png", "/insta/image5.png", "/insta/image6.png", "/insta/image7.png"
+/* ------------------------------------------------------------------
+   EVENTS ARCHIVE — every file inside /public/Events
+   Paths are encoded at render time (spaces -> %20) so filenames stay
+   readable and editable here.
+------------------------------------------------------------------- */
+const GALLERY_IMAGES: string[] = [
+    // BANK ABC GHABGA AT GULF HOTEL 2025
+    "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 2.jpg",
+    "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 16.jpg",
+    "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 19.jpg",
+    "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 25.jpg",
+    "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 27.jpg",
+
+    // F1 2025 - EDB PADDOCK LOUNGE
+    "/Events/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 3.jpg",
+    "/Events/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 34.jpg",
+    "/Events/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 49.jpg",
+
+    // F1 2025 - GULF AIR
+    "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 12.jpg",
+    "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 32.jpg",
+    "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 35.jpg",
+    "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 46.jpg",
+    "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 68.jpg",
+
+    // F1 PRE SEASON TESTING 2025
+    "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 20.jpg",
+    "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 54.jpg",
+    "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 57.jpg",
+    "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 60.jpg",
+    "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 62.jpg",
+
+    // FINTECH 2025
+    "/Events/FINTECH 2025/_HUS1999.JPG",
+    "/Events/FINTECH 2025/_HUS2737.JPG",
+    "/Events/FINTECH 2025/2J5A0953.JPG",
+    "/Events/FINTECH 2025/2J5A0954.JPG",
+    "/Events/FINTECH 2025/2J5A0955.JPG",
+    "/Events/FINTECH 2025/2J5A0956.JPG",
+    "/Events/FINTECH 2025/3N5A0017.JPG",
+    "/Events/FINTECH 2025/3N5A0018.JPG",
+
+    // JOTUN EVENT AT LA FONTAINE
+    "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 1.jpg",
+    "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 2.jpg",
+    "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 3.jpg",
+    "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 17.jpg",
+    "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 32.jpg",
+    "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 50.jpg",
+    "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 55.jpg",
+
+    // RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025
+    "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 1.jpg",
+    "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 4.jpg",
+    "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 6.jpg",
+    "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 8.jpg",
+    "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 9.jpg",
+
+    // TAMKEEN MASHROO3i EVENT AT EWB
+    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 1.jpg",
+    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 2.jpg",
+    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 42.jpg",
+    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 59.jpg",
+    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 73.jpg",
+    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 75.jpg",
+    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 78.jpg"
 ];
+
+// Encode spaces and special characters, keep the "/" separators intact
+const enc = (p: string) => p.split("/").map(encodeURIComponent).join("/");
+
+// How many images render on first paint, and per "load more" batch
+const BATCH_SIZE = 12;
 
 // --- SEO: Structured data (JSON-LD) ---
 const STRUCTURED_DATA = {
@@ -156,8 +224,13 @@ const LangContext = createContext({ isAr: false, toggleLang: () => {}, t: TEXT_E
 export default function EventsPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const timelineRef = useRef<HTMLDivElement>(null);
+    const sentinelRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(true);
     const [isAr, setIsAr] = useState(false);
+
+    // Gallery: progressive rendering + fullscreen viewer
+    const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
     const toggleLang = () => setIsAr((prev) => !prev);
     const t = isAr ? TEXT_AR : TEXT_EN;
@@ -176,6 +249,69 @@ export default function EventsPage() {
             document.documentElement.dir = isAr ? "rtl" : "ltr";
         }
     }, [isAr]);
+
+    // Reveal the next batch of images as the sentinel scrolls into view
+    useEffect(() => {
+        const node = sentinelRef.current;
+        if (!node) return;
+        if (visibleCount >= GALLERY_IMAGES.length) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0]?.isIntersecting) {
+                    setVisibleCount((c) => Math.min(c + BATCH_SIZE, GALLERY_IMAGES.length));
+                }
+            },
+            { root: containerRef.current, rootMargin: "600px 0px" }
+        );
+
+        observer.observe(node);
+        return () => observer.disconnect();
+    }, [visibleCount]);
+
+    // Lightbox navigation
+    const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+    const showPrev = useCallback(
+        () => setLightboxIndex((i) => (i === null ? i : (i - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length)),
+        []
+    );
+    const showNext = useCallback(
+        () => setLightboxIndex((i) => (i === null ? i : (i + 1) % GALLERY_IMAGES.length)),
+        []
+    );
+
+    // Keyboard controls + scroll lock while fullscreen is open
+    useEffect(() => {
+        if (lightboxIndex === null) return;
+
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") closeLightbox();
+            else if (e.key === "ArrowLeft") (isAr ? showNext : showPrev)();
+            else if (e.key === "ArrowRight") (isAr ? showPrev : showNext)();
+        };
+
+        window.addEventListener("keydown", onKey);
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        return () => {
+            window.removeEventListener("keydown", onKey);
+            document.body.style.overflow = prevOverflow;
+        };
+    }, [lightboxIndex, isAr, closeLightbox, showPrev, showNext]);
+
+    // Swipe support on touch devices
+    const touchStartX = useRef<number | null>(null);
+    const onTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX; };
+    const onTouchEnd = (e: React.TouchEvent) => {
+        if (touchStartX.current === null) return;
+        const delta = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(delta) > 60) {
+            if (delta < 0) (isAr ? showPrev : showNext)();
+            else (isAr ? showNext : showPrev)();
+        }
+        touchStartX.current = null;
+    };
 
     // Smooth Scroll Parallax
     const { scrollYProgress } = useScroll({
@@ -435,47 +571,50 @@ export default function EventsPage() {
                         <p className="text-sm md:text-lg font-light text-white/60 leading-relaxed max-w-2xl">{t.archiveDesc}</p>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[250px] md:auto-rows-[350px] gap-3 md:gap-5">
-                        {GALLERY_IMAGES.map((src, i) => {
-                            let spanClass = "col-span-1 row-span-1";
-                            if (i === 0) spanClass = "md:col-span-2 md:row-span-2";
-                            else if (i === 3) spanClass = "md:col-span-2 row-span-1";
-                            else if (i === 4) spanClass = "lg:col-span-2 lg:row-span-2 hidden md:block";
-                            else if (i === 6) spanClass = "md:col-span-3 lg:col-span-2 row-span-1";
-
-                            return (
-                                <motion.div
-                                    key={i}
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true, margin: "-50px" }}
-                                    transition={{ duration: 0.8 }}
-                                    className={`group relative overflow-hidden rounded-xl border border-white/10 bg-[#050505] ${spanClass}`}
-                                >
-                                    <Image
-                                        src={src} alt={`Colours Bahrain event case study ${i + 1}`} fill
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                        loading="lazy"
-                                        className="object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105 will-change-transform opacity-80 group-hover:opacity-100"
-                                    />
-
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
-
-                                    <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                                        <div className="translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out flex items-end justify-between">
-                                            <div className="flex flex-col gap-1">
-                                                <span className="text-[9px] font-bold uppercase tracking-widest text-white">{t.caseStudy}</span>
-                                                <span className="text-[10px] font-mono text-white/60 tracking-widest uppercase">{t.archiveIndex}{i + 1}</span>
-                                            </div>
-                                            <div className={`w-10 h-10 rounded-full bg-white text-black flex items-center justify-center transition-transform duration-300 shadow-xl ${isAr ? 'group-hover:-rotate-45' : 'group-hover:rotate-45'}`} aria-hidden="true">
-                                                <ArrowUpRight size={16} strokeWidth={2} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
+                    {/* Responsive masonry — 1 / 2 / 3 / 4 columns */}
+                    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3 md:gap-5 [column-fill:_balance]">
+                        {GALLERY_IMAGES.slice(0, visibleCount).map((src, i) => (
+                            <motion.button
+                                key={src}
+                                type="button"
+                                onClick={() => setLightboxIndex(i)}
+                                initial={{ opacity: 0, scale: 0.97 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true, margin: "-40px" }}
+                                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                                className="group relative block w-full mb-3 md:mb-5 break-inside-avoid overflow-hidden rounded-xl border border-white/10 bg-[#050505] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                                aria-label={`${t.caseStudy} ${i + 1}`}
+                            >
+                                <Image
+                                    src={enc(src)}
+                                    alt={`Colours Bahrain event ${i + 1}`}
+                                    width={1600}
+                                    height={1067}
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                                    loading={i < 4 ? "eager" : "lazy"}
+                                    className="w-full h-auto object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04] will-change-transform opacity-85 group-hover:opacity-100"
+                                />
+                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
+                                <div className={`absolute bottom-4 ${isAr ? 'left-4' : 'right-4'} w-10 h-10 rounded-full bg-white text-black flex items-center justify-center opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl`} aria-hidden="true">
+                                    <ArrowUpRight size={16} strokeWidth={2} className={isAr ? '-rotate-90' : ''} />
+                                </div>
+                            </motion.button>
+                        ))}
                     </div>
+
+                    {/* Infinite-scroll sentinel */}
+                    {visibleCount < GALLERY_IMAGES.length && (
+                        <div ref={sentinelRef} className="flex flex-col items-center justify-center gap-4 pt-16">
+                            <Loader2 size={18} className="animate-spin text-white/40" aria-hidden="true" />
+                            <button
+                                type="button"
+                                onClick={() => setVisibleCount((c) => Math.min(c + BATCH_SIZE, GALLERY_IMAGES.length))}
+                                className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/50 hover:text-white transition-colors"
+                            >
+                                {visibleCount} / {GALLERY_IMAGES.length}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -493,6 +632,80 @@ export default function EventsPage() {
                     <LayoutGrid size={16} className={`transition-transform duration-500 ${isAr ? 'group-hover:-rotate-90' : 'group-hover:rotate-90'}`} aria-hidden="true" />
                 </Link>
             </section>
+
+            {/* 8. FULLSCREEN VIEWER */}
+            <AnimatePresence>
+                {lightboxIndex !== null && (
+                    <motion.div
+                        key="lightbox"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+                        role="dialog"
+                        aria-modal="true"
+                        onClick={closeLightbox}
+                        onTouchStart={onTouchStart}
+                        onTouchEnd={onTouchEnd}
+                        dir="ltr"
+                    >
+                        {/* Close */}
+                        <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+                            className="absolute top-5 right-5 md:top-8 md:right-8 z-20 w-11 h-11 rounded-full border border-white/20 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                            aria-label="Close"
+                        >
+                            <X size={18} strokeWidth={1.5} />
+                        </button>
+
+                        {/* Counter */}
+                        <span className="absolute top-7 left-5 md:top-10 md:left-8 z-20 text-[10px] font-mono tracking-[0.3em] text-white/50">
+                            {String(lightboxIndex + 1).padStart(2, "0")} / {GALLERY_IMAGES.length}
+                        </span>
+
+                        {/* Prev */}
+                        <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); showPrev(); }}
+                            className="absolute left-3 md:left-8 z-20 w-11 h-11 md:w-14 md:h-14 rounded-full border border-white/20 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                            aria-label="Previous image"
+                        >
+                            <ChevronLeft size={20} strokeWidth={1.5} />
+                        </button>
+
+                        {/* Next */}
+                        <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); showNext(); }}
+                            className="absolute right-3 md:right-8 z-20 w-11 h-11 md:w-14 md:h-14 rounded-full border border-white/20 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                            aria-label="Next image"
+                        >
+                            <ChevronRight size={20} strokeWidth={1.5} />
+                        </button>
+
+                        {/* Image */}
+                        <motion.div
+                            key={GALLERY_IMAGES[lightboxIndex]}
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                            className="relative w-full h-full px-14 py-16 md:px-24 md:py-20"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Image
+                                src={enc(GALLERY_IMAGES[lightboxIndex])}
+                                alt={`Colours Bahrain event ${lightboxIndex + 1}`}
+                                fill
+                                sizes="100vw"
+                                priority
+                                className="object-contain"
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
         </main>
         </LangContext.Provider>
