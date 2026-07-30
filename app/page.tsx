@@ -297,7 +297,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                 >
                     <div className="relative z-10 flex items-center gap-2">
                         <Globe size={16} className="group-hover:text-emerald-400 transition-colors" />
-                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(ENGLISH/ARABIC)</span>
                     </div>
                 </button>
 

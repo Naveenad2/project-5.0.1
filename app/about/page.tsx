@@ -863,7 +863,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                 <button onClick={toggleLang} className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30" aria-label={isAr ? "التبديل إلى الإنجليزية" : "Switch to Arabic"} aria-pressed={isAr}>
                     <div className="relative z-10 flex items-center gap-2">
                         <Globe size={16} className="group-hover:text-emerald-400 transition-colors" aria-hidden="true" />
-                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(EN/AR)</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest mt-[1px]">(ENGLISH/ARABIC)</span>
                     </div>
                 </button>
                 <Link href="/about" className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30">
