@@ -110,10 +110,10 @@ const HERO_IMAGE = "/insta/interiors.jpeg";
 const CAPABILITIES_ICONS = [Store, Coffee, Briefcase, Sofa];
 
 const CAPABILITIES_IMAGES = [
-    "/insta/image6.png",
-    "/insta/image7.png",
-    "/insta/image8.png",
-    "/insta/image9.png"
+    "/insta/in1.jpeg",
+    "/insta/in2.jpeg",
+    "/insta/in3.jpeg",
+    
 ];
 
 /* ------------------------------------------------------------------
@@ -122,99 +122,13 @@ const CAPABILITIES_IMAGES = [
    readable and editable here.
 ------------------------------------------------------------------- */
 const GALLERY_IMAGES: string[] = [
-    "/EXHIBITION/EDAMAH 2025/EDAMAH 01.jpg",
-    // "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 1.jpg",
-    // "/EXHIBITION/AMG STAND AT MARASSI 2025/AMG STAND AT MARASSI GALLERIA 01.jpeg",
-    // "/KIOSK/BATEEL KIOSK AT CITY CENTER 2025.jpg",
-    // "/EXHIBITION/MASSOUD JEWELLERY ARABIA 2025/MASSOUD JEWELLERY 04.JPG",
-    // "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 2.jpg",
-    // "/EXHIBITION/EDAMAH 2025/EDAMAH 02.jpg",
-    // "/EXHIBITION/BAHRAIN MARINA 2025/BAHRAIN MARINA 01.jpg",
-    // "/Events/FINTECH 2025/2J5A0953.JPG",
-    // "/EXHIBITION/AL JIWAN JEWELLERY 01.JPG",
-    // "/EXHIBITION/The Avenues Winter Fest 2024/The Avenues Winter Fest 01.jpg",
-    // "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 2.jpg",
-
-    "/EXHIBITION/EDAMAH 2025/EDAMAH 07.jpg",
-    // "/EXHIBITION/AMG STAND AT MARASSI 2025/AMG STAND AT MARASSI GALLERIA 03.jpeg",
-    // "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 16.jpg",
-    // "/EXHIBITION/BINAA STAND AT CITY CENTER 2025/BINAA STAND AT CITY CENTER 02.jpg",
-    // "/EXHIBITION/MASSOUD JEWELLERY ARABIA 2025/MASSOUD JEWELLERY 06.JPG",
-    // "/Events/FINTECH 2025/2J5A0954.JPG",
-    // "/EXHIBITION/BAHRAIN MARINA 2025/BAHRAIN MARINA 05.jpg",
-    // "/EXHIBITION/F1 STAND @ CITY CENTER 2025/F1 STAND AT CITY CENTER 3.jpg",
-    // "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 3.jpg",
-    // "/EXHIBITION/EDAMAH 2025/EDAMAH 11.jpg",
-    // "/EXHIBITION/The Avenues Winter Fest 2024/The Avenues Winter Fest 03.jpg",
-    // "/EXHIBITION/01.jpg",
-
-    "/Events/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 3.jpg",
-    // "/EXHIBITION/EDAMAH 2025/EDAMAH 13.jpg",
-    // "/EXHIBITION/AMG STAND AT MARASSI 2025/AMG STAND AT MARASSI GALLERIA 07.jpeg",
-    // "/EXHIBITION/BAHRAIN MARINA 2025/BAHRAIN MARINA 06.jpg",
-    // "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 19.jpg",
-    // "/EXHIBITION/BINAA STAND AT CITY CENTER 2025/BINAA STAND AT CITY CENTER 06.jpg",
-    // "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 02.jpg",
-    // "/Events/FINTECH 2025/2J5A0955.JPG",
-    // "/EXHIBITION/EDAMAH 2025/EDAMAH 15.jpg",
-    // "/EXHIBITION/011.jpg",
-    // "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 17.jpg",
-    // "/EXHIBITION/The Avenues Winter Fest 2024/The Avenues Winter Fest 07.jpg",
-
-    "/EXHIBITION/BAHRAIN MARINA AT AVENUES 2025/BAHRAIN MARINA AT AVENUES 2.jpg",
-    // "/EXHIBITION/EDAMAH 2025/EDAMAH 17.jpg",
-    // "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 12.jpg",
-    // "/EXHIBITION/F1 STAND @ CITY CENTER 2025/F1 STAND AT CITY CENTER 6.jpg",
-    // "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 04.jpg",
-    // "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 25.jpg",
-    // "/EXHIBITION/EDAMAH 2025/EDAMAH 18.jpg",
-    // "/EXHIBITION/MODA MALL SHOP AND WIN 12.jpg",
-    // "/Events/FINTECH 2025/2J5A0956.JPG",
-    // "/EXHIBITION/BAHRAIN MARINA AT AVENUES 2025/BAHRAIN MARINA AT AVENUES 4.jpg",
-    // "/EXHIBITION/The Avenues Winter Fest 2024/The Avenues Winter Fest 08.jpg",
-    // "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 32.jpg",
-
-    "/EXHIBITION/EDAMAH 2025/EDAMAH 19.jpg",
-    // "/EXHIBITION/AVENUES RAMADAN STAND 2025.jpg",
-    // "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 32.jpg",
-    // "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 06.jpg",
-    // "/EXHIBITION/LOVE YOUR SKIN AT AVENUES 2025/LOVE YOUR SKIN AT AVENUES 40.jpg",
-    // "/Events/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 27.jpg",
-    // "/EXHIBITION/BESTUNE STAND AT CITY CENTER 2025.jpg",
-    // "/EXHIBITION/F1 STAND @ CITY CENTER 2025/F1 STAND AT CITY CENTER 12.jpg",
-    // "/Events/FINTECH 2025/3N5A0017.JPG",
-    // "/EXHIBITION/BAHRAIN MARINA AT AVENUES 2025/BAHRAIN MARINA AT AVENUES 9.jpg",
-    // "/EXHIBITION/The Avenues Winter Fest 2024/The Avenues Winter Fest 24.jpg",
-    // "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 50.jpg",
-
-    "/EXHIBITION/LOVE YOUR SKIN AT AVENUES 2025/LOVE YOUR SKIN AT AVENUES 45.jpg",
-    // "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 07.jpg",
-    // "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 35.jpg",
-    // "/EXHIBITION/TOYOTA LAND CRUISER STAND SITRA 2025/TOYOTA LAND CRUISER STAND SITRA 2.jpg",
-    // "/EXHIBITION/MARASSI GALLERIA SUPER HERO TRAINING CAMP/MARASSI GALLERIA SUPER HERO TRAINING CAMP 6.jpg",
-    // "/Events/FINTECH 2025/3N5A0018.JPG",
-    // "/EXHIBITION/F1 STAND @ CITY CENTER 2025/F1 STAND AT CITY CENTER 20.jpg",
+    
     // "/EXHIBITION/LOVE YOUR SKIN AT AVENUES 2025/LOVE YOUR SKIN AT AVENUES 64.jpg",
     // "/Events/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 55.jpg",
     // "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 08.jpg",
     // "/EXHIBITION/F1 STAND AT GULF AIR OFFICE - 2025.jpg",
     // "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 46.jpg",
 
-    "/EXHIBITION/TOYOTA LAND CRUISER STAND SITRA 2025/TOYOTA LAND CRUISER STAND SITRA 4.jpg",
-    // "/EXHIBITION/MARASSI GALLERIA SUPER HERO TRAINING CAMP/MARASSI GALLERIA SUPER HERO TRAINING CAMP 16.jpg",
-    // "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 1.jpg",
-    // "/EXHIBITION/LOVE YOUR SKIN AT AVENUES 2025/LOVE YOUR SKIN AT AVENUES 67.jpg",
-    "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 15.jpg",
-    // "/Events/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 68.jpg",
-    // "/EXHIBITION/F1 STAND AT MARASSI - 2025.jpg",
-    // "/EXHIBITION/TOYOTA LAND CRUISER STAND SITRA 2025/TOYOTA LAND CRUISER STAND SITRA 5.jpg",
-    // "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 1.jpg",
-    // "/EXHIBITION/LOVE YOUR SKIN AT AVENUES 2025/LOVE YOUR SKIN AT AVENUES 69.jpg",
-    // "/EXHIBITION/MARASSI GALLERIA SUPER HERO TRAINING CAMP/MARASSI GALLERIA SUPER HERO TRAINING CAMP 37.jpg",
-    // "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 2.jpg",
-
-    "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 066.jpg",
-    "/Events/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 34.jpg",
     // "/EXHIBITION/TOYOTA RAMADAN16.jpg",
     // "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 4.jpg",
     // "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 20.jpg",
@@ -226,14 +140,23 @@ const GALLERY_IMAGES: string[] = [
     // "/Events/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 49.jpg",
     // "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 8.jpg",
 
-    "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 57.jpg",
-    "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 73.jpg",
+   
     // "/Events/FINTECH 2025/_HUS2737.JPG",
     // "/Events/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 9.jpg",
     // "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 60.jpg",
     // "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 75.jpg",
     // "/Events/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 62.jpg",
     // "/Events/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 78.jpg"
+    "/Interiors/MEISEI RESTAURANT.jpeg",
+    "/Interiors/IN3.jpeg",
+    "/Interiors/IN4.jpeg",
+    "/Interiors/IN5.jpeg",
+    "/Interiors/IN6.jpeg",
+      "/Interiors/IN7.jpeg",
+    "/Interiors/IN8.jpeg",
+    "/Interiors/IN9.jpeg",
+    "/Interiors/IN10.jpeg",
+     "/Interiors/NASSER PHARMACY.jpg",
 ];
 
 // Encode spaces and special characters, keep the "/" separators intact
@@ -525,56 +448,52 @@ export default function InteriorsPage() {
             </section>
 
             {/* 4. IMAGE-BASED CAPABILITIES */}
-            <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0" aria-labelledby="competencies-heading">
-                <div className="max-w-[1800px] mx-auto">
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-12 mb-12 md:mb-16 gap-6">
-                        <div>
-                            <span id="competencies-heading" className="text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block" style={{ color: THEME_COLOR }}>{t.coreCompetencies}</span>
-                            <h2 className="text-4xl md:text-6xl font-medium tracking-tighter text-white drop-shadow-md">{t.spatialArch}</h2>
-                        </div>
-                        <p className={`text-xs font-light text-white/50 tracking-wide max-w-sm leading-relaxed ${isAr ? 'md:text-left' : 'md:text-right'}`}>
-                            {t.spatialArchDesc}
-                        </p>
-                    </motion.div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                        {[
-                            { title: t.cap1Title, desc: t.cap1Desc, image: CAPABILITIES_IMAGES[0], icon: CAPABILITIES_ICONS[0] },
-                            { title: t.cap2Title, desc: t.cap2Desc, image: CAPABILITIES_IMAGES[1], icon: CAPABILITIES_ICONS[1] },
-                            { title: t.cap3Title, desc: t.cap3Desc, image: CAPABILITIES_IMAGES[2], icon: CAPABILITIES_ICONS[2] },
-                            { title: t.cap4Title, desc: t.cap4Desc, image: CAPABILITIES_IMAGES[3], icon: CAPABILITIES_ICONS[3] }
-                        ].map((cap, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                                className="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end"
-                            >
-                                {/* Background Image */}
-                                <div className="absolute inset-0 z-0">
-                                    <Image
-                                        src={cap.image}
-                                        alt={`${cap.title} — Colours Bahrain interiors`}
-                                        fill
-                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                                        loading="lazy"
-                                        className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-90"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-                                </div>
-
-                                {/* Content Overlay */}
-                                <div className={`relative z-10 p-6 md:p-8 flex flex-col ${isAr ? 'items-end text-right' : 'items-start text-left'}`}>
-                                    <div className="w-10 h-10 rounded-full border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center mb-4">
-                                        <cap.icon size={16} className="text-white" aria-hidden="true" />
+             <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0" aria-labelledby="competencies-heading">
+                            <div className="max-w-[1800px] mx-auto">
+                                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-12 mb-12 md:mb-16 gap-6">
+                                    <div>
+                                        <span id="competencies-heading" className="text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block" style={{ color: THEME_COLOR }}>{t.coreCompetencies}</span>
+                                        <h2 className="text-4xl md:text-6xl font-medium tracking-tighter text-white drop-shadow-md">{t.spatialArch}</h2>
                                     </div>
-                                    <h3 className="text-lg md:text-xl font-bold uppercase tracking-wider text-white mb-3 drop-shadow-md leading-tight">{cap.title}</h3>
-                                    <p className="text-xs text-white/70 font-light leading-relaxed">{cap.desc}</p>
+                                    <p className={`text-xs font-light text-white/50 tracking-wide max-w-sm leading-relaxed ${isAr ? 'md:text-left' : 'md:text-right'}`}>
+                                        {t.spatialArchDesc}
+                                    </p>
+                                </motion.div>
+            
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                                    {[
+                                        { title: t.cap1Title, desc: t.cap1Desc, image: CAPABILITIES_IMAGES[0] },
+                                        { title: t.cap2Title, desc: t.cap2Desc, image: CAPABILITIES_IMAGES[1] },
+                                        { title: t.cap3Title, desc: t.cap3Desc, image: CAPABILITIES_IMAGES[2] }
+                                    ].map((cap, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                                            className="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end"
+                                        >
+                                            {/* Background Image */}
+                                            <div className="absolute inset-0 z-0">
+                                                <Image
+                                                    src={enc(cap.image)}
+                                                    alt={`${cap.title} — Colours Bahrain exhibitions`}
+                                                    fill
+                                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                                    loading="lazy"
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-90"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                                            </div>
+            
+                                            {/* Content Overlay */}
+                                            <div className="relative z-10 p-6 md:p-8">
+                                                <h3 className="text-lg md:text-xl font-bold uppercase tracking-wider text-white mb-3 drop-shadow-md leading-tight">{cap.title}</h3>
+                                                <p className="text-xs text-white/70 font-light leading-relaxed">{cap.desc}</p>
+                                            </div>
+                                        </motion.div>
+                                    ))}
                                 </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+                            </div>
+                        </section>
 
             {/* 5. EXECUTION TIMELINE (Static & Clean) */}
             <section className="relative z-20 py-24 md:py-40 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/60 backdrop-blur-sm" ref={timelineRef} aria-labelledby="methodology-heading">

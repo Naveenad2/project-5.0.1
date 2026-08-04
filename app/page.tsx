@@ -884,8 +884,8 @@ function Carousel3D() {
                                     <div className="p-1.5 md:p-2 bg-white/5 rounded-full border border-white/10 group-hover:border-emerald-500/50 group-hover:bg-emerald-500/20 transition-all duration-300">
                                         <loc.icon size={10} className="md:w-[12px] md:h-[12px] text-white/60 group-hover:text-emerald-400 transition-colors" />
                                     </div>
-                                    <span className="text-[8px] md:text-[9px] font-bold text-white uppercase tracking-widest">{loc.label}:</span>
-                                    <span className="text-[8px] md:text-[9px] text-white/70 font-mono group-hover:text-white transition-colors">{loc.text}</span>
+                                    <span className="text-[12px] md:text-[14px] font-bold text-white uppercase tracking-widest">{loc.label}:</span>
+                                    <span className="text-[12px] md:text-[14px] text-white/70 font-mono group-hover:text-white transition-colors">{loc.text}</span>
                                     {loc.link && <ArrowUpRight size={10} className="text-white/30 group-hover:text-emerald-400 -ml-1 transition-colors" />}
                                 </>
                             );

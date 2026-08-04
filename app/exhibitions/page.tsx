@@ -207,9 +207,9 @@ const GALLERY_IMAGES: string[] = [
 
 // Capability card backgrounds — now sourced from the EXHIBITION archive
 const CAPABILITIES_IMAGES = [
-    "/EXHIBITION/AMG STAND AT MARASSI 2025/AMG STAND AT MARASSI GALLERIA 01.jpeg",
-    "/EXHIBITION/EDAMAH 2025/EDAMAH 01.jpg",
-    "/EXHIBITION/F1 STAND @ CITY CENTER 2025/F1 STAND AT CITY CENTER 3.jpg"
+    "/insta/ex1.jpeg",
+    "/insta/ex2.jpeg",
+    "/insta/ex3.jpeg",
 ];
 
 // Encode spaces and special characters, keep the "/" separators intact
