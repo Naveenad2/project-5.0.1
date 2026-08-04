@@ -26,6 +26,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { ColoursLogoHeader } from "@/components/ui/ColoursLogoHeader";
 
+// --- INSTAGRAM ---
+const INSTAGRAM_URL = "https://www.instagram.com/colours.bahrain/";
+
 // --- BILINGUAL DICTIONARY (Clean, Professional Tone) ---
 const TEXT_EN = {
     return: "Return",
@@ -46,7 +49,7 @@ const TEXT_EN = {
     copy: "Copy Email",
     copied: "Copied!",
     index: "Project",
-    viewConcept: "View Project",
+    viewConcept: "View on Instagram",
     viewInsta: "View on Instagram",
     hq: "Headquarters",
     galleryBadge: "Our Gallery",
@@ -74,7 +77,7 @@ const TEXT_AR = {
     copy: "نسخ البريد",
     copied: "تم النسخ!",
     index: "مشروع",
-    viewConcept: "عرض المشروع",
+    viewConcept: "عرض على إنستغرام",
     viewInsta: "عرض على إنستغرام",
     hq: "المقر الرئيسي",
     galleryBadge: "معرض الصور",
@@ -83,19 +86,69 @@ const TEXT_AR = {
     developedBy: "تم التطوير بواسطة WhitehillsIntl"
 };
 
-// --- PORTFOLIO DATA (Strict Categories) ---
-const PORTFOLIO = [
-    { id: 1, category: "Events", categoryAr: "الفعاليات", title: "Global Tech Summit 2025", titleAr: "قمة التكنولوجيا العالمية 2025", subtitle: "Immersive Stage & Mapping", subAr: "مسرح غامر وتخطيط بصري", img: "/insta/events.jpeg", link: "https://instagram.com" },
-    { id: 2, category: "Exhibitions", categoryAr: "المعارض", title: "Automotive Pavilion", titleAr: "جناح السيارات", subtitle: "Bespoke Architecture", subAr: "هندسة معمارية مخصصة", img: "/insta/exhibitions.jpeg", link: "https://instagram.com" },
-    { id: 3, category: "Interiors", categoryAr: "التصميم الداخلي", title: "Corporate HQ Lounge", titleAr: "صالة المقر الرئيسي", subtitle: "Premium Fit-Out", subAr: "تجهيزات فاخرة", img: "/insta/interiors.jpeg", link: "https://instagram.com" },
-    { id: 4, category: "Mall Kiosk", categoryAr: "أكشاك", title: "Luxury Brand Activation", titleAr: "تنشيط العلامة الفاخرة", subtitle: "High-Traffic Kiosk", subAr: "كشك عالي الإقبال", img: "/insta/mallkioski.jpeg", link: "https://instagram.com" },
-    { id: 5, category: "Events", categoryAr: "الفعاليات", title: "Award Gala Night", titleAr: "حفل توزيع الجوائز", subtitle: "End-to-End Execution", subAr: "تنفيذ متكامل", img: "/insta/events.jpeg", link: "https://instagram.com" },
-    { id: 6, category: "Exhibitions", categoryAr: "المعارض", title: "Double-Decker Expo", titleAr: "جناح المعرض المزدوج", subtitle: "Structural Engineering", subAr: "هندسة هيكلية", img: "/insta/exhibitions.jpeg", link: "https://instagram.com" },
-    { id: 7, category: "Interiors", categoryAr: "التصميم الداخلي", title: "Modern Workspace", titleAr: "مساحة عمل حديثة", subtitle: "Ergonomic Design", subAr: "تصميم مريح", img: "/insta/interiors.jpeg", link: "https://instagram.com" },
-    { id: 8, category: "Mall Kiosk", categoryAr: "أكشاك", title: "Pop-up Retail Store", titleAr: "متجر تجزئة مؤقت", subtitle: "Brand Activation", subAr: "تنشيط العلامة التجارية", img: "/insta/mallkioski.jpeg", link: "https://instagram.com" },
+// --- PORTFOLIO DATA ---
+// Mapped 1:1 to your real Finder folders. Drop your existing
+// EVENTS / EXHIBITION / KIOSK folders straight into /public
+// (paths below match those folder & file names exactly).
+type CategoryKey = "Events" | "Exhibition" | "Kiosk";
+
+const CATEGORY_META: Record<CategoryKey, { ar: string; accent: string; ring: string }> = {
+    Events:     { ar: "الفعاليات", accent: "from-emerald-400 to-emerald-600", ring: "group-hover:shadow-emerald-500/30" },
+    Exhibition: { ar: "المعارض",   accent: "from-blue-400 to-blue-600",       ring: "group-hover:shadow-blue-500/30" },
+    Kiosk:      { ar: "الأكشاك",   accent: "from-rose-400 to-rose-600",       ring: "group-hover:shadow-rose-500/30" },
+};
+
+interface Project {
+    id: number;
+    category: CategoryKey;
+    title: string;
+    titleAr: string;
+    subtitle: string;
+    subAr: string;
+    img: string;
+}
+
+const PORTFOLIO: Project[] = [
+    // ---------- EVENTS ----------
+    { id: 1, category: "Events", title: "Bank ABC Ghabga at Gulf Hotel", titleAr: "بنك ABC غبقة في فندق الخليج", subtitle: "Ramadan Gala Production", subAr: "إنتاج حفل رمضاني", img: "/EVENTS/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 2.jpg" },
+    { id: 2, category: "Events", title: "F1 2025 — EDB Paddock Lounge", titleAr: "F1 2025 — صالة EDB في الحظيرة", subtitle: "VIP Paddock Experience", subAr: "تجربة كبار الشخصيات", img: "/EVENTS/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 3.jpg" },
+    { id: 3, category: "Events", title: "F1 2025 — Gulf Air Paddock Club", titleAr: "F1 2025 — نادي طيران الخليج", subtitle: "Trackside Hospitality Suite", subAr: "جناح ضيافة على الحلبة", img: "/EVENTS/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 12.jpg" },
+    { id: 4, category: "Events", title: "F1 Pre-Season Testing 2025", titleAr: "اختبارات ما قبل الموسم F1 2025", subtitle: "Branded Trackside Activation", subAr: "تفعيل علامة تجارية على الحلبة", img: "/EVENTS/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 20.jpg" },
+    { id: 5, category: "Events", title: "Fintech 2025", titleAr: "فينتك 2025", subtitle: "Conference Stage & Booths", subAr: "مسرح ومنصات المؤتمر", img: "/EVENTS/FINTECH 2025/2J5A0953.JPG" },
+    { id: 6, category: "Events", title: "Jotun Event at La Fontaine", titleAr: "فعالية جوتن في لا فونتين", subtitle: "Product Launch Evening", subAr: "أمسية إطلاق منتج", img: "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 1.jpg" },
+    { id: 7, category: "Events", title: "Riffa Views School Event", titleAr: "فعالية مدرسة ريفا فيوز", subtitle: "National Theatre Production", subAr: "إنتاج في المسرح الوطني", img: "/EVENTS/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 1.jpg" },
+
+    // ---------- EXHIBITION ----------
+    { id: 8, category: "Exhibition", title: "Al Jiwan Jewellery", titleAr: "الجوان للمجوهرات", subtitle: "Boutique Showcase", subAr: "عرض بوتيك فاخر", img: "/EXHIBITION/AL JIWAN JEWELLERY 01.JPG" },
+    { id: 9, category: "Exhibition", title: "AMG Stand at Marassi Galleria", titleAr: "جناح AMG في مراسي غاليريا", subtitle: "Automotive Showroom Build", subAr: "بناء صالة عرض سيارات", img: "/EXHIBITION/AMG STAND AT MARASSI 2025/AMG STAND AT MARASSI GALLERIA 01.jpeg" },
+    { id: 10, category: "Exhibition", title: "Avenues Ramadan Stand", titleAr: "جناح رمضان في أفينيوز", subtitle: "Seasonal Mall Activation", subAr: "تفعيل موسمي في المول", img: "/EXHIBITION/AVENUES RAMADAN STAND 2025.jpg" },
+    { id: 11, category: "Exhibition", title: "Back to School — Marassi Galleria", titleAr: "العودة للمدارس — مراسي غاليريا", subtitle: "Family Mall Campaign", subAr: "حملة عائلية في المول", img: "/EXHIBITION/BACK TO SCHOOL  2025/MARASSI GALLERIA MALL BACK TO SCHOOL 02.jpg" },
+    { id: 12, category: "Exhibition", title: "Bahrain Marina", titleAr: "مارينا البحرين", subtitle: "Waterfront Brand Experience", subAr: "تجربة علامة تجارية على الواجهة البحرية", img: "/EXHIBITION/BAHRAIN MARINA 2025/BAHRAIN MARINA 01.jpg" },
+    { id: 13, category: "Exhibition", title: "Bahrain Marina at Avenues", titleAr: "مارينا البحرين في أفينيوز", subtitle: "Mall Concourse Installation", subAr: "تركيب في ممر المول", img: "/EXHIBITION/BAHRAIN MARINA AT AVENUES 2025/BAHRAIN MARINA AT AVENUES 2.jpg" },
+    { id: 14, category: "Exhibition", title: "Bestune Stand at City Center", titleAr: "جناح بيستون في سيتي سنتر", subtitle: "Automotive Launch Stand", subAr: "جناح إطلاق سيارات", img: "/EXHIBITION/BESTUNE STAND AT CITY CENTER 2025.jpg" },
+    { id: 15, category: "Exhibition", title: "Binaa Stand at City Center", titleAr: "جناح بناء في سيتي سنتر", subtitle: "Real Estate Showcase", subAr: "عرض عقاري", img: "/EXHIBITION/BINAA STAND AT CITY CENTER 2025/BINAA STAND AT CITY CENTER 02.jpg" },
+    { id: 16, category: "Exhibition", title: "Edamah 2025", titleAr: "إدامة 2025", subtitle: "Corporate Exhibition Stand", subAr: "جناح معرض للشركات", img: "/EXHIBITION/EDAMAH 2025/EDAMAH 01.jpg" },
+    { id: 17, category: "Exhibition", title: "F1 Stand at City Center", titleAr: "جناح F1 في سيتي سنتر", subtitle: "Motorsport Retail Activation", subAr: "تفعيل تجزئة لرياضة السيارات", img: "/EXHIBITION/F1 STAND @ CITY CENTER 2025/F1 STAND AT CITY CENTER 3.jpg" },
+
+    // ---------- KIOSK ----------
+    { id: 18, category: "Kiosk", title: "Bateel Kiosk at City Center", titleAr: "كشك بتيل في سيتي سنتر", subtitle: "Retail Kiosk Fit-Out", subAr: "تجهيز كشك تجزئة", img: "/KIOSK/BATEEL KIOSK AT CITY CENTER 2025.jpg" },
+    { id: 19, category: "Kiosk", title: "Kiosk Activations", titleAr: "تفعيلات الأكشاك", subtitle: "Mall Pop-Up Moments", subAr: "لحظات منبثقة في المول", img: "/KIOSK/WhatsApp Image 2025-07-17 at 1.58.30 PM.jpeg" },
 ];
 
-const CATEGORIES = ["All", "Events", "Exhibitions", "Interiors", "Mall Kiosk"];
+const CATEGORIES: ("All" | CategoryKey)[] = ["All", "Events", "Exhibition", "Kiosk"];
+
+// Bento span pattern — cycles so any number of projects still reads as a
+// deliberate, varied editorial grid instead of a flat uniform wall of tiles.
+const SPAN_PATTERN = [
+    "md:col-span-2 md:row-span-2",
+    "col-span-1 row-span-1",
+    "col-span-1 row-span-1",
+    "md:col-span-2 row-span-1",
+    "col-span-1 row-span-1",
+    "lg:col-span-2 lg:row-span-2",
+    "col-span-1 row-span-1",
+    "md:col-span-3 lg:col-span-2 row-span-1",
+];
 
 // Custom smooth easing curve (FIXED: Added "as const" for TypeScript)
 const customEase = [0.22, 1, 0.36, 1] as const;
@@ -106,10 +159,9 @@ const LangContext = createContext({ isAr: false, toggleLang: () => {}, t: TEXT_E
 export default function GalleryPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showContact, setShowContact] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<"All" | CategoryKey>("All");
   const [isMobile, setIsMobile] = useState(true);
   const [isAr, setIsAr] = useState(false);
-  const [selectedPost, setSelectedPost] = useState<any>(null);
 
   const toggleLang = () => setIsAr(!isAr);
   const t = isAr ? TEXT_AR : TEXT_EN;
@@ -227,7 +279,7 @@ export default function GalleryPage() {
         <div className="relative z-40 px-6 md:px-12 lg:px-24 flex justify-start mb-12 pointer-events-auto max-w-[1800px] mx-auto">
             <div className="flex flex-wrap items-center gap-2 md:gap-3 p-2 bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
                 {CATEGORIES.map((cat) => {
-                    const label = isAr && cat !== "All" ? PORTFOLIO.find(p => p.category === cat)?.categoryAr || cat : (isAr && cat === "All" ? t.filterAll : cat);
+                    const label = cat === "All" ? t.filterAll : (isAr ? CATEGORY_META[cat].ar : cat);
                     return (
                         <button
                             key={cat}
@@ -251,54 +303,15 @@ export default function GalleryPage() {
         {/* 5. EDITORIAL BENTO GALLERY */}
         <section className="relative px-6 md:px-12 lg:px-24 pb-40 z-20">
             <motion.div layout className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[250px] md:auto-rows-[300px] gap-4 md:gap-6 max-w-[1800px] mx-auto">
-                <AnimatePresence>
-                    {filteredPortfolio.map((project, i) => {
-                        const title = isAr ? project.titleAr : project.title;
-                        const subtitle = isAr ? project.subAr : project.subtitle;
-                        
-                        // Layout logic
-                        let spanClass = "col-span-1 row-span-1";
-                        if (i === 0) spanClass = "md:col-span-2 md:row-span-2";
-                        else if (i === 3) spanClass = "md:col-span-2 row-span-1";
-                        else if (i === 4) spanClass = "lg:col-span-2 lg:row-span-2";
-                        else if (i === 6) spanClass = "md:col-span-3 lg:col-span-2 row-span-1";
-
-                        return (
-                            <motion.div 
-                                layout
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
-                                transition={{ duration: 0.5, ease: customEase }}
-                                key={project.id}
-                                onClick={() => setSelectedPost(project)}
-                                className={`group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 cursor-pointer shadow-lg ${spanClass}`}
-                            >
-                                <Image 
-                                    src={project.img} 
-                                    alt={title} 
-                                    fill 
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110 will-change-transform"
-                                />
-                                
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
-                                
-                                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                                    <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out flex items-end justify-between">
-                                        <div>
-                                            <span className="text-[9px] font-mono text-emerald-400 mb-2 block tracking-widest uppercase">{t.index} // 0{i + 1}</span>
-                                            <h3 className="text-lg md:text-xl font-bold uppercase text-white tracking-widest">{t.viewConcept}</h3>
-                                            <p className="text-[10px] text-white/50 mt-1">{title}</p>
-                                        </div>
-                                        <div className={`w-10 h-10 rounded-full bg-white text-black flex items-center justify-center transition-transform duration-300 ${isAr ? 'group-hover:-rotate-45' : 'group-hover:rotate-45'}`}>
-                                            <ArrowUpRight size={16} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
+                <AnimatePresence mode="popLayout">
+                    {filteredPortfolio.map((project, i) => (
+                        <GalleryTile
+                            key={project.id}
+                            project={project}
+                            index={i}
+                            spanClass={SPAN_PATTERN[i % SPAN_PATTERN.length]}
+                        />
+                    ))}
                 </AnimatePresence>
             </motion.div>
         </section>
@@ -332,17 +345,81 @@ export default function GalleryPage() {
         </section>
 
         <ContactModal isOpen={showContact} onClose={() => setShowContact(false)} />
-        
-        {/* LIGHTBOX MODAL */}
-        <AnimatePresence>
-            {selectedPost && (
-                <LightboxModal post={selectedPost} onClose={() => setSelectedPost(null)} />
-            )}
-        </AnimatePresence>
 
         </div>
     </LangContext.Provider>
   );
+}
+
+// --- GALLERY TILE ---
+// Handles its own loaded/hover state so the grid never blocks on a single
+// slow image, and clicking a tile sends the visitor straight to Instagram.
+function GalleryTile({ project, index, spanClass }: { project: Project; index: number; spanClass: string }) {
+    const { isAr, t } = useContext(LangContext);
+    const [loaded, setLoaded] = useState(false);
+    const title = isAr ? project.titleAr : project.title;
+    const subtitle = isAr ? project.subAr : project.subtitle;
+    const meta = CATEGORY_META[project.category];
+    const categoryLabel = isAr ? meta.ar : project.category;
+
+    return (
+        <motion.a
+            layout
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${title} — ${t.viewInsta}`}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9, filter: "blur(8px)" }}
+            transition={{ duration: 0.45, ease: customEase, delay: Math.min(index, 8) * 0.03 }}
+            className={`group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 cursor-pointer shadow-lg transition-shadow duration-500 hover:shadow-2xl ${meta.ring} ${spanClass}`}
+        >
+            {/* Skeleton shimmer shown until the image finishes loading — keeps
+                the grid feeling instant instead of hanging on mobile connections. */}
+            {!loaded && (
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent animate-pulse" />
+            )}
+
+            <Image
+                src={project.img}
+                alt={title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                quality={70}
+                loading="lazy"
+                onLoad={() => setLoaded(true)}
+                className={`object-cover transition-all duration-[1200ms] ease-out group-hover:scale-110 will-change-transform ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+
+            {/* Category accent line — colour-codes each project by discipline,
+                echoing the emerald/blue/rose gradient used in the footer CTA. */}
+            <div className={`absolute top-0 ${isAr ? 'right-0' : 'left-0'} h-full w-[3px] bg-gradient-to-b ${meta.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+                <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out flex items-end justify-between gap-4">
+                    <div className="min-w-0">
+                        <span className={`text-[9px] font-mono mb-2 block tracking-widest uppercase text-transparent bg-clip-text bg-gradient-to-r ${meta.accent}`}>{categoryLabel}</span>
+                        <h3 className="text-lg md:text-xl font-bold uppercase text-white tracking-widest truncate">{title}</h3>
+                        <p className="text-[10px] text-white/50 mt-1 truncate">{subtitle}</p>
+                    </div>
+                    <div className="shrink-0 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center transition-transform duration-300 group-hover:rotate-[360deg]">
+                        <Instagram size={16} />
+                    </div>
+                </div>
+            </div>
+
+            {/* Always-visible corner badge so the Instagram destination reads
+                clearly even before hover, especially useful on touch devices. */}
+            <div className="absolute top-4 right-4 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div className="w-8 h-8 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                    <ArrowUpRight size={14} className="text-white" />
+                </div>
+            </div>
+        </motion.a>
+    );
 }
 
 // --- MODAL COMPONENTS ---
@@ -412,74 +489,5 @@ function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                 </div>
             )}
         </AnimatePresence>
-    );
-}
-
-function LightboxModal({ post, onClose }: { post: any, onClose: () => void }) {
-    const { isAr, t } = useContext(LangContext);
-    const title = isAr ? post.titleAr : post.title;
-    const subtitle = isAr ? post.subAr : post.subtitle;
-    const category = isAr ? post.categoryAr : post.category;
-
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [onClose]);
-
-    return (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10" dir={isAr ? "rtl" : "ltr"}>
-            <motion.div 
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                onClick={onClose}
-                className="absolute inset-0 bg-black/90 backdrop-blur-md cursor-pointer"
-            />
-            
-            <motion.div 
-                initial={{ scale: 0.95, opacity: 0, y: 20 }} 
-                animate={{ scale: 1, opacity: 1, y: 0 }} 
-                exit={{ scale: 0.95, opacity: 0, y: 10 }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="relative w-full max-w-5xl max-h-[90vh] bg-[#0a0a0f] border border-white/10 rounded-2xl md:rounded-[2rem] overflow-hidden flex flex-col md:flex-row shadow-[0_0_80px_rgba(0,0,0,0.8)] z-10"
-            >
-                <button onClick={onClose} className={`absolute top-4 ${isAr ? 'left-4' : 'right-4'} z-20 p-2 md:p-3 rounded-full bg-black/50 text-white/60 hover:text-white hover:bg-black border border-white/10 transition-all backdrop-blur-md`}>
-                    <X size={20} />
-                </button>
-
-                <div className="w-full md:w-3/5 h-[40vh] md:h-auto md:min-h-[600px] relative bg-black">
-                    <Image src={post.img} alt={title} fill className="object-cover" />
-                </div>
-
-                <div className="w-full md:w-2/5 p-6 md:p-10 flex flex-col justify-between overflow-y-auto">
-                    <div>
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                                <ColoursLogoHeader className="w-6 h-auto fill-white" />
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-sm text-white">colours_studio</h4>
-                                <span className="text-[10px] text-white/50 font-mono">{t.hq}</span>
-                            </div>
-                        </div>
-
-                        <hr className="border-white/10 mb-6" />
-
-                        <div className="flex items-center gap-2 mb-3">
-                            <ImageIcon size={14} className="text-blue-400" />
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">{category}</span>
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-4">{title}</h2>
-                        <p className="text-sm text-white/70 leading-relaxed font-light">{subtitle}</p>
-                    </div>
-
-                    <div className="mt-8 pt-6 border-t border-white/10">
-                        <Link href={post.link} target="_blank" className="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-lg">
-                            <Instagram size={18} />
-                            {t.viewInsta}
-                        </Link>
-                    </div>
-                </div>
-            </motion.div>
-        </div>
     );
 }

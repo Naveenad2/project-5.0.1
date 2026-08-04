@@ -73,6 +73,13 @@ const TEXT_EN = {
     index: "Index",
     viewConcept: "View Concept",
 
+    // Instagram Feed
+    instaTag: "Follow The Journey",
+    instaTitle: "@colours.bahrain",
+    instaDesc: "A live look into our world — behind-the-scenes moments, activations, and finished builds straight from our Instagram feed.",
+    instaCta: "View Post",
+    instaFollow: "Follow on Instagram",
+
     // Partners & Network
     trustedPartners: "Trusted By Visionaries, Brands & Institutions",
     globalUplink: "Headquarters Section",
@@ -167,6 +174,12 @@ const TEXT_AR = {
     index: "فهرس",
     viewConcept: "عرض المفهوم",
 
+    instaTag: "تابع رحلتنا",
+    instaTitle: "@colours.bahrain",
+    instaDesc: "نظرة حية على عالمنا — لحظات من كواليس العمل، وفعاليات، وأعمال منجزة مباشرة من حساب إنستغرام الخاص بنا.",
+    instaCta: "عرض المنشور",
+    instaFollow: "تابعنا على إنستغرام",
+
     trustedPartners: "موثوق به من قبل أصحاب الرؤى والعلامات التجارية والمؤسسات",
 
     globalUplink: "قسم المقر الرئيسي",
@@ -235,6 +248,18 @@ const GALLERY_IMAGES = [
     "/insta/image7.png"
 ];
 
+// --- INSTAGRAM FEED SHOWCASE (6 posts, in order) ---
+// Images live at /public/insta/i1.png ... /public/insta/i6.png
+// Each links out to the matching live Instagram post, in the same order.
+const INSTAGRAM_FEED = [
+    { image: "/insta/i1.png", link: "https://www.instagram.com/p/DbS3KcWDEAO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" },
+    { image: "/insta/i2.png", link: "https://www.instagram.com/p/DbIUBSZjNlU/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" },
+    { image: "/insta/i3.png", link: "https://www.instagram.com/p/Dakxo4BDDN4/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" },
+    { image: "/insta/i4.png", link: "https://www.instagram.com/p/Dae-VrEjAuO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" },
+    { image: "/insta/i5.png", link: "https://www.instagram.com/p/DacLJq0CpOW/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" },
+    { image: "/insta/i6.png", link: "https://www.instagram.com/p/DaSLpqLDDG2/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" }
+];
+
 const CAPABILITIES_DATA = [
     { idTitle: "cap1", idDesc: "cap1Desc", icon: Box },
     { idTitle: "cap2", idDesc: "cap2Desc", icon: Sparkles },
@@ -270,6 +295,12 @@ const CONTACT_INFO = {
     instagram: "https://www.instagram.com/colours.bahrain/?hl=en",
     facebook: "https://www.facebook.com/ColoursEventsBahrain?_rdc=1&_rdr"
 };
+
+// Precise, geocode-friendly query string for the embedded map.
+// Built from the official registered address so the pin lands on the
+// correct building rather than an approximate lat/lng guess.
+const MAP_QUERY = "Colours Events Management Co WLL, Building 2568, Road 4450, Block 744, Manama, Kingdom of Bahrain";
+const MAP_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&z=16&output=embed`;
 
 // --- SEO: Structured data (JSON-LD) ---
 const STRUCTURED_DATA = {
@@ -370,7 +401,8 @@ function InteractiveTicker({ children, direction = 1, speed = 1, isAr = false, i
     return (
         <div
             ref={containerRef}
-            className="flex-1 overflow-x-auto relative scrollbar-hide cursor-grab active:cursor-grabbing w-full"
+            className="flex-1 overflow-x-auto relative no-scrollbar cursor-grab active:cursor-grabbing w-full"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             onWheel={handleWheel}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => { setIsHovered(false); setIsDragging(false); }}
@@ -432,6 +464,12 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
     />
 
+    {/* Global helper: hides scrollbars anywhere .no-scrollbar is used (Trusted Partners ticker) */}
+    <style dangerouslySetInnerHTML={{__html: `
+        .no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    `}} />
+
     <div ref={containerRef} className={`bg-[#050508] h-[100dvh] w-full relative overflow-y-auto overflow-x-hidden text-white selection:bg-emerald-500/30 font-sans scroll-smooth custom-scrollbar ${isAr ? 'dir-rtl' : 'dir-ltr'}`} dir={isAr ? "rtl" : "ltr"} lang={isAr ? "ar" : "en"}>
 
       {/* DEVELOPED BY SIDE BADGE */}
@@ -457,7 +495,7 @@ export default function AboutPage() {
       <Navbar onOpenContact={() => setShowContact(true)} />
 
       {/* 3. HERO SECTION */}
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-6 md:px-12 lg:px-24 z-10 pt-24 pb-12" aria-labelledby="hero-heading">
+      <section className="relative min-h-[100svh] flex flex-col justify-center px-6 md:px-12 lg:px-24 z-10 pt-32 sm:pt-28 md:pt-24 pb-12" aria-labelledby="hero-heading">
         <motion.div style={{ y: yHero, opacity: opacityHero }} className="max-w-[1800px] mx-auto w-full">
 
             <motion.div
@@ -671,7 +709,10 @@ export default function AboutPage() {
       </section>
 
       {/* 6. EDITORIAL BENTO GALLERY */}
-      <GallerySection />
+      {/* <GallerySection /> */}
+
+      {/* 6.5 INSTAGRAM FEED SHOWCASE */}
+      <InstagramFeedSection />
 
       {/* 7. GLOBAL NETWORK (UPDATED WITH MAP AND ADDRESSES) */}
       <section className="relative py-24 md:py-40 px-6 md:px-12 lg:px-24 z-10 border-t border-white/10 bg-gradient-to-b from-black to-[#05050a] overflow-hidden" aria-labelledby="hq-heading">
@@ -759,7 +800,7 @@ export default function AboutPage() {
                     title="Colours Bahrain headquarters location on Google Maps"
                     referrerPolicy="no-referrer-when-downgrade"
                     style={{ border: 0, filter: 'invert(100%) hue-rotate(180deg) contrast(1.2) grayscale(0.2)' }}
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3579.5290680650974!2d50.51865957640523!3d26.212001589832264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49b01511f6291d%3A0xc31db3a6774eebbe!2sColours%20Events%20%26%20Exhibitions!5e0!3m2!1sen!2sbh!4v1713865449772!5m2!1sen!2sbh"
+                    src={MAP_EMBED_SRC}
                     allowFullScreen={false}
                     aria-hidden="false"
                     tabIndex={-1}
@@ -844,13 +885,13 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none" aria-label={isAr ? "التنقل الرئيسي" : "Primary navigation"}>
+        <nav className="fixed top-0 left-0 w-full z-50 px-4 py-3 md:px-10 md:py-6 flex items-center justify-between pointer-events-none" aria-label={isAr ? "التنقل الرئيسي" : "Primary navigation"}>
 
             {/* BRAND LOGO */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "circOut" }} className="pointer-events-auto shrink-0">
                 <Link href="/" className="group relative block" aria-label="Colours Bahrain — Home">
-                    <div className="w-24 sm:w-32 md:w-44 relative z-10 transition-transform duration-500 group-hover:scale-105">
-                        <ColoursLogoHeader className="w-full h-auto fill-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" aria-label="Colours Bahrain" />
+                    <div className="w-20 h-8 sm:w-28 sm:h-10 md:w-40 md:h-14 relative z-10 transition-transform duration-500 group-hover:scale-105">
+                        <ColoursLogoHeader className="w-full h-full object-contain fill-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" aria-label="Colours Bahrain" />
                     </div>
                 </Link>
             </motion.div>
@@ -902,7 +943,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-[72px] right-4 bg-black/90 backdrop-blur-2xl border border-white/10 p-4 rounded-2xl flex flex-col gap-3 pointer-events-auto shadow-[0_20px_40px_rgba(0,0,0,0.8)] min-w-[220px]"
+                        className="absolute top-[64px] right-4 bg-black/90 backdrop-blur-2xl border border-white/10 p-4 rounded-2xl flex flex-col gap-3 pointer-events-auto shadow-[0_20px_40px_rgba(0,0,0,0.8)] min-w-[220px]"
                         dir={isAr ? "rtl" : "ltr"}
                     >
                         <button onClick={() => { toggleLang(); setIsMenuOpen(false); }} className="flex items-center gap-3 px-4 py-3.5 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-white/10 transition-colors w-full" aria-label={isAr ? "التبديل إلى الإنجليزية" : "Switch to Arabic"}>
@@ -991,6 +1032,83 @@ function GallerySection() {
                         </motion.div>
                     );
                 })}
+            </div>
+        </section>
+    );
+}
+
+// --- INSTAGRAM FEED SHOWCASE ---
+// Responsive feed grid: 2 cols on mobile, 3 on tablet+, 6 on wide desktop.
+// Each tile shows its order number and opens the matching live post in a new tab.
+function InstagramFeedSection() {
+    const { isAr, t } = useContext(LangContext);
+    return (
+        <section className="relative py-24 md:py-32 px-4 md:px-12 lg:px-24 z-10 bg-[#050508] border-t border-white/10" aria-labelledby="instagram-heading">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-col items-center text-center mb-12 md:mb-16"
+            >
+                <span className="text-[9px] md:text-[10px] font-mono text-white/50 border border-white/10 px-3 py-1 rounded-full mb-6 tracking-[0.3em] uppercase flex items-center gap-2">
+                    <Instagram size={12} className="text-rose-400" aria-hidden="true" />
+                    {t.instaTag}
+                </span>
+                <h2 id="instagram-heading" className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tighter text-white mb-6">
+                    {t.instaTitle}
+                </h2>
+                <p className="text-sm md:text-lg font-light text-white/60 leading-relaxed max-w-2xl mb-8">
+                    {t.instaDesc}
+                </p>
+                <a
+                    href={CONTACT_INFO.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 text-[10px] md:text-xs font-bold uppercase tracking-widest"
+                >
+                    <Instagram size={14} aria-hidden="true" />
+                    {t.instaFollow}
+                </a>
+            </motion.div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3 max-w-[1800px] mx-auto">
+                {INSTAGRAM_FEED.map((post, i) => (
+                    <motion.a
+                        key={i}
+                        href={post.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.5, delay: (i % 6) * 0.06 }}
+                        className="group relative aspect-square overflow-hidden rounded-lg md:rounded-xl border border-white/10 bg-white/5 block"
+                        aria-label={`${t.instaCta} ${i + 1} — opens on Instagram`}
+                    >
+                        <Image
+                            src={post.image}
+                            alt={`Colours Bahrain Instagram post ${i + 1}`}
+                            fill
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                            loading="lazy"
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110 will-change-transform"
+                        />
+
+                        {/* Order number badge */}
+                        <div className="absolute top-2 left-2 md:top-3 md:left-3 w-6 h-6 md:w-7 md:h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center z-10">
+                            <span className="text-[9px] md:text-[10px] font-mono font-bold text-white">{String(i + 1).padStart(2, "0")}</span>
+                        </div>
+
+                        {/* Hover overlay */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <div className="flex flex-col items-center gap-1.5 text-white">
+                                <Instagram size={20} aria-hidden="true" />
+                                <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest">{t.instaCta}</span>
+                            </div>
+                        </div>
+                    </motion.a>
+                ))}
             </div>
         </section>
     );

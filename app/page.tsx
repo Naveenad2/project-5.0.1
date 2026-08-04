@@ -38,7 +38,7 @@ const TEXT_EN = {
     directLine: "Direct Line",
     email: "email",
     trusted: "Trusted Partners",
-    explore: "CLICK HERE TO KNOW MORE",
+    explore: "KNOW MORE",
     activeForm: "Active Form",
     sysUplink: "System_Uplink_v2.0",
     uplink: "Direct Uplink",
@@ -156,6 +156,230 @@ const ANGLE_STEP = 360 / SERVICES.length;
 // Context for App-wide Language State
 const LangContext = createContext({ isAr: false, toggleLang: () => {}, t: TEXT_EN });
 
+// =========================================================================
+// --- LOCAL AI KNOWLEDGE ENGINE ---
+// 100% local, keyword/intent-driven "agent" built from the Colours Events
+// Management Co WLL 2025 Company Profile. No third-party API calls.
+// =========================================================================
+
+const KNOWLEDGE_BASE = {
+    legalName: "Colours Events Management Co WLL",
+    yearsInOperation: 17,
+    country: "Kingdom of Bahrain",
+    totalStaff: 68,
+    director: "Devadas Chozhiyattil Kumaran",
+    owners: [
+        { name: "Devadas Chozhiyattil Kumaran", stake: "50%", nationality: "Indian" },
+        { name: "Smitha Devadas", stake: "50%", nationality: "Indian" }
+    ],
+    leadership: [
+        { name: "Noel George", role: "General Manager" },
+        { name: "Vibin Haridharan", role: "Business Head – Events & Exhibitions" },
+        { name: "Suresh Karuvath Vasu", role: "Projects & Production Head" }
+    ],
+    team: [
+        { name: "Vibin Hari", role: "Business Head – Events & Exhibitions", experience: "11+ years", focus: "Local & international projects" },
+        { name: "Marc Ortega", role: "Senior Project Manager", experience: "15+ years", focus: "Formula1, Tamkeen & many international projects" },
+        { name: "Suresh Vasu", role: "Production Manager & Quality Control", experience: "18+ years", focus: "All Colours projects for the past 17 years" },
+        { name: "Adnan Al Moaber", role: "Project Coordinator", experience: "15+ years", focus: "MYS Youth City & international projects worldwide" },
+        { name: "Richy George Prince", role: "Project Coordinator", experience: "5+ years", focus: "International projects for Formula1" }
+    ],
+    services: [
+        "Event Build – Design & Build Event Setups",
+        "Event & Project Management",
+        "AV Solutions",
+        "Exhibition Stand – Design & Build Custom Exhibition Stands"
+    ],
+    mission: "Colours' mission is to deliver exceptional events and exhibitions that create lasting impressions, foster meaningful connections, and drive business success through creativity, innovation, and meticulous attention to detail.",
+    vision: "Colours' vision is to be recognized as a global leader in event and exhibition management — transforming ideas into extraordinary experiences that build meaningful connections and success worldwide.",
+    goals: [
+        "Deliver unmatched, seamless event experiences tailored to each client",
+        "Foster strong long-term partnerships with clients, vendors and stakeholders",
+        "Innovate and adapt with the latest trends and technology",
+        "Champion sustainability and social responsibility in every production",
+        "Expand reach into new markets and diversify the event portfolio"
+    ],
+    majorClients: [
+        "Exhibition World Bahrain", "Bahrain International Circuit", "The Economic Development Board (EDB)",
+        "Moda Mall", "Seef Properties (Seef Mall, Al Liwan, Souq Al Baraha)", "The Avenues",
+        "Marassi Galleria", "Tamkeen", "Gulf Air", "DO & CO", "Edamah", "Alba", "Bapco"
+    ],
+    projects: [
+        { name: "Fintech Forward 2024", client: "Bahrain Fintech Bay & EDB", date: "October 2024", scope: "Conceptualize, design, manufacture, install, AV & full event management" },
+        { name: "Fintech Forward 2023", client: "Bahrain Fintech Bay & EDB", date: "October 2023", scope: "Conceptualize, design, manufacture, install, AV & full event management" },
+        { name: "The Crown Prince Scholarship Award Event", client: "The Court of the Crown Prince", date: "January 2024", scope: "Conceptualize, design, manufacture, AV & event management" },
+        { name: "Mashroo3i Demo Day 2025", client: "The Labour Fund (TAMKEEN)", date: "February 2025", scope: "Conceptualize, design, manufacture, AV & event management" },
+        { name: "Formula1 Pre-Season Testing Event", client: "Bahrain International Circuit (BIC)", date: "February 2025", scope: "Conceptualize, design, manufacture, AV & event management" },
+        { name: "Nuances Colour Launch Event", client: "Jotun Bahrain", date: "January 2025", scope: "Manufacture, AV & event management" },
+        { name: "BIC F1 Launch Event", client: "Bahrain International Circuit (BIC)", date: "February 2020", scope: "Conceptualize, design, manufacture, AV & event management" }
+    ],
+    certifications: [
+        "Commercial Registration (CR No. 069149-01) – Ministry of Industry and Commerce, Kingdom of Bahrain",
+        "Bahrainization Certificate – Ministry of Labour",
+        "SME Classification Certificate – classified as a Medium enterprise"
+    ],
+    contact: {
+        bahrainAddress: "Unit 7, Building 2568, Road 4450, Block 744, Manama, Kingdom of Bahrain",
+        saudiAddress: "Bldg: 7073, Street: Abaad Ibn Abbar, Sinaiyah Al Awaziyah, Khobar, Kingdom of Saudi Arabia",
+        phone: "+973 17295917",
+        email: "info@coloursbahrain.com",
+        instagram: "https://www.instagram.com/colours.bahrain/",
+        facebook: "https://www.facebook.com/ColoursEventsBahrain"
+    }
+};
+const AI_INTENTS: {
+    id: string;
+    keywords: string[];
+    en: () => string;
+    ar: () => string;
+    suggestionsEn: string[];
+    suggestionsAr: string[];
+}[] = [
+    {
+        id: "greeting",
+        keywords: ["hi", "hello", "hey", "marhaba", "salam", "good morning", "good evening", "good day", "assalam"],
+        en: () => "Hello, welcome to Colours. We're an events, exhibitions, interiors and media house based in Bahrain with 17 years of experience. What would you like to know?",
+        ar: () => "مرحباً بكم في كلرز. نحن بيت خبرة في الفعاليات والمعارض والتصميم الداخلي والإعلام في مملكة البحرين بخبرة 17 عاماً. بماذا يمكنني مساعدتكم؟",
+        suggestionsEn: ["What services do you offer?", "Tell me about your team", "Show me past projects"],
+        suggestionsAr: ["ما هي خدماتكم؟", "أخبرني عن فريقكم", "أرني مشاريعكم السابقة"]
+    },
+    {
+        id: "about",
+        keywords: ["about", "company", "who are you", "colours profile", "history", "established", "founded", "background", "overview", "wll", "how long", "years of operation"],
+        en: () => `Colours Events Management Co WLL has been operating in Bahrain for 17 years, with a full-time team of 68 employees. We specialize in event build, event & project management, AV solutions, and custom exhibition stand design & build.`,
+        ar: () => `تعمل شركة كلرز لإدارة الفعاليات في مملكة البحرين منذ 17 عاماً، ويضم فريقنا 68 موظفاً. نحن متخصصون في بناء الفعاليات، وإدارة الفعاليات والمشاريع، وحلول الصوت والصورة.`,
+        suggestionsEn: ["What's your mission?", "Who are your clients?", "How do I contact you?"],
+        suggestionsAr: ["ما هي رسالتكم؟", "من هم عملاؤكم؟", "كيف أتواصل معكم؟"]
+    },
+    {
+        id: "mission_vision",
+        keywords: ["mission", "vision", "goal", "goals", "values", "philosophy", "purpose"],
+        en: () => `Mission: Deliver exceptional events and exhibitions that create lasting impressions and drive business success through creativity and attention to detail.\n\nVision: To be recognized as a global leader in event and exhibition management.`,
+        ar: () => `رسالتنا: تقديم فعاليات ومعارض استثنائية تترك انطباعاً دائماً وتحقق نجاح الأعمال.\n\nرؤيتنا: أن نكون رواداً عالميين في إدارة الفعاليات والمعارض.`,
+        suggestionsEn: ["What services do you offer?", "Show me your projects"],
+        suggestionsAr: ["ما هي خدماتكم؟", "أرني مشاريعكم"]
+    },
+    {
+        id: "services",
+        keywords: ["service", "services", "what do you offer", "what do you do", "capability", "capabilities", "specialize", "specialise", "what can you do", "solutions", "event build", "exhibition stand"],
+        en: () => `Our core services:\n• Event Build – Design & Build Event Setups\n• Event & Project Management\n• AV Solutions\n• Exhibition Stand – Design & Build Custom Stands\n\nWe deliver end-to-end, from concept through manufacturing, installation and on-site management.`,
+        ar: () => `خدماتنا الأساسية:\n• بناء الفعاليات\n• إدارة الفعاليات والمشاريع\n• حلول الصوت والصورة\n• تصميم وبناء أجنحة المعارض`,
+        suggestionsEn: ["What's the pricing like?", "Show me past projects", "Contact your team"],
+        suggestionsAr: ["ما هي الأسعار؟", "أرني مشاريعكم السابقة", "تواصل مع الفريق"]
+    },
+    {
+        id: "project_f1",
+        keywords: ["formula1", "formula 1", "f1", "bic", "bahrain international circuit", "grand prix", "paddock"],
+        en: () => "We're a long-standing partner of the Bahrain International Circuit: the BIC F1 Launch Event (2020), Formula1 Pre-Season Testing (Feb 2025), and paddock lounges for EDB, Gulf Air and Do&Co.",
+        ar: () => "نحن شريك طويل الأمد لحلبة البحرين الدولية، نفذنا فعالية إطلاق فورمولا 1 (2020)، واختبارات ما قبل الموسم (فبراير 2025)، وصالات جناح خاصة لعدة عملاء.",
+        suggestionsEn: ["Tell me about Fintech Forward", "Who is your team?"],
+        suggestionsAr: ["أخبرني عن فينتك فورورد", "من هو فريقكم؟"]
+    },
+    {
+        id: "project_fintech",
+        keywords: ["fintech", "fintech forward", "fintech bay"],
+        en: () => "Fintech Forward is our flagship annual project with Bahrain Fintech Bay & the EDB — delivered October 2023 and October 2024, covering full conceptualization, design, manufacturing, AV and event management.",
+        ar: () => "فينتك فورورد هو مشروعنا السنوي الرئيسي مع خليج البحرين للتقنية المالية وهيئة تنمية الاقتصاد، نُفذ في أكتوبر 2023 و2024.",
+        suggestionsEn: ["Show me other projects", "How do I request a quote?"],
+        suggestionsAr: ["أرني مشاريع أخرى", "كيف أطلب عرض سعر؟"]
+    },
+    {
+        id: "projects_general",
+        keywords: ["project", "projects", "portfolio", "past work", "case study", "case studies", "clientele events", "done before", "examples of work"],
+        en: () => `Some of our recent major projects:\n• Fintech Forward 2024 & 2023 — Bahrain Fintech Bay & EDB\n• Crown Prince Scholarship Award — Jan 2024\n• Mashroo3i Demo Day — Tamkeen, Feb 2025\n• F1 Pre-Season Testing — BIC, Feb 2025\n\nAsk me about any of these by name for more detail.`,
+        ar: () => `من أبرز مشاريعنا:\n• فينتك فورورد 2024 و2023\n• جائزة ولي العهد للمنحة الدراسية — يناير 2024\n• مشروعي ديمو داي — تمكين، فبراير 2025\n• اختبارات فورمولا 1 — فبراير 2025`,
+        suggestionsEn: ["Tell me about Formula 1 projects", "Who is on the project team?"],
+        suggestionsAr: ["أخبرني عن مشاريع فورمولا 1", "من هو فريق المشروع؟"]
+    },
+    {
+        id: "team",
+        keywords: ["team", "staff", "employee", "employees", "who works", "management", "director", "manager", "leadership", "organization", "who runs"],
+        en: () => `Colours is led by Managing Director Devadas Chozhiyattil Kumaran and General Manager Noel George, supported by 68 employees. Key project leads: Vibin Hari (Business Head, Events & Exhibitions), Marc Ortega (Senior Project Manager, 15+ yrs), Suresh Vasu (Production Manager, 18+ yrs).`,
+        ar: () => `تُدار كلرز من قبل المدير العام ديفاداس تشوزهياتيل كومران، ويدعمه فريق من 68 موظفاً.`,
+        suggestionsEn: ["What certifications do you hold?", "How can I contact the team?"],
+        suggestionsAr: ["ما هي شهاداتكم؟", "كيف أتواصل مع الفريق؟"]
+    },
+    {
+        id: "clients",
+        keywords: ["client", "clients", "partner", "partners", "customer", "brands", "who do you work with", "trusted", "worked with"],
+        en: () => `We've worked with some of Bahrain's most prominent organizations, including Bahrain EDB, Gulf Air, DO & CO, The Avenues, Seef Mall, Tamkeen, Marassi, Alba and Bapco.`,
+        ar: () => `عملنا مع بعض أبرز المؤسسات في البحرين، منها هيئة تنمية الاقتصاد، طيران الخليج، ذا أفنيوز، سيف مول، وتمكين.`,
+        suggestionsEn: ["Show me a specific project", "What services do you offer?"],
+        suggestionsAr: ["أرني مشروعاً محدداً", "ما هي خدماتكم؟"]
+    },
+    {
+        id: "certifications",
+        keywords: ["certificate", "certification", "cr number", "commercial registration", "license", "licence", "sme", "bahrainization", "legal", "registered", "compliance"],
+        en: () => `We hold a full Commercial Registration (CR No. 069149-01), a valid Bahrainization Certificate, and are classified as a Medium enterprise under the SME Classification.`,
+        ar: () => `نعمل بموجب سجل تجاري رسمي (رقم 069149-01)، ونحمل شهادة بحرنة سارية، ونحن مصنفون كمؤسسة متوسطة.`,
+        suggestionsEn: ["How do I contact you?", "Tell me about the company"],
+        suggestionsAr: ["كيف أتواصل معكم؟", "أخبرني عن الشركة"]
+    },
+    {
+        id: "contact",
+        keywords: ["contact", "email", "e-mail", "phone", "call", "reach you", "address", "location", "where are you", "office", "khobar", "saudi office", "manama office"],
+        en: () => `Phone: +973 17295917\nEmail: info@coloursbahrain.com\nBahrain Office: Unit 7, Building 2568, Road 4450, Block 744, Manama\nSaudi Office: Bldg 7073, Khobar\n\nOr submit a brief in the "Direct Uplink" tab and our strategy team will follow up.`,
+        ar: () => `الهاتف: 17295917 973+\nالبريد الإلكتروني: info@coloursbahrain.com\nمكتب البحرين: الوحدة 7، مبنى 2568، طريق 4450، مجمع 744، المنامة`,
+        suggestionsEn: ["What are your working hours?", "I'd like to request a quote"],
+        suggestionsAr: ["ما هي ساعات العمل؟", "أرغب بطلب عرض سعر"]
+    },
+    {
+        id: "pricing",
+        keywords: ["price", "pricing", "cost", "quote", "quotation", "budget", "how much", "estimate"],
+        en: () => "Pricing depends on scope, scale and location. The fastest way to get an accurate quote is submitting your project brief through the \"Direct Uplink\" tab — our team responds with tailored costing after reviewing your requirements.",
+        ar: () => "تعتمد التكلفة على حجم ونطاق ومكان الفعالية. أسرع طريقة للحصول على عرض سعر دقيق هي إرسال موجز مشروعكم.",
+        suggestionsEn: ["What services do you offer?", "How do I submit a brief?"],
+        suggestionsAr: ["ما هي خدماتكم؟", "كيف أرسل موجز المشروع؟"]
+    },
+];
+
+const DEFAULT_SUGGESTIONS_EN = ["What services do you offer?", "Tell me about your team", "How do I contact you?"];
+const DEFAULT_SUGGESTIONS_AR = ["ما هي خدماتكم؟", "أخبرني عن فريقكم", "كيف أتواصل معكم؟"];
+
+function normalize(str: string) {
+    return str.toLowerCase().replace(/[^\w\s\u0600-\u06FF]/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function getLocalAIResponse(rawInput: string, isAr: boolean, t: typeof TEXT_EN): { text: string; suggestions: string[] } {
+    const query = normalize(rawInput);
+    if (!query) {
+        return { text: t.aiGreeting, suggestions: isAr ? DEFAULT_SUGGESTIONS_AR : DEFAULT_SUGGESTIONS_EN };
+    }
+
+    let bestIntent: (typeof AI_INTENTS)[number] | null = null;
+    let bestScore = 0;
+
+    for (const intent of AI_INTENTS) {
+        let score = 0;
+        for (const kw of intent.keywords) {
+            const kwNorm = normalize(kw);
+            const wordCount = kwNorm.split(" ").length;
+            // whole-phrase / whole-word boundary match only — avoids "hi" matching "this"
+            const pattern = new RegExp(`(^|\\s)${kwNorm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(\\s|$)`);
+            if (pattern.test(query)) {
+                score += wordCount * 2; // longer, more specific phrases win
+            }
+        }
+        if (score > bestScore) {
+            bestScore = score;
+            bestIntent = intent;
+        }
+    }
+
+    if (bestIntent && bestScore > 0) {
+        return {
+            text: isAr ? bestIntent.ar() : bestIntent.en(),
+            suggestions: isAr ? bestIntent.suggestionsAr : bestIntent.suggestionsEn
+        };
+    }
+
+    return {
+        text: isAr
+            ? "لم أجد إجابة دقيقة لهذا السؤال ضمن بيانات الشركة المتوفرة لدي. جربوا أحد الأسئلة أدناه، أو أرسلوا موجز مشروعكم مباشرة."
+            : "I don't have an exact answer to that yet. Try one of the topics below, or submit a project brief directly and our team will follow up personally.",
+        suggestions: isAr ? DEFAULT_SUGGESTIONS_AR : DEFAULT_SUGGESTIONS_EN
+    };
+}
 // --- MAIN PAGE COMPONENT ---
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -650,14 +874,10 @@ function Carousel3D() {
                 </button>
             </div>
 
-            {/* 1. STATIC GLOBAL NETWORK TICKER */}
-            <div className={`w-full border-t border-white/10 py-3 md:py-4 flex items-center overflow-hidden pointer-events-auto relative ${isAr ? 'pr-4 md:pr-12' : 'pl-4 md:pl-12'}`}>
-                 <div className={`hidden md:flex items-center gap-2.5 z-20 bg-transparent shrink-0 ${isAr ? 'pl-6 border-l border-white/10' : 'pr-6 border-r border-white/10'}`}>
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_#3b82f6]" />
-                    <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-white/70 whitespace-nowrap">GLOBAL NETWORK</span>
-                </div>
-                <div className="flex-1 overflow-x-auto scrollbar-hide w-full">
-                    <div className={`flex items-center gap-6 md:gap-10 whitespace-nowrap w-max md:w-full md:flex-wrap md:justify-end px-2 md:px-6`}>
+            {/* 1. STATIC LOCATION / DIRECT-LINE TICKER — centered & responsive, label removed */}
+            <div className="w-full border-t border-white/10 py-3 md:py-4 flex items-center justify-center overflow-hidden pointer-events-auto relative px-4 md:px-12">
+                <div className="flex-1 overflow-x-auto scrollbar-hide w-full flex justify-center">
+                    <div className="flex items-center justify-center gap-6 md:gap-10 whitespace-nowrap w-max md:w-full md:flex-wrap md:justify-center px-2 md:px-6 mx-auto">
                         {LOCATIONS.map((loc, i) => {
                             const innerContent = (
                                 <>
@@ -896,59 +1116,82 @@ function EmailInterface() {
         </motion.div>
     );
 }
-
 function AIInterface() {
     const { isAr, t } = useContext(LangContext);
-    const [messages, setMessages] = useState([{ role: 'ai', text: t.aiGreeting }]);
+    const [messages, setMessages] = useState<{ role: string; text: string; time: string }[]>([]);
+    const [suggestions, setSuggestions] = useState<string[]>(DEFAULT_SUGGESTIONS_EN);
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
+    const nowStr = () => new Date().toLocaleTimeString(isAr ? "ar-BH" : "en-US", { hour: "2-digit", minute: "2-digit" });
+
     useEffect(() => {
-        setMessages([{ role: 'ai', text: t.aiGreeting }]);
+        setMessages([{ role: "ai", text: t.aiGreeting, time: nowStr() }]);
+        setSuggestions(isAr ? DEFAULT_SUGGESTIONS_AR : DEFAULT_SUGGESTIONS_EN);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [t.aiGreeting]);
 
-    const handleSend = () => {
-        if (!input.trim()) return;
-        const newMsg = { role: 'user', text: input };
-        setMessages(prev => [...prev, newMsg]);
+    const sendMessage = (text: string) => {
+        if (!text.trim()) return;
+        setMessages(prev => [...prev, { role: "user", text, time: nowStr() }]);
         setInput("");
         setIsTyping(true);
+        setSuggestions([]);
+
+        const { text: reply, suggestions: nextSuggestions } = getLocalAIResponse(text, isAr, t);
+
         setTimeout(() => {
             setIsTyping(false);
-            setMessages(prev => [...prev, { role: 'ai', text: t.aiReply }]);
-        }, 1500);
+            setMessages(prev => [...prev, { role: "ai", text: reply, time: nowStr() }]);
+            setSuggestions(nextSuggestions);
+        }, 500 + Math.min(text.length * 6, 600));
     };
 
     useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, [messages, isTyping]);
 
     return (
         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="h-full flex flex-col">
+            {/* HEADER */}
             <div className="flex items-center justify-between mb-4 md:mb-6 border-b border-white/10 pb-4 md:pb-6 shrink-0">
                 <div className="flex items-center gap-3 md:gap-4">
-                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-blue-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)]"><Sparkles size={16} className="text-white" /></div>
+                    <div className="relative">
+                        <div className="w-9 h-9 md:w-11 md:h-11 rounded-full bg-gradient-to-tr from-emerald-400 to-blue-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                            <Sparkles size={16} className="text-white" />
+                        </div>
+                        <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[#020203]" />
+                    </div>
                     <div>
                         <h3 className="text-xs md:text-sm font-black text-white uppercase tracking-wider">{t.neuralInt}</h3>
-                        <div className="flex items-center gap-1.5 md:gap-2 mt-0.5">
-                            <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-500 animate-pulse" />
-                            <span className="text-[8px] md:text-[9px] text-white/50 uppercase tracking-[0.2em] font-mono">{t.listening}</span>
-                        </div>
+                        <span className="text-[9px] md:text-[10px] text-emerald-400/90 uppercase tracking-[0.15em] font-mono">{t.listening}</span>
                     </div>
                 </div>
             </div>
-            <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar mb-4">
+
+            {/* MESSAGES */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar mb-3">
                 {messages.map((msg, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                        <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'ai' ? 'bg-white/10 border border-white/10' : 'bg-white text-black shadow-md'}`}>
-                            {msg.role === 'ai' ? <Bot size={14} /> : <User size={14} />}
+                    <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
+                        <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shrink-0 ${msg.role === "ai" ? "bg-white/10 border border-white/10" : "bg-white text-black shadow-md"}`}>
+                            {msg.role === "ai" ? <Sparkles size={13} className="text-emerald-400" /> : <User size={13} />}
                         </div>
-                        <div className={`p-3 md:p-4 rounded-2xl max-w-[85%] md:max-w-[80%] text-xs md:text-sm leading-relaxed ${msg.role === 'ai' ? (isAr ? 'bg-white/5 text-white/90 rounded-tr-none border border-white/10' : 'bg-white/5 text-white/90 rounded-tl-none border border-white/10') : (isAr ? 'bg-white text-black rounded-tl-none shadow-lg' : 'bg-white text-black rounded-tr-none shadow-lg')}`}>{msg.text}</div>
+                        <div className="flex flex-col max-w-[85%] md:max-w-[78%]">
+                            <div className={`p-3 md:p-4 rounded-2xl text-xs md:text-sm leading-relaxed whitespace-pre-line ${
+                                msg.role === "ai"
+                                    ? `bg-white/5 text-white/90 border border-white/10 ${isAr ? "rounded-tr-none" : "rounded-tl-none"}`
+                                    : `bg-white text-black shadow-lg ${isAr ? "rounded-tl-none" : "rounded-tr-none"}`
+                            }`}>
+                                {msg.text}
+                            </div>
+                            <span className={`text-[8px] text-white/25 font-mono mt-1 ${msg.role === "user" ? "text-right" : "text-left"}`}>{msg.time}</span>
+                        </div>
                     </motion.div>
                 ))}
+
                 {isTyping && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-3">
-                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/10"><Bot size={14} /></div>
-                        <div className={`bg-white/5 px-4 py-3 md:px-5 md:py-4 rounded-2xl border border-white/10 flex gap-1.5 items-center h-10 md:h-auto ${isAr ? 'rounded-tr-none' : 'rounded-tl-none'}`}>
+                        <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/10"><Sparkles size={13} className="text-emerald-400" /></div>
+                        <div className={`bg-white/5 px-4 py-3 rounded-2xl border border-white/10 flex gap-1.5 items-center h-10 ${isAr ? "rounded-tr-none" : "rounded-tl-none"}`}>
                             <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
                             <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
                             <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
@@ -956,9 +1199,35 @@ function AIInterface() {
                     </motion.div>
                 )}
             </div>
+
+            {/* SUGGESTION CHIPS */}
+            {!isTyping && suggestions.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3 shrink-0">
+                    {suggestions.map((s, i) => (
+                        <button
+                            key={i}
+                            onClick={() => sendMessage(s)}
+                            className="text-[10px] md:text-[11px] px-3 py-2 rounded-full border border-white/15 bg-white/5 text-white/70 hover:text-white hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all"
+                        >
+                            {s}
+                        </button>
+                    ))}
+                </div>
+            )}
+
+            {/* INPUT */}
             <div className="relative mt-auto shrink-0 pb-2 md:pb-0">
-                <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} type="text" placeholder={t.enterCmd} className={`w-full bg-[#0a0a0f] border border-white/20 rounded-2xl py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-white/20 shadow-inner ${isAr ? 'pr-5 md:pr-6 pl-12 md:pl-14' : 'pl-5 md:pl-6 pr-12 md:pr-14'}`} />
-                <button onClick={handleSend} className={`absolute top-2 md:top-2.5 p-1.5 md:p-2 bg-white text-black rounded-xl hover:scale-105 active:scale-95 transition-transform shadow-md ${isAr ? 'left-2 md:left-3' : 'right-2 md:right-3'}`}><ArrowRight size={16} className={`md:w-[18px] md:h-[18px] ${isAr ? 'rotate-180' : ''}`} /></button>
+                <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage(input)}
+                    type="text"
+                    placeholder={t.enterCmd}
+                    className={`w-full bg-[#0a0a0f] border border-white/20 rounded-2xl py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors placeholder:text-white/20 shadow-inner ${isAr ? "pr-5 md:pr-6 pl-12 md:pl-14" : "pl-5 md:pl-6 pr-12 md:pr-14"}`}
+                />
+                <button onClick={() => sendMessage(input)} className={`absolute top-2 md:top-2.5 p-1.5 md:p-2 bg-white text-black rounded-xl hover:scale-105 active:scale-95 transition-transform shadow-md ${isAr ? "left-2 md:left-3" : "right-2 md:right-3"}`}>
+                    <ArrowRight size={16} className={`md:w-[18px] md:h-[18px] ${isAr ? "rotate-180" : ""}`} />
+                </button>
             </div>
         </motion.div>
     );
