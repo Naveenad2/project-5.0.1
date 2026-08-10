@@ -495,8 +495,25 @@ export default function AboutPage() {
       <Navbar onOpenContact={() => setShowContact(true)} />
 
       {/* 3. HERO SECTION */}
-      <section className="relative min-h-[100svh] flex flex-col justify-center px-6 md:px-12 lg:px-24 z-10 pt-32 sm:pt-28 md:pt-24 pb-12" aria-labelledby="hero-heading">
-        <motion.div style={{ y: yHero, opacity: opacityHero }} className="max-w-[1800px] mx-auto w-full">
+     {/* 3. HERO SECTION */}
+      <section className="relative min-h-[100svh] flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 sm:pt-28 md:pt-24 pb-12 overflow-hidden" aria-labelledby="hero-heading">
+
+        {/* Full-bleed cover photo */}
+       {/* Full-bleed cover photo — pinned to the first viewport height only */}
+        <motion.div style={{ y: yHero, opacity: opacityHero }} className="absolute top-0 left-0 right-0 h-[100svh] z-0 overflow-hidden" aria-hidden="true">
+            <Image
+                src={HERO_IMAGE}
+                alt="Colours Bahrain — immersive event experience"
+                fill
+                sizes="100vw"
+                className="object-cover scale-105"
+                priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-[#050508]/80 to-[#050508]/20" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#050508]/50 via-transparent to-transparent" />
+        </motion.div>
+
+        <div className="relative z-10 max-w-[1800px] mx-auto w-full">
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -567,9 +584,8 @@ export default function AboutPage() {
                 <MousePointer2 size={14} className="animate-bounce" />
                 <span className="text-[9px] font-mono uppercase tracking-widest">{t.scroll}</span>
             </motion.div>
-        </motion.div>
+     </div>
       </section>
-
       {/* 3.5. STYLISH MISSION, VISION & GOALS BENTO BOX */}
       <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24" aria-labelledby="directives-heading">
           <div className="max-w-[1800px] mx-auto">
@@ -1055,21 +1071,21 @@ function InstagramFeedSection() {
                     <Instagram size={12} className="text-rose-400" aria-hidden="true" />
                     {t.instaTag}
                 </span>
-                <h2 id="instagram-heading" className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tighter text-white mb-6">
-                    {t.instaTitle}
-                </h2>
+               <h2 id="instagram-heading" className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tighter text-white mb-6">
+    {t.instaTitle}
+</h2>
                 <p className="text-sm md:text-lg font-light text-white/60 leading-relaxed max-w-2xl mb-8">
                     {t.instaDesc}
                 </p>
                 <a
-                    href={CONTACT_INFO.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 text-[10px] md:text-xs font-bold uppercase tracking-widest"
-                >
-                    <Instagram size={14} aria-hidden="true" />
-                    {t.instaFollow}
-                </a>
+                   href={CONTACT_INFO.instagram}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-3 px-9 py-4 md:px-12 md:py-5 rounded-full border border-white/15 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 text-xs md:text-sm font-bold uppercase tracking-widest"
+>
+    <Instagram size={18} className="md:w-5 md:h-5" aria-hidden="true" />
+    {t.instaFollow}
+</a>
             </motion.div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3 max-w-[1800px] mx-auto">

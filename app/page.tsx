@@ -11,8 +11,8 @@ import {
 import { 
     ArrowRight, Mail, X, Send, Bot, 
     Sparkles, User, ChevronLeft, ChevronRight,
-    Zap, ArrowUpRight, MapPin, Phone, Instagram, Facebook,
-    LayoutGrid, Info, Globe, ChevronDown, Menu
+    Zap, ArrowUpRight, MapPin, Phone,
+    LayoutGrid, Info, Globe, Menu
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -63,7 +63,15 @@ const TEXT_EN = {
     enterCmd: "Enter command...",
     langToggle: "عربي",
     viewMap: "View Map",
-    hideMap: "Hide Map"
+    hideMap: "Hide Map",
+    seoHeading: "Colours — Events, Exhibitions, Interior Fit-Out & Retail Kiosks in Bahrain",
+    seoDescription: "Colours Events Management Co WLL designs and builds events, exhibition stands, interior fit-outs and mall kiosks across Bahrain and Saudi Arabia, trusted by Bahrain EDB, Gulf Air, Tamkeen and the Bahrain International Circuit.",
+    navAria: "Primary navigation",
+    langAria: "Switch language between English and Arabic",
+    menuAria: "Toggle menu",
+    prevAria: "Previous service",
+    nextAria: "Next service",
+    closeAria: "Close contact panel"
 };
 
 const TEXT_AR = {
@@ -110,23 +118,34 @@ const TEXT_AR = {
     enterCmd: "أدخل الأمر...",
     langToggle: "EN",
     viewMap: "عرض الخريطة",
-    hideMap: "إخفاء الخريطة"
+    hideMap: "إخفاء الخريطة",
+    seoHeading: "كلرز — إدارة الفعاليات والمعارض والتصميم الداخلي وأكشاك التجزئة في البحرين",
+    seoDescription: "تصمم شركة كلرز لإدارة الفعاليات وتنفذ الفعاليات وأجنحة المعارض والتصميم الداخلي وأكشاك المولات في البحرين والسعودية، وتحظى بثقة هيئة تنمية الاقتصاد وطيران الخليج وتمكين وحلبة البحرين الدولية.",
+    navAria: "التنقل الرئيسي",
+    langAria: "تبديل اللغة بين الإنجليزية والعربية",
+    menuAria: "فتح القائمة",
+    prevAria: "الخدمة السابقة",
+    nextAria: "الخدمة التالية",
+    closeAria: "إغلاق نافذة التواصل"
 };
 
-// -- Content Configuration (4 items repeated to maintain perfect 3D circle) --
+// -- Content Configuration (4 services repeated 3x to fill a full 3D circle) --
+// Each of the 12 card slots gets its own unique accent color so no two cards
+// in the ring ever share an identical background wash, even though the
+// underlying service repeats.
 const SERVICES = [
   { id: 1, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#E11D48", image: "/insta/events.jpeg", link: "/events" },
-  { id: 2, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#8B5CF6", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
+  { id: 2, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#EC4899", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
   { id: 3, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#3B82F6", image: "/insta/interiors.jpeg", link: "/interiors" },
   { id: 4, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" },
-  { id: 5, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#E11D48", image: "/insta/events.jpeg", link: "/events" },
-  { id: 6, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#8B5CF6", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
-  { id: 7, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#3B82F6", image: "/insta/interiors.jpeg", link: "/interiors" },
-  { id: 8, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" },
-  { id: 9, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#E11D48", image: "/insta/events.jpeg", link: "/events" },
-  { id: 10, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#8B5CF6", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
-  { id: 11, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#3B82F6", image: "/insta/interiors.jpeg", link: "/interiors" },
-  { id: 12, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#10B981", image: "/insta/mallkioski.jpeg", link: "/kiosks" }
+  { id: 5, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#F97316", image: "/insta/events.jpeg", link: "/events" },
+  { id: 6, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#F472B6", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
+  { id: 7, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#06B6D4", image: "/insta/interiors.jpeg", link: "/interiors" },
+  { id: 8, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#84CC16", image: "/insta/mallkioski.jpeg", link: "/kiosks" },
+  { id: 9, title: "EVENTS", titleAr: "الفعاليات", subtitle: "MANAGEMENT", subAr: "إدارة", color: "#F43F5E", image: "/insta/events.jpeg", link: "/events" },
+  { id: 10, title: "EXHIBITIONS", titleAr: "المعارض", subtitle: "STAND BUILD", subAr: "بناء الأجنحة", color: "#DB2777", image: "/insta/exhibitions.jpeg", link: "/exhibitions" },
+  { id: 11, title: "INTERIORS", titleAr: "التصميم الداخلي", subtitle: "FIT-OUT", subAr: "تجهيزات", color: "#0EA5E9", image: "/insta/interiors.jpeg", link: "/interiors" },
+  { id: 12, title: "MALL KIOSKS", titleAr: "أكشاك", subtitle: "RETAIL", subAr: "تجزئة", color: "#14B8A6", image: "/insta/mallkioski.jpeg", link: "/kiosks" }
 ];
 
 const CLIENTS = [
@@ -428,6 +447,43 @@ export default function Home() {
                 mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
                 -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
             }
+
+            /* Pure-CSS infinite marquee — no JS scroll math, so it never
+               jumps/snaps and stays perfectly smooth at any viewport width
+               (including narrow foldable cover screens). */
+            @keyframes marquee-scroll {
+                from { transform: translate3d(0, 0, 0); }
+                to { transform: translate3d(-50%, 0, 0); }
+            }
+            .marquee-track {
+                animation-name: marquee-scroll;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+
+            /* Forces its own compositing layer so GPU-accelerated transforms
+               (3D carousel, tickers) render crisp instead of blurry, and
+               eliminates the flicker some browsers show on rotateY/translateZ. */
+            .gpu-boost {
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+            }
+
+            /* Crisp small-caps rendering for UI labels sitting on blurred glass */
+            .crisp-label {
+                font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: optimizeLegibility;
+                transform: translateZ(0);
+                backface-visibility: hidden;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .marquee-track { animation: none !important; }
+            }
         `}} />
 
         <AnimatePresence mode="wait">
@@ -481,6 +537,11 @@ export default function Home() {
                 </motion.div>
             ) : (
                 <motion.div key="main-ui" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }} className="h-full w-full relative">
+                    {/* Visually hidden but fully crawlable/screen-reader accessible heading —
+                        the visible UI is a highly animated 3D carousel with no static <h1>,
+                        so this gives search engines and assistive tech real page content. */}
+                    <h1 className="sr-only">{t.seoHeading}</h1>
+                    <p className="sr-only">{t.seoDescription}</p>
                     <Navbar onOpenContact={() => setIsModalOpen(true)} />
                     <Carousel3D />
                     <ContactOmniModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
@@ -498,7 +559,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none">
+        <nav aria-label={t.navAria} className="fixed top-0 left-0 w-full z-50 px-4 py-4 md:px-10 md:py-8 flex items-center justify-between pointer-events-none">
             
             {/* BRAND LOGO */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "circOut" }} className="pointer-events-auto shrink-0">
@@ -517,6 +578,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                 {/* LANGUAGE TOGGLE BUTTON */}
                 <button 
                     onClick={toggleLang}
+                    aria-label={t.langAria}
                     className="flex shrink-0 group relative px-5 py-3 bg-transparent backdrop-blur-sm border border-white/10 text-white/70 hover:text-white rounded-full transition-all will-change-transform hover:bg-white/5 hover:border-white/30"
                 >
                     <div className="relative z-10 flex items-center gap-2">
@@ -559,7 +621,7 @@ function Navbar({ onOpenContact }: { onOpenContact: () => void }) {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
                 className="pointer-events-auto flex md:hidden items-center"
             >
-                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-3 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors shadow-lg">
+                <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label={t.menuAria} aria-expanded={isMenuOpen} className="p-3 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white hover:bg-white/10 transition-colors shadow-lg">
                     {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
                 </button>
             </motion.div>
@@ -606,7 +668,7 @@ const BackgroundLayer = React.memo(({ activeColor }: { activeColor: string, acti
             {/* HIGHLY SATURATED BASE COLOR INJECTION */}
             <motion.div 
                 animate={{ backgroundColor: activeColor }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
+                transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 opacity-[0.75] saturate-[400%] mix-blend-color-dodge will-change-[background-color]"
             />
             
@@ -619,7 +681,10 @@ const BackgroundLayer = React.memo(({ activeColor }: { activeColor: string, acti
                         y: ['-10%', '5%', '-10%'],
                         scale: [1, 1.15, 1]
                     }}
-                    transition={{ duration: 25, ease: "easeInOut", repeat: Infinity }}
+                   transition={{ 
+    backgroundColor: { duration: 2.2, ease: [0.22, 1, 0.36, 1] },
+    default: { duration: 25, ease: "easeInOut", repeat: Infinity }
+}}
                     className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full blur-[140px] opacity-70 mix-blend-screen will-change-transform"
                 />
                 <motion.div 
@@ -629,7 +694,10 @@ const BackgroundLayer = React.memo(({ activeColor }: { activeColor: string, acti
                         y: ['10%', '-10%', '10%'],
                         scale: [1.1, 0.95, 1.1]
                     }}
-                    transition={{ duration: 30, ease: "easeInOut", repeat: Infinity }}
+                 transition={{ 
+    backgroundColor: { duration: 2.2, ease: [0.22, 1, 0.36, 1] },
+    default: { duration: 30, ease: "easeInOut", repeat: Infinity }
+}}
                     className="absolute -bottom-[20%] -right-[10%] w-[80vw] h-[80vw] rounded-full blur-[130px] opacity-60 mix-blend-screen will-change-transform"
                 />
             </div>
@@ -645,71 +713,39 @@ const BackgroundLayer = React.memo(({ activeColor }: { activeColor: string, acti
 BackgroundLayer.displayName = "BackgroundLayer";
 
 // --- CUSTOM INTERACTIVE TICKER COMPONENT ---
-function InteractiveTicker({ children, direction = 1, speed = 1, isAr = false, innerClassName = "" }: any) {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeftPos, setScrollLeftPos] = useState(0);
-
-    useEffect(() => {
-        let animationId: number;
-        const scroll = () => {
-            if (containerRef.current && !isHovered && !isDragging) {
-                const container = containerRef.current;
-                const dir = isAr ? -direction : direction; 
-                container.scrollLeft += dir * speed;
-                
-                // Snap to half point seamlessly (since items are duplicated 4x)
-                if (dir > 0 && container.scrollLeft >= container.scrollWidth / 2) {
-                    container.scrollLeft = 1; // offset prevents jitter
-                } else if (dir < 0 && container.scrollLeft <= 0) {
-                    container.scrollLeft = (container.scrollWidth / 2) - 1;
-                }
-            }
-            animationId = requestAnimationFrame(scroll);
-        };
-        animationId = requestAnimationFrame(scroll);
-        return () => cancelAnimationFrame(animationId);
-    }, [isHovered, isDragging, isAr, direction, speed]);
-
-    const handleWheel = (e: React.WheelEvent) => {
-        if (containerRef.current) {
-            containerRef.current.scrollLeft += (e.deltaY > 0 || e.deltaX > 0) ? 40 : -40;
-        }
-    };
-
-    const handleMouseDown = (e: React.MouseEvent) => {
-        setIsDragging(true);
-        if (containerRef.current) {
-            setStartX(e.pageX - containerRef.current.offsetLeft);
-            setScrollLeftPos(containerRef.current.scrollLeft);
-        }
-    };
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging || !containerRef.current) return;
-        e.preventDefault();
-        const x = e.pageX - containerRef.current.offsetLeft;
-        const walk = (x - startX) * 1.5;
-        containerRef.current.scrollLeft = scrollLeftPos - walk;
-    };
+// Pure CSS-driven infinite marquee. The track is rendered twice back-to-back
+// and animated from translateX(0) to translateX(-50%), which loops perfectly
+// forever with zero JS math and zero snap-back — this is what removes the
+// stutter/glitch the old scrollLeft-based version had, and it's why the
+// ticker now stays smooth and fully visible at any screen width, including
+// very narrow foldable cover displays, since it never depends on measuring
+// container/scroll widths at runtime.
+function InteractiveTicker({ children, speed = 32, isAr = false, innerClassName = "" }: {
+    children: React.ReactNode;
+    speed?: number; // seconds for one full loop — lower is faster
+    isAr?: boolean;
+    innerClassName?: string;
+}) {
+    const [isPaused, setIsPaused] = useState(false);
 
     return (
-        <div 
-            ref={containerRef}
-            className="flex-1 overflow-x-auto relative scrollbar-hide cursor-grab active:cursor-grabbing w-full"
-            onWheel={handleWheel}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => { setIsHovered(false); setIsDragging(false); }}
-            onMouseDown={handleMouseDown}
-            onMouseUp={() => setIsDragging(false)}
-            onMouseMove={handleMouseMove}
-            onTouchStart={() => setIsHovered(true)}
-            onTouchEnd={() => setIsHovered(false)}
+        <div
+            className="w-full overflow-hidden relative"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => setIsPaused(false)}
         >
-            <div className={innerClassName}>
-                {children}
+            <div
+                className="marquee-track gpu-boost flex w-max"
+                style={{
+                    animationDuration: `${speed}s`,
+                    animationDirection: isAr ? "reverse" : "normal",
+                    animationPlayState: isPaused ? "paused" : "running",
+                }}
+            >
+                <div className={`flex items-center shrink-0 ${innerClassName}`}>{children}</div>
+                <div className={`flex items-center shrink-0 ${innerClassName}`} aria-hidden="true">{children}</div>
             </div>
         </div>
     );
@@ -717,12 +753,13 @@ function InteractiveTicker({ children, direction = 1, speed = 1, isAr = false, i
 
 // --- MAIN CAROUSEL COMPONENT ---
 function Carousel3D() {
-  const { isAr } = useContext(LangContext);
+    const { isAr, t } = useContext(LangContext);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
   const autoplayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const targetRotationRef = useRef(0);
   const wheelAccumulator = useRef(0);
 
   useEffect(() => {
@@ -735,8 +772,12 @@ function Carousel3D() {
   const RADIUS = isMobile ? 480 : 750;       
   const CARD_WIDTH = isMobile ? 220 : 320;
 
-  const rotationSpring = useSpring(0, { stiffness: 50, damping: 20, mass: 1 });
-  const scaleSpring = useSpring(1, { stiffness: 100, damping: 20 });
+  // Slightly overdamped (damping ratio > 1) so every rotation eases to a
+  // full, clean stop with zero bounce-back before the next transition can
+  // begin — this is what makes the carousel feel butter smooth instead of
+  // occasionally jittering when autoplay fires mid-settle.
+  const rotationSpring = useSpring(0, { stiffness: 60, damping: 26, mass: 1 });
+  const scaleSpring = useSpring(1, { stiffness: 120, damping: 22 });
 
   useEffect(() => {
     const unsubscribe = rotationSpring.on("change", (currentRotation) => {
@@ -749,9 +790,10 @@ function Carousel3D() {
 
   useEffect(() => {
     if (!isAutoPlaying) return;
-    const interval = setInterval(() => {
-        rotationSpring.set(rotationSpring.get() - (isAr ? -ANGLE_STEP : ANGLE_STEP));
-    }, 5000); 
+   const interval = setInterval(() => {
+    targetRotationRef.current -= (isAr ? -ANGLE_STEP : ANGLE_STEP);
+    rotationSpring.set(targetRotationRef.current);
+}, 5000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, rotationSpring, isAr]);
 
@@ -764,9 +806,18 @@ function Carousel3D() {
       if (autoplayTimeoutRef.current) clearTimeout(autoplayTimeoutRef.current);
       autoplayTimeoutRef.current = setTimeout(() => setIsAutoPlaying(true), 4000); 
   };
-
-  const next = () => { pauseAutoplay(); rotationSpring.set(Math.round((rotationSpring.get() - ANGLE_STEP) / ANGLE_STEP) * ANGLE_STEP); resumeAutoplay(); };
-  const prev = () => { pauseAutoplay(); rotationSpring.set(Math.round((rotationSpring.get() + ANGLE_STEP) / ANGLE_STEP) * ANGLE_STEP); resumeAutoplay(); };
+const next = () => {
+    pauseAutoplay();
+    targetRotationRef.current -= ANGLE_STEP;
+    rotationSpring.set(targetRotationRef.current);
+    resumeAutoplay();
+};
+const prev = () => {
+    pauseAutoplay();
+    targetRotationRef.current += ANGLE_STEP;
+    rotationSpring.set(targetRotationRef.current);
+    resumeAutoplay();
+};
 
   const handleWheel = (e: React.WheelEvent) => {
       pauseAutoplay();
@@ -789,8 +840,9 @@ function Carousel3D() {
   const handlePanEnd = (e: any, info: PanInfo) => {
     const current = rotationSpring.get();
     const velocity = info.velocity.x / 10;
-    const target = Math.round((current + velocity) / ANGLE_STEP) * ANGLE_STEP;
-    rotationSpring.set(target);
+const target = Math.round((current + velocity) / ANGLE_STEP) * ANGLE_STEP;
+targetRotationRef.current = target;
+rotationSpring.set(target);
     scaleSpring.set(1);
     resumeAutoplay();
   };
@@ -809,7 +861,7 @@ function Carousel3D() {
       {/* SWIPE CATCHER & 3D CAROUSEL STAGE */}
       <motion.div 
         className="absolute inset-0 flex items-center justify-center z-10 -mt-16 md:-mt-24 touch-none cursor-grab active:cursor-grabbing"
-        style={{ transformStyle: "preserve-3d" }}
+        style={{ transformStyle: "preserve-3d", WebkitBackfaceVisibility: "hidden", backfaceVisibility: "hidden" }}
         onPanStart={handlePanStart}
         onPan={handlePan}
         onPanEnd={handlePanEnd}
@@ -820,7 +872,9 @@ function Carousel3D() {
             rotateY: rotationSpring,
             scale: scaleSpring,
             z: -RADIUS + (isMobile ? 120 : 250),
-            transformStyle: "preserve-3d"
+            transformStyle: "preserve-3d",
+            WebkitBackfaceVisibility: "hidden",
+            backfaceVisibility: "hidden"
           }}
         >
           {SERVICES.map((item, i) => (
@@ -843,7 +897,7 @@ function Carousel3D() {
             
             {/* CAROUSEL CONTROLS */}
             <div className="flex items-end justify-center w-full gap-4 md:gap-8 relative px-6 md:px-12 pb-4 md:pb-6">
-                <button onClick={prev} className={`absolute ${isAr ? 'right-6 lg:right-[30%]' : 'left-6 lg:left-[30%]'} pointer-events-auto group w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-[0_0_30px_rgba(0,0,0,0.8)]`}>
+                <button onClick={prev} aria-label={t.prevAria} className={`absolute ${isAr ? 'right-6 lg:right-[30%]' : 'left-6 lg:left-[30%]'} pointer-events-auto group w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-[0_0_30px_rgba(0,0,0,0.8)]`}>
                     <ChevronLeft size={24} className={`transition-transform ${isAr ? 'group-hover:translate-x-1 rotate-180' : 'group-hover:-translate-x-1'}`} />
                 </button>
 
@@ -869,7 +923,7 @@ function Carousel3D() {
                     </div>
                 </div>
 
-                <button onClick={next} className={`absolute ${isAr ? 'left-6 lg:left-[30%]' : 'right-6 lg:right-[30%]'} pointer-events-auto group w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-[0_0_30px_rgba(0,0,0,0.8)]`}>
+                <button onClick={next} aria-label={t.nextAria} className={`absolute ${isAr ? 'left-6 lg:left-[30%]' : 'right-6 lg:right-[30%]'} pointer-events-auto group w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-[0_0_30px_rgba(0,0,0,0.8)]`}>
                     <ChevronRight size={24} className={`transition-transform ${isAr ? 'group-hover:-translate-x-1 rotate-180' : 'group-hover:translate-x-1'}`} />
                 </button>
             </div>
@@ -911,14 +965,14 @@ function Carousel3D() {
                     <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/80 whitespace-nowrap">TRUSTED PARTNERS</span>
                 </div>
 
-                <div className="flex-1 overflow-hidden relative mask-linear-fade w-full">
-                     <InteractiveTicker direction={1} speed={1} isAr={isAr} innerClassName="flex items-center gap-12 md:gap-24 whitespace-nowrap w-max pr-24">
-                        {[...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => {
+                <div className="flex-1 overflow-hidden relative mask-linear-fade w-full min-w-0">
+                     <InteractiveTicker speed={30} isAr={isAr} innerClassName="gap-10 sm:gap-12 md:gap-24 whitespace-nowrap pr-10 sm:pr-12 md:pr-24">
+                        {CLIENTS.map((client, i) => {
                             const isSvg = client.logo.toLowerCase().endsWith('.svg');
                             return (
-                            <div key={i} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-500 cursor-default group hover:scale-110 pointer-events-auto shrink-0">
-                                <div className={`relative flex items-center justify-center pointer-events-none ${isSvg ? 'h-14 md:h-24 max-w-[140px] md:max-w-[200px]' : 'h-8 md:h-12 max-w-[90px] md:max-w-[130px]'}`}>
-                                    <img src={client.logo} alt={client.name} className="h-full w-auto object-contain drop-shadow-xl pointer-events-none" />
+                            <div key={i} className="flex items-center justify-center opacity-80 hover:opacity-100 transition-all duration-500 cursor-default group hover:scale-110 shrink-0">
+                                <div className={`relative flex items-center justify-center pointer-events-none ${isSvg ? 'h-10 sm:h-14 md:h-24 max-w-[100px] sm:max-w-[140px] md:max-w-[200px]' : 'h-6 sm:h-8 md:h-12 max-w-[70px] sm:max-w-[90px] md:max-w-[130px]'}`}>
+                                    <img src={client.logo} alt={client.name} loading="lazy" decoding="async" className="h-full w-auto object-contain drop-shadow-xl pointer-events-none" />
                                 </div>
                             </div>
                         )})}
@@ -949,7 +1003,9 @@ const CarouselItem = React.memo(({ item, index, isActive, cardWidth, radius, ang
                 marginLeft: -cardWidth / 2,
                 marginTop: -(cardWidth * 1.5) / 2,
                 transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                transformStyle: 'preserve-3d'
+                transformStyle: 'preserve-3d',
+                WebkitBackfaceVisibility: 'hidden',
+                backfaceVisibility: 'hidden'
             }}
         >
             <Link 
@@ -1006,9 +1062,12 @@ const CarouselItem = React.memo(({ item, index, isActive, cardWidth, radius, ang
                             </h2>
                             
                             <div className="flex items-center justify-center w-full border-t border-white/20 pt-4 md:pt-5">
-                                <div className={`group/btn inline-flex items-center justify-center gap-3 backdrop-blur-md border text-white px-5 py-2.5 md:px-6 md:py-3 rounded-xl transition-all duration-500 shadow-2xl ${isAr ? 'flex-row-reverse' : ''} ${isActive ? 'bg-white/10 border-white/20 group-hover:bg-white group-hover:text-black' : 'bg-transparent border-transparent'}`}>
-                                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em]">{t.explore}</span>
-                                    <div className="w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center overflow-hidden relative transition-colors duration-500 bg-black/10 group-hover:bg-black/5">
+                                <div className={`group/btn relative inline-flex items-center justify-center gap-3 text-white px-5 py-2.5 md:px-6 md:py-3 rounded-xl transition-all duration-500 shadow-2xl ${isAr ? 'flex-row-reverse' : ''} ${isActive ? 'group-hover:text-black' : ''}`}>
+                                    {/* Glass panel lives on its own layer, separate from the text below,
+                                        so the backdrop-blur filter never softens the label itself. */}
+                                    <div className={`absolute inset-0 rounded-xl border backdrop-blur-md transition-all duration-500 ${isActive ? 'bg-white/10 border-white/20 group-hover:bg-white' : 'bg-transparent border-transparent'}`} />
+                                    <span className="crisp-label relative z-10 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.15em]">{t.explore}</span>
+                                    <div className="relative z-10 w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center overflow-hidden transition-colors duration-500 bg-black/10 group-hover:bg-black/5">
                                         <ArrowUpRight size={12} className={`text-current transition-transform duration-500 absolute ${isAr ? 'group-hover/btn:-translate-x-4 group-hover/btn:-translate-y-4' : 'group-hover/btn:translate-x-4 group-hover/btn:-translate-y-4'} group-hover:translate-x-4 group-hover:-translate-y-4`} />
                                         <ArrowUpRight size={12} className={`text-current transition-transform duration-500 absolute ${isAr ? 'translate-x-4 translate-y-4' : '-translate-x-4 translate-y-4'} group-hover/btn:translate-x-0 group-hover/btn:translate-y-0 group-hover:translate-x-0 group-hover:translate-y-0`} />
                                     </div>
@@ -1057,7 +1116,7 @@ function ContactOmniModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                         </div>
 
                         <div className="flex-1 relative bg-[#020203] overflow-hidden flex flex-col">
-                            <button onClick={onClose} className={`absolute top-6 ${isAr ? 'left-6' : 'right-6'} z-20 p-2 rounded-full bg-white/5 hover:bg-white/20 border border-white/10 transition-colors text-white/60 hover:text-white`}><X size={16} /></button>
+                            <button onClick={onClose} aria-label={t.closeAria} className={`absolute top-6 ${isAr ? 'left-6' : 'right-6'} z-20 p-2 rounded-full bg-white/5 hover:bg-white/20 border border-white/10 transition-colors text-white/60 hover:text-white`}><X size={16} /></button>
                             <div className="flex-1 overflow-y-auto custom-scrollbar p-5 md:p-10">
                                 <AnimatePresence mode="wait">
                                     {activeTab === 'email' ? <EmailInterface key="email" /> : <AIInterface key="ai" />}
@@ -1097,17 +1156,17 @@ function EmailInterface() {
             <form className="space-y-4 md:space-y-5" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
                     <div className="space-y-1.5">
-                        <label className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.identity}</label>
-                        <input type="text" placeholder={t.nameOrg} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all placeholder:text-white/20" />
+                        <label htmlFor="contact-name" className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.identity}</label>
+                        <input id="contact-name" name="name" type="text" autoComplete="name" placeholder={t.nameOrg} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all placeholder:text-white/20" />
                     </div>
                     <div className="space-y-1.5">
-                        <label className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.coords}</label>
-                        <input type="email" placeholder={t.emailAddr} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all placeholder:text-white/20" />
+                        <label htmlFor="contact-email" className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.coords}</label>
+                        <input id="contact-email" name="email" type="email" autoComplete="email" placeholder={t.emailAddr} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all placeholder:text-white/20" />
                     </div>
                 </div>
                 <div className="space-y-1.5">
-                    <label className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.brief}</label>
-                    <textarea rows={4} placeholder={t.outline} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all resize-none placeholder:text-white/20" />
+                    <label htmlFor="contact-brief" className="text-[9px] md:text-[10px] font-mono text-emerald-500 uppercase tracking-widest">{t.brief}</label>
+                    <textarea id="contact-brief" name="brief" rows={4} placeholder={t.outline} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 md:py-4 text-xs md:text-sm text-white focus:outline-none focus:border-emerald-500/50 focus:bg-white/10 transition-all resize-none placeholder:text-white/20" />
                 </div>
                 <button className="w-full group bg-white text-black h-12 md:h-14 rounded-xl font-black uppercase tracking-[0.2em] text-[10px] md:text-[11px] flex items-center justify-center gap-3 hover:bg-emerald-400 transition-all mt-6 shadow-[0_10px_20px_rgba(16,185,129,0.15)] hover:shadow-[0_15px_30px_rgba(16,185,129,0.3)]">
                     <span>{t.transmit}</span><Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
