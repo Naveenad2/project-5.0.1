@@ -901,13 +901,19 @@ rotationSpring.set(target);
                     <ChevronLeft size={24} className={`transition-transform ${isAr ? 'group-hover:translate-x-1 rotate-180' : 'group-hover:-translate-x-1'}`} />
                 </button>
 
-                <div className="pointer-events-auto flex items-center justify-center mx-auto w-[65%] md:w-auto">
-                    <div className="h-14 md:h-16 px-8 md:px-12 border border-white/10 bg-black/60 backdrop-blur-2xl rounded-full flex flex-col items-center justify-center min-w-[200px] md:min-w-[360px] shadow-[0_0_40px_rgba(0,0,0,0.9)] relative overflow-hidden group transition-all hover:border-white/30">
+                {/* SERVICE NAME PILL — width is now content-driven (w-fit) instead of a
+                    fixed min-width, and the title text is forced to a single line
+                    (whitespace-nowrap) with slightly tighter tracking/size only on the
+                    smallest screens. Previously the fixed h-14 height combined with a
+                    wrappable title meant long labels like "MALL KIOSKS" broke onto two
+                    lines and spilled outside the pill on mobile. */}
+                <div className="pointer-events-auto flex items-center justify-center mx-auto px-4 max-w-[88%] md:max-w-none md:w-auto">
+                    <div className="min-h-[56px] md:h-16 px-5 sm:px-8 md:px-12 py-2 border border-white/10 bg-black/60 backdrop-blur-2xl rounded-full flex flex-col items-center justify-center w-fit max-w-full shadow-[0_0_40px_rgba(0,0,0,0.9)] relative overflow-hidden group transition-all hover:border-white/30">
                         <div className="flex flex-col items-center relative z-10">
                             <motion.span 
                                 key={activeIndex}
                                 initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
-                                className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-black mb-1 drop-shadow-md"
+                                className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-black mb-1 drop-shadow-md whitespace-nowrap"
                                 style={{ color: activeColor }}
                             >
                                 {activeSubtitle}
@@ -915,7 +921,7 @@ rotationSpring.set(target);
                             <motion.span 
                                 key={activeIndex + "_t"}
                                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                                className="text-base md:text-xl font-black uppercase tracking-[0.2em] text-white transition-transform duration-500 drop-shadow-lg"
+                                className="text-[13px] sm:text-base md:text-xl font-black uppercase tracking-[0.08em] sm:tracking-[0.15em] md:tracking-[0.2em] text-white transition-transform duration-500 drop-shadow-lg whitespace-nowrap"
                             >
                                 {activeTitle}
                             </motion.span>
@@ -928,10 +934,19 @@ rotationSpring.set(target);
                 </button>
             </div>
 
-            {/* 1. STATIC LOCATION / DIRECT-LINE TICKER — centered & responsive, label removed */}
-            <div className="w-full border-t border-white/10 py-3 md:py-4 flex items-center justify-center overflow-hidden pointer-events-auto relative px-4 md:px-12">
-                <div className="flex-1 overflow-x-auto scrollbar-hide w-full flex justify-center">
-                    <div className="flex items-center justify-center gap-6 md:gap-10 whitespace-nowrap w-max md:w-full md:flex-wrap md:justify-center px-2 md:px-6 mx-auto">
+            {/* 1. STATIC LOCATION / DIRECT-LINE TICKER — centered on desktop, freely
+                horizontally scrollable on mobile. The previous version applied
+                `justify-center` to the *scrollable* container itself: when flex
+                content wider than its box is centered, the browser positions the
+                scroll offset so it starts already scrolled past the first item,
+                and that space is unreachable — which is exactly why BHR was
+                stuck off-screen and only KSA→MAIL were visible. Centering is now
+                only applied at md+ where the row wraps and no scrolling is
+                needed; on mobile the row is left-aligned inside a scroll
+                container so the full BHR→MAIL range is reachable by swiping. */}
+            <div className="w-full border-t border-white/10 py-3 md:py-4 flex items-center md:justify-center overflow-hidden pointer-events-auto relative px-4 md:px-12">
+                <div className="flex-1 overflow-x-auto scrollbar-hide w-full snap-x snap-proximity scroll-pl-1 scroll-pr-6">
+                    <div className="flex items-center justify-start md:justify-center gap-6 md:gap-10 whitespace-nowrap w-max md:w-full md:flex-wrap pl-1 pr-6 md:px-6 mx-auto">
                         {LOCATIONS.map((loc, i) => {
                             const innerContent = (
                                 <>
@@ -945,11 +960,11 @@ rotationSpring.set(target);
                             );
 
                             return loc.link ? (
-                                <a key={i} href={loc.link} target={loc.link.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" className="flex items-center gap-2 md:gap-3 opacity-80 hover:opacity-100 transition-all duration-300 group hover:scale-[1.02] cursor-pointer shrink-0">
+                                <a key={i} href={loc.link} target={loc.link.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" className="flex items-center gap-2 md:gap-3 opacity-80 hover:opacity-100 transition-all duration-300 group hover:scale-[1.02] cursor-pointer shrink-0 snap-start">
                                     {innerContent}
                                 </a>
                             ) : (
-                                <div key={i} className="flex items-center gap-2 md:gap-3 opacity-80 hover:opacity-100 transition-all duration-300 group shrink-0">
+                                <div key={i} className="flex items-center gap-2 md:gap-3 opacity-80 hover:opacity-100 transition-all duration-300 group shrink-0 snap-start">
                                     {innerContent}
                                 </div>
                             );

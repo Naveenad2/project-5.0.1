@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback, createContext } from "react";
+import { useRef, useState, useEffect, useContext, createContext } from "react";
 import {
     motion,
     useScroll,
@@ -8,8 +8,8 @@ import {
     AnimatePresence
 } from "framer-motion";
 import {
-    ArrowLeft, LayoutGrid, ArrowUpRight,
-    Globe, Compass, Asterisk, X, ChevronLeft, ChevronRight, Loader2
+    ArrowLeft, LayoutGrid,
+    Globe, Compass, Asterisk, Instagram, Loader2, Plus
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -57,7 +57,16 @@ const TEXT_EN = {
 
     ctaTitle: "Ready to Create Something Extraordinary?",
     ctaDesc: "Whether you are launching a brand, hosting a global conference, producing a landmark celebration, or creating an immersive public experience, our team is ready to bring your vision to life. Let’s build an experience that people remember long after the lights go down.",
-    ctaBtn: "Return to Core System"
+    ctaBtn: "Return to Core System",
+
+    // gallery / pagination
+    viewInsta: "View on Instagram",
+    showing: "Showing",
+    of: "of",
+    loadMore: "Load More",
+    loadingMore: "Loading",
+    allLoaded: "You've reached the end",
+    projects: "Projects",
 };
 
 const TEXT_AR = {
@@ -100,7 +109,16 @@ const TEXT_AR = {
 
     ctaTitle: "مستعد لصنع شيء استثنائي؟",
     ctaDesc: "سواء كنت تطلق علامة تجارية، أو تستضيف مؤتمرًا عالميًا، أو تنتج احتفالًا بارزًا، أو تبتكر تجربة عامة غامرة، فإن فريقنا مستعد لتحويل رؤيتك إلى واقع. لنبنِ تجربة يتذكرها الناس طويلًا بعد أن تنطفئ الأضواء.",
-    ctaBtn: "العودة إلى النظام الأساسي"
+    ctaBtn: "العودة إلى النظام الأساسي",
+
+    // gallery / pagination
+    viewInsta: "عرض على إنستغرام",
+    showing: "عرض",
+    of: "من",
+    loadMore: "تحميل المزيد",
+    loadingMore: "جاري التحميل",
+    allLoaded: "لقد وصلت إلى النهاية",
+    projects: "مشروع",
 };
 
 const THEME_COLOR = "#E11D48"; // Rose Red
@@ -114,79 +132,69 @@ const CAPABILITIES_IMAGES = [
 ];
 
 /* ------------------------------------------------------------------
-   EVENTS ARCHIVE — every file inside /public/Events
-   Paths are encoded at render time (spaces -> %20) so filenames stay
-   readable and editable here.
+   EVENTS PORTFOLIO — same data source & image paths as the "Our Work"
+   page (folder /ev, files ev1.png, ev2.png ... in source order), so
+   the gallery here always mirrors that catalogue 1:1.
 ------------------------------------------------------------------- */
-const GALLERY_IMAGES: string[] = [
-    // BANK ABC GHABGA AT GULF HOTEL 2025
-    "/EVENTS/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 2.jpg",
-    // "/EVENTS/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 16.jpg",
-    
-    // "/EVENTS/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 19.jpg",
-    // "/EVENTS/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 25.jpg",
-    // "/EVENTS/BANK ABC GHABGA AT GULF HOTEL 2025/BANK ABC GHABGA AT GULF HOTEL 27.jpg",
+interface SourceItem {
+    url: string;
+    title?: string;
+    titleAr?: string;
+}
 
-    // F1 2025 - EDB PADDOCK LOUNGE
-    "/EVENTS/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 3.jpg",
-    // "/EVENTS/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 34.jpg",
-    // "/EVENTS/F1 2025 - EDB PADDOCK LOUNGE/ECONOMIC DEVELOPMENT BOARD  PADDOCK CLUB 49.jpg",
-
-    // F1 2025 - GULF AIR
-    "/EVENTS/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 12.jpg",
-    // "/EVENTS/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 32.jpg",
-    // "/EVENTS/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 35.jpg",
-    // "/EVENTS/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 46.jpg",
-    // "/EVENTS/F1 2025 - GULF AIR/GULF AIR PADDOCK CLUB 68.jpg",
-
-    // F1 PRE SEASON TESTING 2025
-    "/EVENTS/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 20.jpg",
-    // "/EVENTS/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 54.jpg",
-    // "/EVENTS/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 57.jpg",
-    // "/EVENTS/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 60.jpg",
-    // "/EVENTS/F1 PRE SEASON TESTING 2025/F1 PRE - SEASON TESTING 62.jpg",
-
-    // FINTECH 2025
-    "/EVENTS/FINTECH 2025/_HUS1999.JPG",
-    // "/EVENTS/FINTECH 2025/_HUS2737.JPG",
-    // "/EVENTS/FINTECH 2025/2J5A0953.JPG",
-    // "/EVENTS/FINTECH 2025/2J5A0954.JPG",
-    // "/EVENTS/FINTECH 2025/2J5A0955.JPG",
-    // "/EVENTS/FINTECH 2025/2J5A0956.JPG",
-    // "/EVENTS/FINTECH 2025/3N5A0017.JPG",
-    // "/EVENTS/FINTECH 2025/3N5A0018.JPG",
-
-    // JOTUN EVENT AT LA FONTAINE
-    "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 1.jpg",
-    // "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 2.jpg",
-    // "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 3.jpg",
-    // "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 17.jpg",
-    // "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 32.jpg",
-    "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 50.jpg",
-    // "/EVENTS/JOTUN EVENT AT LA FONTAINE/JOTUN EVENT AT LA FONTAINE 55.jpg",
-
-    // RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025
-    "/EVENTS/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 1.jpg",
-    // "/EVENTS/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 4.jpg",
-    // "/EVENTS/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 6.jpg",
-    // "/EVENTS/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 8.jpg",
-    // "/EVENTS/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 2025/RIFFA VIEW SCHOOL EVENT AT NATIONAL THEATRE 9.jpg",
-
-    // TAMKEEN MASHROO3i EVENT AT EWB
-    "/EVENTS/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 1.jpg",
-     "/EVENTS/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 2.jpg",
-    "/EVENTS/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 42.jpg",
-    // "/EVENTS/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 59.jpg",
-    // "/EVENTS/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 73.jpg",
-    // "/EVENTS/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 75.jpg",
-    // "/EVENTS/TAMKEEN MASHROO3i EVENT AT EWB/TAMKEEN MASHROO3i EVENT AT EWB 78.jpg"
+const EVENT_ITEMS: SourceItem[] = [
+    { url: "https://www.instagram.com/p/DQBWzOSFcsX/", title: "The Third Edition of Fintech Forward", titleAr: "النسخة الثالثة من فينتك فوروارد" },
+    { url: "https://www.instagram.com/p/Dbm-DHYlC3S/", title: "Talabat Annual Riders Appreciation", titleAr: "حفل تقدير سائقي طلبات السنوي" },
+    { url: "https://www.instagram.com/p/DaZ0KajFeZG/?img_index=1", title: "The Avenues Fan Zone", titleAr: "منطقة المشجعين في أفنيوز" },
+    { url: "https://www.instagram.com/p/DaSLpqLDDG2/?img_index=1", title: "F1 Pre-Season Testing Hospitality Lounge 2026", titleAr: "صالة ضيافة اختبارات ما قبل الموسم للفورمولا 1، 2026" },
+    { url: "https://www.instagram.com/p/DN5e_E4AncG/?img_index=1", title: "Back to School Activation at Marassi Galleria", titleAr: "فعالية العودة إلى المدارس في مراسي غاليريا" },
+    { url: "https://www.instagram.com/p/DMFZjwBvFa0/", title: "The Avenues SHOP & WIN 2025", titleAr: "تسوّق واربح في أفنيوز 2025" },
+    { url: "https://www.instagram.com/p/DKJmnNgK5oU/", title: "Super Hero Camp at Marassi Galleria", titleAr: "معسكر الأبطال الخارقين في مراسي غاليريا" },
+    { url: "https://www.instagram.com/p/DJqwabbIZH4/", title: "Bank ABC — Staff Ghabga 2025", titleAr: "بنك ABC — غبقة الموظفين 2025" },
+    { url: "https://www.instagram.com/p/DIibQO0M5H2/", title: "Gulf Air Hospitality Lounge, BIC F1 2025 Paddock Club", titleAr: "صالة ضيافة طيران الخليج، نادي بادوك BIC F1 2025" },
+    { url: "https://www.instagram.com/p/DIa_up-MEKj/", title: "F1 Pre-Season Testing Hospitality", titleAr: "ضيافة اختبارات ما قبل الموسم للفورمولا 1" },
+    { url: "https://www.instagram.com/p/DGsnkUBCx6T/", title: "Tamkeen Mashroo3i Demo Day 2025", titleAr: "يوم عرض مشروعي — تمكين 2025" },
+    { url: "https://www.instagram.com/p/DF7kcPYM8Y1/", title: "Jotun's Nuances 2025", titleAr: "فعالية نوانسز — جوتن 2025" },
+    { url: "https://www.instagram.com/p/DEOxQZUCU1-/?img_index=1", title: "The Avenues Winterland 2024", titleAr: "وينترلاند في أفنيوز 2024" },
+    { url: "https://www.instagram.com/p/DBdNtAnMtiq/", title: "Fintech Forward 2024", titleAr: "فينتك فوروارد 2024" },
+    { url: "https://www.instagram.com/p/C5NhAQ_sXCV/?img_index=1", title: "Ramadan Décor at Exhibition World", titleAr: "ديكور رمضان في إكزيبيشن وورلد" },
 ];
 
-// Encode spaces and special characters, keep the "/" separators intact
-const enc = (p: string) => p.split("/").map(encodeURIComponent).join("/");
+interface Project {
+    id: number;
+    title: string;
+    titleAr: string;
+    subtitle: string;
+    subAr: string;
+    img: string;
+    href: string;
+    code: string;
+}
 
-// How many images render on first paint, and per "load more" batch
-const BATCH_SIZE = 12;
+// Builds the Project[] straight from EVENT_ITEMS, in the exact order the
+// files appear in /public/ev (index 0 => ev1.png), identical to the
+// "Our Work" page's Events section.
+function buildEventProjects(items: SourceItem[]): Project[] {
+    return items.map((item, i) => {
+        const n = i + 1;
+        const num = String(n).padStart(2, "0");
+        return {
+            id: n,
+            title: item.title ?? `Events ${num}`,
+            titleAr: item.titleAr ?? `الفعاليات ${num}`,
+            subtitle: "Event Production",
+            subAr: "إنتاج الفعاليات",
+            img: `/ev/ev${n}.png`,
+            href: item.url,
+            code: `EV-${num}`,
+        };
+    });
+}
+
+const EVENT_PROJECTS: Project[] = buildEventProjects(EVENT_ITEMS);
+
+// How many tiles render on first paint, and per "load more" batch
+const PAGE_SIZE = 10;
 
 // --- SEO: Structured data (JSON-LD) ---
 const STRUCTURED_DATA = {
@@ -219,19 +227,21 @@ const fadeUp = {
     visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as const } }
 };
 
+// Custom smooth easing curve (matches "Our Work" gallery tiles)
+const customEase = [0.22, 1, 0.36, 1] as const;
+
 // Context for App-wide Language State
 const LangContext = createContext({ isAr: false, toggleLang: () => {}, t: TEXT_EN });
 
 export default function EventsPage() {
     const containerRef = useRef<HTMLDivElement>(null);
     const timelineRef = useRef<HTMLDivElement>(null);
-    const sentinelRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(true);
     const [isAr, setIsAr] = useState(false);
 
-    // Gallery: progressive rendering + fullscreen viewer
-    const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
-    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+    // Gallery pagination (same pattern as "Our Work")
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    const [loadingMore, setLoadingMore] = useState(false);
 
     const toggleLang = () => setIsAr((prev) => !prev);
     const t = isAr ? TEXT_AR : TEXT_EN;
@@ -251,67 +261,17 @@ export default function EventsPage() {
         }
     }, [isAr]);
 
-    // Reveal the next batch of images as the sentinel scrolls into view
-    useEffect(() => {
-        const node = sentinelRef.current;
-        if (!node) return;
-        if (visibleCount >= GALLERY_IMAGES.length) return;
+    const visibleProjects = EVENT_PROJECTS.slice(0, visibleCount);
+    const hasMore = visibleCount < EVENT_PROJECTS.length;
+    const remaining = EVENT_PROJECTS.length - visibleCount;
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0]?.isIntersecting) {
-                    setVisibleCount((c) => Math.min(c + BATCH_SIZE, GALLERY_IMAGES.length));
-                }
-            },
-            { root: containerRef.current, rootMargin: "600px 0px" }
-        );
-
-        observer.observe(node);
-        return () => observer.disconnect();
-    }, [visibleCount]);
-
-    // Lightbox navigation
-    const closeLightbox = useCallback(() => setLightboxIndex(null), []);
-    const showPrev = useCallback(
-        () => setLightboxIndex((i) => (i === null ? i : (i - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length)),
-        []
-    );
-    const showNext = useCallback(
-        () => setLightboxIndex((i) => (i === null ? i : (i + 1) % GALLERY_IMAGES.length)),
-        []
-    );
-
-    // Keyboard controls + scroll lock while fullscreen is open
-    useEffect(() => {
-        if (lightboxIndex === null) return;
-
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") closeLightbox();
-            else if (e.key === "ArrowLeft") (isAr ? showNext : showPrev)();
-            else if (e.key === "ArrowRight") (isAr ? showPrev : showNext)();
-        };
-
-        window.addEventListener("keydown", onKey);
-        const prevOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-
-        return () => {
-            window.removeEventListener("keydown", onKey);
-            document.body.style.overflow = prevOverflow;
-        };
-    }, [lightboxIndex, isAr, closeLightbox, showPrev, showNext]);
-
-    // Swipe support on touch devices
-    const touchStartX = useRef<number | null>(null);
-    const onTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX; };
-    const onTouchEnd = (e: React.TouchEvent) => {
-        if (touchStartX.current === null) return;
-        const delta = e.changedTouches[0].clientX - touchStartX.current;
-        if (Math.abs(delta) > 60) {
-            if (delta < 0) (isAr ? showPrev : showNext)();
-            else (isAr ? showNext : showPrev)();
-        }
-        touchStartX.current = null;
+    const handleLoadMore = () => {
+        if (loadingMore) return;
+        setLoadingMore(true);
+        window.setTimeout(() => {
+            setVisibleCount((c) => Math.min(c + PAGE_SIZE, EVENT_PROJECTS.length));
+            setLoadingMore(false);
+        }, 450);
     };
 
     // Smooth Scroll Parallax
@@ -562,7 +522,7 @@ export default function EventsPage() {
                 </div>
             </section>
 
-            {/* 6. EDITORIAL GALLERY */}
+            {/* 6. EDITORIAL MASONRY GALLERY — same design/tile as "Our Work" (Events data only) */}
             <section className="py-24 md:py-40 px-4 md:px-12 lg:px-24 shrink-0 border-t border-white/10" aria-labelledby="portfolio-heading">
                 <div className="max-w-[1800px] mx-auto">
                     <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="flex flex-col items-center text-center mb-16 md:mb-24">
@@ -572,48 +532,49 @@ export default function EventsPage() {
                         <p className="text-sm md:text-lg font-light text-white/60 leading-relaxed max-w-2xl">{t.archiveDesc}</p>
                     </motion.div>
 
-                    {/* Responsive masonry — 1 / 2 / 3 / 4 columns */}
-                    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3 md:gap-5 [column-fill:_balance]">
-                        {GALLERY_IMAGES.slice(0, visibleCount).map((src, i) => (
-                            <motion.button
-                                key={src}
-                                type="button"
-                                onClick={() => setLightboxIndex(i)}
-                                initial={{ opacity: 0, scale: 0.97 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true, margin: "-40px" }}
-                                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                className="group relative block w-full mb-3 md:mb-5 break-inside-avoid overflow-hidden rounded-xl border border-white/10 bg-[#050505] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                                aria-label={`${t.caseStudy} ${i + 1}`}
-                            >
-                                <Image
-                                    src={enc(src)}
-                                    alt={`Colours Bahrain event ${i + 1}`}
-                                    width={1600}
-                                    height={1067}
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                                    loading={i < 4 ? "eager" : "lazy"}
-                                    className="w-full h-auto object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04] will-change-transform opacity-85 group-hover:opacity-100"
-                                />
-                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
-                                <div className={`absolute bottom-4 ${isAr ? 'left-4' : 'right-4'} w-10 h-10 rounded-full bg-white text-black flex items-center justify-center opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl`} aria-hidden="true">
-                                    <ArrowUpRight size={16} strokeWidth={2} className={isAr ? '-rotate-90' : ''} />
-                                </div>
-                            </motion.button>
-                        ))}
-                    </div>
+                    {/* Responsive masonry — 2 / 3 / 4 / 5 columns, identical to Our Work */}
+                    <motion.div layout className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-1.5 md:gap-2">
+                        <AnimatePresence mode="popLayout">
+                            {visibleProjects.map((project, i) => (
+                                <EventTile key={project.id} project={project} index={i} priority={i < 4} />
+                            ))}
+                        </AnimatePresence>
+                    </motion.div>
 
-                    {/* Infinite-scroll sentinel */}
-                    {visibleCount < GALLERY_IMAGES.length && (
-                        <div ref={sentinelRef} className="flex flex-col items-center justify-center gap-4 pt-16">
-                            <Loader2 size={18} className="animate-spin text-white/40" aria-hidden="true" />
-                            <button
-                                type="button"
-                                onClick={() => setVisibleCount((c) => Math.min(c + BATCH_SIZE, GALLERY_IMAGES.length))}
-                                className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/50 hover:text-white transition-colors"
-                            >
-                                {visibleCount} / {GALLERY_IMAGES.length}
-                            </button>
+                    {/* LOAD MORE */}
+                    {EVENT_PROJECTS.length > PAGE_SIZE && (
+                        <div className="flex flex-col items-center gap-6 mt-16 md:mt-20">
+                            <div className="w-full max-w-xs h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                <motion.div
+                                    className="h-full bg-gradient-to-r from-rose-400 via-white to-rose-400"
+                                    initial={false}
+                                    animate={{ width: `${Math.min((Math.min(visibleCount, EVENT_PROJECTS.length) / EVENT_PROJECTS.length) * 100, 100)}%` }}
+                                    transition={{ duration: 0.6, ease: customEase }}
+                                />
+                            </div>
+
+                            <p className="text-[10px] uppercase tracking-widest text-white/40 font-mono">
+                                {t.showing} {Math.min(visibleCount, EVENT_PROJECTS.length)} {t.of} {EVENT_PROJECTS.length} {t.projects}
+                            </p>
+
+                            {hasMore ? (
+                                <button
+                                    onClick={handleLoadMore}
+                                    disabled={loadingMore}
+                                    className="group relative inline-flex items-center gap-3 px-8 py-4 md:px-10 md:py-5 rounded-full border border-white/15 bg-white/5 backdrop-blur-xl text-white hover:border-rose-400/50 hover:bg-white/10 transition-all duration-500 disabled:opacity-60 disabled:cursor-wait shadow-[0_10px_40px_rgba(0,0,0,0.4)]"
+                                >
+                                    <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">
+                                        {loadingMore ? t.loadingMore : `${t.loadMore} (${Math.min(remaining, PAGE_SIZE)})`}
+                                    </span>
+                                    {loadingMore ? (
+                                        <Loader2 size={16} className="animate-spin text-rose-400" />
+                                    ) : (
+                                        <Plus size={16} className="text-rose-400 group-hover:rotate-90 transition-transform duration-500" />
+                                    )}
+                                </button>
+                            ) : (
+                                <span className="text-[9px] uppercase tracking-widest text-white/25 font-mono">{t.allLoaded}</span>
+                            )}
                         </div>
                     )}
                 </div>
@@ -634,81 +595,109 @@ export default function EventsPage() {
                 </Link>
             </section>
 
-            {/* 8. FULLSCREEN VIEWER */}
-            <AnimatePresence>
-                {lightboxIndex !== null && (
-                    <motion.div
-                        key="lightbox"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
-                        role="dialog"
-                        aria-modal="true"
-                        onClick={closeLightbox}
-                        onTouchStart={onTouchStart}
-                        onTouchEnd={onTouchEnd}
-                        dir="ltr"
-                    >
-                        {/* Close */}
-                        <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
-                            className="absolute top-5 right-5 md:top-8 md:right-8 z-20 w-11 h-11 rounded-full border border-white/20 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                            aria-label="Close"
-                        >
-                            <X size={18} strokeWidth={1.5} />
-                        </button>
-
-                        {/* Counter */}
-                        <span className="absolute top-7 left-5 md:top-10 md:left-8 z-20 text-[10px] font-mono tracking-[0.3em] text-white/50">
-                            {String(lightboxIndex + 1).padStart(2, "0")} / {GALLERY_IMAGES.length}
-                        </span>
-
-                        {/* Prev */}
-                        <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); showPrev(); }}
-                            className="absolute left-3 md:left-8 z-20 w-11 h-11 md:w-14 md:h-14 rounded-full border border-white/20 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                            aria-label="Previous image"
-                        >
-                            <ChevronLeft size={20} strokeWidth={1.5} />
-                        </button>
-
-                        {/* Next */}
-                        <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); showNext(); }}
-                            className="absolute right-3 md:right-8 z-20 w-11 h-11 md:w-14 md:h-14 rounded-full border border-white/20 bg-black/40 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                            aria-label="Next image"
-                        >
-                            <ChevronRight size={20} strokeWidth={1.5} />
-                        </button>
-
-                        {/* Image */}
-                        <motion.div
-                            key={GALLERY_IMAGES[lightboxIndex]}
-                            initial={{ opacity: 0, scale: 0.98 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                            className="relative w-full h-full px-14 py-16 md:px-24 md:py-20"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <Image
-                                src={enc(GALLERY_IMAGES[lightboxIndex])}
-                                alt={`Colours Bahrain event ${lightboxIndex + 1}`}
-                                fill
-                                sizes="100vw"
-                                priority
-                                className="object-contain"
-                            />
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
         </main>
         </LangContext.Provider>
+    );
+}
+
+// --- EVENT GALLERY TILE (identical design language to the "Our Work" GalleryTile) ---
+function EventTile({
+    project,
+    index,
+    priority,
+}: {
+    project: Project;
+    index: number;
+    priority?: boolean;
+}) {
+    const { isAr, t } = useContext(LangContext);
+    const [loaded, setLoaded] = useState(false);
+    const [ratio, setRatio] = useState(4 / 5);
+    const title = isAr ? project.titleAr : project.title;
+    const subtitle = isAr ? project.subAr : project.subtitle;
+
+    const clampStyle = (lines: number): React.CSSProperties => ({
+        display: "-webkit-box",
+        WebkitLineClamp: lines,
+        WebkitBoxOrient: "vertical",
+        overflow: "hidden",
+    });
+
+    return (
+        <motion.a
+            layout
+            href={project.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${title} — ${t.viewInsta}`}
+            initial={{ opacity: 0, scale: 0.92, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, filter: "blur(6px)" }}
+            transition={{ duration: 0.5, ease: customEase, delay: Math.min(index, 8) * 0.035 }}
+            style={{ aspectRatio: ratio }}
+            className="group relative block w-full mb-1.5 md:mb-2 break-inside-avoid overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] cursor-pointer shadow-lg transition-shadow duration-500 hover:shadow-2xl hover:shadow-rose-500/30"
+        >
+            {!loaded && <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-white/[0.02] animate-pulse" />}
+
+            <Image
+                src={project.img}
+                alt={title}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                quality={75}
+                {...(priority ? { priority: true } : { loading: "lazy" as const })}
+                onLoad={(e) => {
+                    const img = e.currentTarget;
+                    if (img.naturalWidth && img.naturalHeight) {
+                        setRatio(img.naturalWidth / img.naturalHeight);
+                    }
+                    setLoaded(true);
+                }}
+                className={`object-cover object-center transition-opacity duration-500 ease-out ${loaded ? "opacity-100" : "opacity-0"} group-hover:scale-105 will-change-transform`}
+                style={{ transition: "opacity 0.5s ease-out, transform 0.7s ease-out" }}
+            />
+
+            {/* Base readability scrim — always on, slightly stronger on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-black/40 opacity-90 group-hover:opacity-95 transition-opacity duration-500" />
+
+            {/* Category accent line */}
+            <div className={`absolute top-0 ${isAr ? "right-0" : "left-0"} h-full w-[3px] bg-gradient-to-b from-rose-400 to-rose-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+            {/* --- HEADER ROW (always visible) --- */}
+            <div className="absolute top-0 inset-x-0 flex items-start justify-between gap-2 p-3 md:p-4">
+                <div className="min-w-0 flex items-center gap-1.5 px-2 py-1 md:px-2.5 md:py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 shrink-0">
+                    <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shrink-0" />
+                    <span className="text-[7px] md:text-[8px] font-mono uppercase tracking-widest text-white/80 whitespace-nowrap">
+                        {project.code}
+                    </span>
+                </div>
+            </div>
+
+            {/* --- TITLE / FOOTER (always visible, clamped so nothing overlaps) --- */}
+            <div className="absolute inset-x-0 bottom-0 p-3 pt-8 md:p-5 md:pt-12 bg-gradient-to-t from-black/95 via-black/60 to-transparent">
+                <div className="flex items-end justify-between gap-2 md:gap-3">
+                    <div className="min-w-0 flex-1">
+                        <h3
+                            className="text-[11px] leading-tight sm:text-sm md:text-base font-bold uppercase text-white tracking-wide break-words"
+                            style={clampStyle(2)}
+                            title={title}
+                        >
+                            {title}
+                        </h3>
+                        <p
+                            className="text-[9px] md:text-[10px] text-white/50 mt-1 break-words opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-6 transition-all duration-500 ease-out"
+                            style={clampStyle(1)}
+                        >
+                            {subtitle}
+                        </p>
+                    </div>
+
+                    <div className="shrink-0 w-7 h-7 md:w-9 md:h-9 rounded-full bg-white text-black flex items-center justify-center transition-transform duration-300 group-hover:rotate-[360deg] shadow-lg">
+                        <Instagram size={13} className="md:hidden" />
+                        <Instagram size={16} className="hidden md:block" />
+                    </div>
+                </div>
+            </div>
+        </motion.a>
     );
 }
