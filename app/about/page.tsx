@@ -425,17 +425,23 @@ export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showContact, setShowContact] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
-  const [isAr, setIsAr] = useState(false);
+  const [isAr, setIsAr] = useState(() => {
+    if (typeof window !== "undefined") {
+        return localStorage.getItem("colours_lang") === "ar";
+    }
+    return false;
+});
 
   const toggleLang = () => setIsAr((prev) => !prev);
   const t = isAr ? TEXT_AR : TEXT_EN;
 
   useEffect(() => {
+        localStorage.setItem("colours_lang", isAr ? "ar" : "en");
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [isAr]);
 
   // SEO / accessibility: keep <html> lang & dir in sync with the active language
   useEffect(() => {

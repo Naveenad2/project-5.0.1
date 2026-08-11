@@ -277,7 +277,12 @@ export default function GalleryPage() {
     const [showContact, setShowContact] = useState(false);
     const [activeCategory, setActiveCategory] = useState<"All" | CategoryKey>("All");
     const [isMobile, setIsMobile] = useState(true);
-    const [isAr, setIsAr] = useState(false);
+   const [isAr, setIsAr] = useState(() => {
+    if (typeof window !== "undefined") {
+        return localStorage.getItem("colours_lang") === "ar";
+    }
+    return false;
+});
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const [loadingMore, setLoadingMore] = useState(false);
 
@@ -285,11 +290,12 @@ export default function GalleryPage() {
     const t = isAr ? TEXT_AR : TEXT_EN;
 
     useEffect(() => {
+         localStorage.setItem("colours_lang", isAr ? "ar" : "en");
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
         checkMobile();
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
-    }, []);
+    }, [isAr]);
 
     // Reset pagination every time the category changes, so switching filters
     // always starts back at the first 10 tiles of that section.

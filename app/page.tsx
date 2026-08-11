@@ -403,13 +403,19 @@ function getLocalAIResponse(rawInput: string, isAr: boolean, t: typeof TEXT_EN):
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bootPhase, setBootPhase] = useState(0); 
-  const [isAr, setIsAr] = useState(false);
+ const [isAr, setIsAr] = useState(() => {
+    if (typeof window !== "undefined") {
+        return localStorage.getItem("colours_lang") === "ar";
+    }
+    return false;
+});
 
   const toggleLang = () => setIsAr(!isAr);
   const t = isAr ? TEXT_AR : TEXT_EN;
 
   // Session-Aware Boot Logic
   useEffect(() => {
+     localStorage.setItem("colours_lang", isAr ? "ar" : "en");
     const hasBooted = sessionStorage.getItem("app_has_booted");
     if (hasBooted) {
         setBootPhase(3); // Skip loader if already visited
@@ -424,7 +430,7 @@ export default function Home() {
         }, 3600),
     ];
     return () => timers.forEach(t => clearTimeout(t));
-  }, []);
+  }, [isAr]);
 
   return (
     <LangContext.Provider value={{ isAr, toggleLang, t }}>
