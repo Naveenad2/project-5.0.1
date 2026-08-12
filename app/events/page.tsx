@@ -22,7 +22,7 @@ const TEXT_EN = {
     mainGrid: "Main_Grid",
     langToggle: "عربي",
     title: "EVENTS",
-    subtitle: "Creating Experiences That Resonate. Environments That Endure.",
+    subtitle: "Creating Experiences That Resonate.",
     globalReach: "Global Reach. Regional Intelligence.",
     heroDesc: "From our headquarters in Bahrain to destinations across the world, we design and deliver exceptional event experiences that transcend geography and expectations.",
     philosophy: "Our Perspective",
