@@ -35,7 +35,7 @@ const PAGE_SIZE = 10; // how many tiles are visible per "page"
 const TEXT_EN = {
     return: "Return",
     mainHome: "Home",
-    est: "Established 2000 in Bahrain",
+    est: "20+ Years of Excellence",
     active: "Serving the GCC Region",
     title1: "Our",
     title2: "Works.",
@@ -64,7 +64,7 @@ const TEXT_EN = {
 const TEXT_AR = {
     return: "عودة",
     mainHome: "الرئيسية",
-    est: "تأسست عام 2000 في البحرين",
+    est : "أكثر من 20 عاماً من التميز",
     active: "نخدم منطقة دول مجلس التعاون",
     title1: "معرض",
     title2: "أعمالنا.",

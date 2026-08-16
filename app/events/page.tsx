@@ -383,7 +383,7 @@ export default function EventsPage() {
                             <div className="flex justify-between items-center border-b border-white/10 pb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: THEME_COLOR }} aria-hidden="true" />
-                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">{t.globalReach}</span>
+                                    <span className="text-sm md:text-base font-bold uppercase tracking-[0.15em] text-white leading-snug">{t.globalReach}</span>
                                 </div>
                                 <Globe size={16} className="text-white/50 shrink-0" aria-hidden="true" />
                             </div>
@@ -406,36 +406,7 @@ export default function EventsPage() {
                 </div>
             </section>
 
-            {/* 3. OVERVIEW & PERSPECTIVE */}
-            <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/40 backdrop-blur-sm" aria-labelledby="perspective-heading">
-                <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 lg:gap-24 items-start">
-
-                    <motion.div
-                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                        className="lg:col-span-7 flex flex-col"
-                    >
-                        <span id="perspective-heading" className="text-[10px] font-bold uppercase tracking-[0.3em] mb-8" style={{ color: THEME_COLOR }}>{t.philosophy}</span>
-                        <p className="text-2xl md:text-4xl font-light text-white/90 leading-snug md:leading-snug">
-                            {t.overview}
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                        className="lg:col-span-5 flex flex-col gap-6 border-t border-white/10 pt-10 lg:border-t-0 lg:pt-0"
-                    >
-                        <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{t.perspectiveTitle}</h2>
-                        <p className="text-sm md:text-base text-white/70 leading-relaxed font-light">
-                            {t.perspectiveText}
-                        </p>
-                        <p className="text-sm md:text-base text-white/60 leading-relaxed font-light border-t border-white/10 pt-6">
-                            {t.perspectiveNote}
-                        </p>
-                    </motion.div>
-
-                </div>
-            </section>
-
+     
             {/* 4. IMAGE-BASED CAPABILITIES */}
             <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0" aria-labelledby="competencies-heading">
                 <div className="max-w-[1800px] mx-auto">
@@ -482,6 +453,47 @@ export default function EventsPage() {
                     </div>
                 </div>
             </section>
+
+                   {/* 3. OVERVIEW & PERSPECTIVE */}
+            <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/40 backdrop-blur-sm" aria-labelledby="perspective-heading">
+                <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 lg:gap-24 items-start">
+
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                        className="lg:col-span-7 flex flex-col"
+                    >
+                        <span id="perspective-heading" className="text-[10px] font-bold uppercase tracking-[0.3em] mb-8 block" style={{ color: THEME_COLOR }}>{t.philosophy}</span>
+                        <p className="text-2xl md:text-4xl font-light text-white/90 leading-snug md:leading-snug">
+                            {t.overview}
+                        </p>
+                    </motion.div>
+
+                 <motion.div
+    initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+    className="lg:col-span-5 flex flex-col gap-6 border-t border-white/10 pt-10 lg:border-t-0 lg:pt-0"
+>
+    {/* invisible spacer — only active at lg+ (where columns sit side by side).
+        mb-2 + the container's gap-6 (24px) = 32px, matching the left label's
+        mb-8 (32px), so "Engineering Moments That Matter." lines up exactly
+        with "We believe every event..." instead of sitting lower. */}
+    <span
+        className="hidden lg:block invisible text-[10px] font-bold uppercase tracking-[0.3em] mb-2"
+        aria-hidden="true"
+    >
+        {t.philosophy}
+    </span>
+    <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{t.perspectiveTitle}</h2>
+    <p className="text-sm md:text-base text-white/70 leading-relaxed font-light">
+        {t.perspectiveText}
+    </p>
+    <p className="text-sm md:text-base text-white/60 leading-relaxed font-light border-t border-white/10 pt-6">
+        {t.perspectiveNote}
+    </p>
+</motion.div>
+
+                </div>
+            </section>
+
 
             {/* 5. EXECUTION TIMELINE */}
             <section className="relative z-20 py-24 md:py-40 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/60 backdrop-blur-sm" ref={timelineRef} aria-labelledby="methodology-heading">

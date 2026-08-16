@@ -411,36 +411,7 @@ export default function InteriorsPage() {
                 </div>
             </section>
 
-            {/* 3. OVERVIEW & PHILOSOPHY */}
-            <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/40 backdrop-blur-sm" aria-labelledby="philosophy-heading">
-                <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 lg:gap-24 items-start">
-
-                    <motion.div
-                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                        className="lg:col-span-7 flex flex-col"
-                    >
-                        <span id="philosophy-heading" className="text-[10px] font-bold uppercase tracking-[0.3em] mb-8" style={{ color: THEME_COLOR }}>{t.philosophy}</span>
-                        <p className="text-2xl md:text-4xl font-light text-white/90 leading-snug md:leading-snug">
-                            {t.overview}
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                        className="lg:col-span-5 flex flex-col gap-6 border-t border-white/10 pt-10 lg:border-t-0 lg:pt-0"
-                    >
-                        <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{t.philTitle}</h2>
-                        <p className="text-sm md:text-base text-white/70 leading-relaxed font-light">
-                            {t.philText}
-                        </p>
-                        <p className="text-sm md:text-base text-white/60 leading-relaxed font-light border-t border-white/10 pt-6">
-                            {t.philNote}
-                        </p>
-                    </motion.div>
-
-                </div>
-            </section>
-
+           
             {/* 4. IMAGE-BASED CAPABILITIES */}
              <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0" aria-labelledby="competencies-heading">
                             <div className="max-w-[1800px] mx-auto">
@@ -488,6 +459,43 @@ export default function InteriorsPage() {
                                 </div>
                             </div>
                         </section>
+
+                         {/* 3. OVERVIEW & PHILOSOPHY */}
+            <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/40 backdrop-blur-sm" aria-labelledby="philosophy-heading">
+                <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 lg:gap-24 items-start">
+
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                        className="lg:col-span-7 flex flex-col"
+                    >
+                        <span id="philosophy-heading" className="text-[10px] font-bold uppercase tracking-[0.3em] mb-8" style={{ color: THEME_COLOR }}>{t.philosophy}</span>
+                        <p className="text-2xl md:text-4xl font-light text-white/90 leading-snug md:leading-snug">
+                            {t.overview}
+                        </p>
+                    </motion.div>
+
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                        className="lg:col-span-5 flex flex-col gap-6 border-t border-white/10 pt-10 lg:border-t-0 lg:pt-0"
+                    >
+                         <span
+        className="hidden lg:block invisible text-[10px] font-bold uppercase tracking-[0.3em] mb-2"
+        aria-hidden="true"
+    >
+        {t.philosophy}
+    </span>
+                        <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-white">{t.philTitle}</h2>
+                        <p className="text-sm md:text-base text-white/70 leading-relaxed font-light">
+                            {t.philText}
+                        </p>
+                        <p className="text-sm md:text-base text-white/60 leading-relaxed font-light border-t border-white/10 pt-6">
+                            {t.philNote}
+                        </p>
+                    </motion.div>
+
+                </div>
+            </section>
+
 
             {/* 5. EXECUTION TIMELINE (Static & Clean) */}
             <section className="relative z-20 py-24 md:py-40 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/60 backdrop-blur-sm" ref={timelineRef} aria-labelledby="methodology-heading">

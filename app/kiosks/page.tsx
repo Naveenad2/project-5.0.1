@@ -28,10 +28,6 @@ const TEXT_EN = {
     philosophy: "Philosophy",
     overview: "We design and fabricate high-traffic retail kiosks and experiential pop-ups. Placed in premier destinations like The Avenues, Marassi Galleria, and Moda Mall, our structures are engineered to maximize brand visibility, consumer engagement, and commercial return.",
 
-    stat1Label: "Retail Activations", stat1Value: "300+",
-    stat2Label: "Footfall Engagement", stat2Value: "Maximum",
-    stat3Label: "Client Satisfaction", stat3Value: "100%",
-
     coreCompetencies: "Core Competencies",
     structEng: "Retail Infrastructure",
     structEngDesc: "Engineered for high-traffic environments and rapid deployment.",
@@ -77,10 +73,6 @@ const TEXT_AR = {
     heroDesc: "السيطرة على مساحات التجزئة المتميزة في جميع أنحاء المملكة. نحن نحول الإقبال الكثيف إلى تفاعل ملموس للعلامة التجارية.",
     philosophy: "فلسفتنا",
     overview: "نقوم بتصميم وتصنيع أكشاك التجزئة والمتاجر المؤقتة عالية الإقبال. موضوعة في وجهات رئيسية مثل الأفنيوز، مراسي جاليريا، ومودا مول، تم هندسة هياكلنا لزيادة رؤية العلامة التجارية وتفاعل المستهلكين والعائد التجاري.",
-
-    stat1Label: "تنشيط التجزئة", stat1Value: "+300",
-    stat2Label: "تفاعل الزوار", stat2Value: "الحد الأقصى",
-    stat3Label: "رضا العملاء", stat3Value: "100%",
 
     coreCompetencies: "الكفاءات الأساسية",
     structEng: "البنية التحتية للتجزئة",
@@ -313,15 +305,15 @@ export default function KiosksPage() {
                         className="flex flex-col items-start w-full relative"
                     >
                         {/* Subtitle */}
-                        <div className="flex items-center gap-4 mb-4 md:mb-6">
-                            <Asterisk size={14} style={{ color: THEME_COLOR }} />
-                            <span className="text-[10px] md:text-xs font-bold text-white uppercase tracking-[0.4em]">
+                        <div className="flex items-start gap-4 mb-4 md:mb-6 max-w-2xl">
+                            <Asterisk size={14} style={{ color: THEME_COLOR }} className="mt-1 shrink-0" />
+                            <span className="text-[10px] md:text-xs font-bold text-white uppercase tracking-[0.3em] md:tracking-[0.4em] leading-relaxed">
                                 {t.subtitle}
                             </span>
                         </div>
 
                         {/* Massive Editorial Title */}
-                        <h1 className="text-[11vw] md:text-[10vw] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.8] text-white mix-blend-plus-lighter drop-shadow-2xl">
+                        <h1 className="text-[13vw] md:text-[10vw] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.8] text-white mix-blend-plus-lighter drop-shadow-2xl">
                             {t.title}
                         </h1>
 
@@ -335,9 +327,9 @@ export default function KiosksPage() {
                             <div className="flex justify-between items-center border-b border-white/10 pb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="h-2 w-2 rounded-full" style={{ backgroundColor: THEME_COLOR }} />
-                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">{t.fabricationHq}</span>
+                                    <span className="text-sm md:text-base font-bold uppercase tracking-[0.15em] text-white leading-snug">{t.fabricationHq}</span>
                                 </div>
-                                <Globe size={16} className="text-white/50" />
+                                <Globe size={16} className="text-white/50 shrink-0" />
                             </div>
 
                             <p className="text-[11px] text-white/80 leading-relaxed font-light">
@@ -358,43 +350,7 @@ export default function KiosksPage() {
                 </div>
             </section>
 
-            {/* 3. OVERVIEW & METRICS */}
-            <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/40 backdrop-blur-sm">
-                <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
-
-                    <motion.div
-                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                        className="lg:col-span-7 flex flex-col"
-                    >
-                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] mb-8" style={{ color: THEME_COLOR }}>{t.philosophy}</span>
-                        <p className="text-2xl md:text-4xl font-light text-white/90 leading-snug md:leading-snug">
-                            {t.overview}
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
-                        className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-10 border-t border-white/10 pt-10 lg:border-t-0 lg:pt-0"
-                    >
-                        <div className="flex flex-col group">
-                            <span className="text-[10px] font-mono text-white/50 uppercase tracking-[0.2em] mb-3 group-hover:text-white transition-colors">{t.stat1Label}</span>
-                            <span className="text-4xl md:text-5xl font-medium tracking-tighter text-white">{t.stat1Value}</span>
-                            <div className="h-[1px] w-12 bg-white/20 mt-4 group-hover:w-full transition-all duration-500" style={{ backgroundColor: THEME_COLOR }} />
-                        </div>
-                        <div className="flex flex-col group">
-                            <span className="text-[10px] font-mono text-white/50 uppercase tracking-[0.2em] mb-3 group-hover:text-white transition-colors">{t.stat2Label}</span>
-                            <span className="text-4xl md:text-5xl font-medium tracking-tighter text-white">{t.stat2Value}</span>
-                            <div className="h-[1px] w-12 bg-white/20 mt-4 group-hover:w-full transition-all duration-500" style={{ backgroundColor: THEME_COLOR }} />
-                        </div>
-                        <div className="flex flex-col group sm:col-span-2">
-                            <span className="text-[10px] font-mono text-white/50 uppercase tracking-[0.2em] mb-3 group-hover:text-white transition-colors">{t.stat3Label}</span>
-                            <span className="text-4xl md:text-5xl font-medium tracking-tighter text-white">{t.stat3Value}</span>
-                            <div className="h-[1px] w-12 bg-white/20 mt-4 group-hover:w-full transition-all duration-500" style={{ backgroundColor: THEME_COLOR }} />
-                        </div>
-                    </motion.div>
-
-                </div>
-            </section>
+          
 
             {/* 4. IMAGE-BASED CAPABILITIES */}
             <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0">
@@ -404,7 +360,7 @@ export default function KiosksPage() {
                             <span className="text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block" style={{ color: THEME_COLOR }}>{t.coreCompetencies}</span>
                             <h2 className="text-4xl md:text-6xl font-medium tracking-tighter text-white drop-shadow-md">{t.structEng}</h2>
                         </div>
-                        <p className={`text-xs font-mono text-white/50 uppercase tracking-widest max-w-xs md:text-right ${isAr ? 'md:text-left' : 'md:text-right'}`}>
+                        <p className={`text-xs font-mono text-white/50 uppercase tracking-widest max-w-xs leading-relaxed ${isAr ? 'md:text-left' : 'md:text-right'}`}>
                             {t.structEngDesc}
                         </p>
                     </motion.div>
@@ -419,7 +375,7 @@ export default function KiosksPage() {
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                                className="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] h-[400px] flex flex-col justify-end"
+                                className="group relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end"
                             >
                                 {/* Background Image */}
                                 <div className="absolute inset-0 z-0">
@@ -427,7 +383,8 @@ export default function KiosksPage() {
                                         src={cap.image}
                                         alt={cap.title}
                                         fill
-                                        sizes="(max-width: 768px) 100vw, 25vw"
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                        loading="lazy"
                                         className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-90"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
@@ -435,10 +392,10 @@ export default function KiosksPage() {
 
                                 {/* Content Overlay */}
                                 <div className={`relative z-10 p-6 md:p-8 flex flex-col ${isAr ? 'items-end text-right' : 'items-start text-left'}`}>
-                                    <div className="w-10 h-10 rounded-full border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center mb-4">
+                                    <div className="w-10 h-10 rounded-full border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center mb-4 shrink-0">
                                         <cap.icon size={16} className="text-white" />
                                     </div>
-                                    <h3 className="text-xl font-bold uppercase tracking-wider text-white mb-3 drop-shadow-md">{cap.title}</h3>
+                                    <h3 className="text-lg md:text-xl font-bold uppercase tracking-wider text-white mb-3 drop-shadow-md leading-tight">{cap.title}</h3>
                                     <p className="text-xs text-white/70 font-light leading-relaxed">{cap.desc}</p>
                                 </div>
                             </motion.div>
@@ -447,16 +404,33 @@ export default function KiosksPage() {
                 </div>
             </section>
 
+              {/* 3. OVERVIEW (stats section removed) */}
+            <section className="relative z-20 py-24 md:py-32 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/40 backdrop-blur-sm">
+                <div className="max-w-[1800px] mx-auto">
+
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+                        className="max-w-4xl flex flex-col"
+                    >
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] mb-8 block" style={{ color: THEME_COLOR }}>{t.philosophy}</span>
+                        <p className="text-2xl md:text-4xl font-light text-white/90 leading-snug md:leading-snug">
+                            {t.overview}
+                        </p>
+                    </motion.div>
+
+                </div>
+            </section>
+
             {/* 5. EXECUTION TIMELINE (Static & Clean) */}
             <section className="relative z-20 py-24 md:py-40 px-6 md:px-12 lg:px-24 shrink-0 border-t border-white/10 bg-black/60 backdrop-blur-sm" ref={timelineRef}>
                 <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
 
-                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="lg:col-span-5 sticky top-32 self-start">
+                    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="lg:col-span-5 lg:sticky lg:top-32 self-start">
                         <span className="text-[10px] font-bold uppercase tracking-[0.3em] mb-4 block" style={{ color: THEME_COLOR }}>{t.methodology}</span>
                         <h2 className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tighter text-white leading-[0.9] mb-6 drop-shadow-lg">
                             {t.builtPrecision}
                         </h2>
-                        <p className="text-white/70 font-light text-lg">
+                        <p className="text-white/70 font-light text-base md:text-lg leading-relaxed">
                             {t.methodDesc}
                         </p>
                     </motion.div>
@@ -474,7 +448,7 @@ export default function KiosksPage() {
                                 <motion.div
                                     key={i}
                                     initial={{ opacity: 0, x: isAr ? -20 : 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ delay: i * 0.15 }}
-                                    className="relative flex items-start gap-8 md:gap-12 group"
+                                    className="relative flex items-start gap-6 sm:gap-8 md:gap-12 group"
                                 >
                                     {/* Static Node */}
                                     <div className="relative z-10 w-14 h-14 md:w-20 md:h-20 rounded-full border border-white/30 bg-[#050505] flex items-center justify-center shrink-0">
@@ -482,7 +456,7 @@ export default function KiosksPage() {
                                     </div>
 
                                     <div className="pt-2 md:pt-4">
-                                        <h3 className="text-2xl md:text-3xl font-medium tracking-tight text-white mb-3">{proc.title}</h3>
+                                        <h3 className="text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-white mb-3">{proc.title}</h3>
                                         <p className="text-sm md:text-base text-white/60 leading-relaxed font-light max-w-lg">{proc.desc}</p>
                                     </div>
                                 </motion.div>
@@ -513,7 +487,7 @@ export default function KiosksPage() {
 
                     {/* Load More */}
                     {KIOSK_PROJECTS.length > PAGE_SIZE && (
-                        <div className="flex flex-col items-center gap-6 mt-16">
+                        <div className="flex flex-col items-center gap-6 mt-16 md:mt-20">
                             <div className="w-full max-w-xs h-[2px] bg-white/10 rounded-full overflow-hidden">
                                 <motion.div
                                     className="h-full bg-gradient-to-r from-rose-400 via-emerald-400 to-blue-400"
@@ -551,8 +525,8 @@ export default function KiosksPage() {
             </section>
 
             {/* 7. MINIMALIST FOOTER CTA */}
-            <section className="py-32 md:py-48 text-center shrink-0 relative border-t border-white/10 bg-black/50 backdrop-blur-md">
-                <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-12 relative z-10 drop-shadow-md">
+            <section className="py-32 md:py-48 text-center shrink-0 relative border-t border-white/10 bg-black/50 backdrop-blur-md px-6">
+                <h2 className="text-3xl md:text-5xl font-medium tracking-tighter text-white mb-12 relative z-10 drop-shadow-md max-w-4xl mx-auto">
                     {t.ctaTitle}
                 </h2>
 
