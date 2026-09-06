@@ -68,14 +68,14 @@ const TEXT_AR = {
     active: "نخدم منطقة دول مجلس التعاون",
     title1: "معرض",
     title2: "أعمالنا.",
-    desc: "معرض منسق لأبرز مشاريعنا. نقوم بتصميم وبناء المساحات لتقديم تنفيذ لا تشوبه شائبة حيث تلتقي الدقة بالجمال المذهل.",
+    desc: "معرض مخصص لأبرز مشاريعنا. نصمم ونبني المساحات بتنفيذ متقن لا تشوبه شائبة حيث تلتقي الدقة بالجمال المذهل.",
     scroll: "قم بالتمرير للاستكشاف",
     filterAll: "الكل",
     ctaTitle: "مستعد للبدء؟",
     ctaBtn: "بدأ مشروعك",
     secureUplink: "اتصل بنا",
     dialogue: "ابدأ الحوار.",
-    contactDesc: "فريقنا مستعد لتحويل تجربتك القادمة إلى واقع. انسخ البريد الإلكتروني أدناه للتواصل معنا.",
+    contactDesc: "فريقنا مستعد لتحقيق تجربتكم القادمة. انسخ البريد الإلكتروني أدناه للتواصل معنا.",
     official: "الاستفسارات الرسمية",
     copy: "نسخ البريد",
     copied: "تم النسخ!",
@@ -87,7 +87,7 @@ const TEXT_AR = {
     loadMore: "تحميل المزيد",
     loadingMore: "جاري التحميل",
     allLoaded: "لقد وصلت إلى النهاية",
-    projects: "مشروع",
+    projects: "مشاريع",
 };
 
 // --- CATEGORY SETUP ---
@@ -168,7 +168,7 @@ const EVENT_ITEMS: SourceItem[] = [
 
 const EXHIBITION_ITEMS: SourceItem[] = [
     { url: "https://www.instagram.com/p/DSAT1Xtj2Ph/", title: "EDAMAH Stand @ Cityscape Bahrain 2025", titleAr: "جناح إدامة في سيتي سكيب البحرين 2025" },
-    { url: "https://www.instagram.com/p/DV7_vc1lBol/", title: "TAMKEEN Bahrain Pavilion @ Gulfood 2026 Dubai", titleAr: "جناح البحرين لتمكين في جلفود 2026، دبي" },
+    { url: "https://www.instagram.com/p/DV7_vc1lBol/", title: "TAMKEEN Bahrain Pavilion @ Gulfood 2026 Dubai", titleAr: "جناح مملكة البحرين في معرض الخليج للأغذية 2026 (دبي)، دبي" },
     { url: "https://www.instagram.com/p/DSrqeYFk1KG/", title: "SAVILLS Stand @ Cityscape Global 2025", titleAr: "جناح سافيلز في سيتي سكيب جلوبال 2025" },
     { url: "https://www.instagram.com/p/DSheZrdDqh6/", title: "The American Express Lounge, Jewellery Arabia 2025", titleAr: "صالة أمريكان إكسبريس في جوليري أرابيا 2025" },
     { url: "https://www.instagram.com/p/DR6RoSUkx6b/", title: "Bahrain Marina Stand @ Cityscape Bahrain 2025", titleAr: "جناح بحرين مارينا في سيتي سكيب البحرين 2025" },

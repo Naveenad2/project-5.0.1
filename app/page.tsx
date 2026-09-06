@@ -76,10 +76,10 @@ const TEXT_EN = {
 
 const TEXT_AR = {
     init: "تهيئة_البروتوكول",
-    engineer: "نحن نهندس",
+    engineer: "نحن نصمم وننفذ",
     spatial: "المكان",
     rendering: "تقديم_الجماليات",
-    realities: "الحقائق.",
+    realities: "الوقائع.",
     colours: "كلرز.",
     about: "عن كلرز",
     gallery: "أعمالنا",
@@ -103,7 +103,7 @@ const TEXT_AR = {
     serverOn: "الخادم متصل",
     latency: "زمن الاستجابة: 12ms \nالتشفير: AES-256",
     initProject: "بدء المشروع",
-    dossier: "أرسل ملفك. سيقوم فريق الاستراتيجية لدينا بالاستلام.",
+    dossier: "أرسل ملفك. سيستلمه فريق التخطيط الاستيراتيجي عندنا.",
     identity: "الهوية",
     nameOrg: "الاسم / المنظمة",
     coords: "الإحداثيات",
@@ -113,14 +113,14 @@ const TEXT_AR = {
     transmit: "إرسال البيانات",
     neuralInt: "الواجهة العصبية",
     listening: "يستمع",
-    aiGreeting: "الأنظمة متصلة. أنا واجهة كلرز. كيف يمكننا هندسة تجربتك القادمة؟",
-    aiReply: "تم استلام الإشارة. لقد قمنا بتحويل هذا إلى مديرينا المبدعين. هل ترغب في تحميل موجز المشروع؟",
+    aiGreeting: "الأنظمة متصلة. أنا واجهة كلرز. كيف يمكننا تصميم وتنفيذ تجربتك القادمة؟",
+    aiReply: "استلمنا الإشارة وأحلناها إلى المدراء الإبداعيين. هل ترغب في تحميل موجز المشروع؟",
     enterCmd: "أدخل الأمر...",
     langToggle: "EN",
     viewMap: "عرض الخريطة",
     hideMap: "إخفاء الخريطة",
     seoHeading: "كلرز — إدارة الفعاليات والمعارض والتصميم الداخلي وأكشاك التجزئة في البحرين",
-    seoDescription: "تصمم شركة كلرز لإدارة الفعاليات وتنفذ الفعاليات وأجنحة المعارض والتصميم الداخلي وأكشاك المولات في البحرين والسعودية، وتحظى بثقة هيئة تنمية الاقتصاد وطيران الخليج وتمكين وحلبة البحرين الدولية.",
+    seoDescription: "شركة كلرز لإدارة الفعاليات تصمم وتنفذ الفعاليات وأجنحة المعارض والتصميم الداخلي وأكشاك المولات في البحرين والسعودية، وتحظى بثقة مجلس التنمية الاقتصادية في البحرين وطيران الخليج وتمكين وحلبة البحرين الدولية.",
     navAria: "التنقل الرئيسي",
     langAria: "تبديل اللغة بين الإنجليزية والعربية",
     menuAria: "فتح القائمة",
@@ -258,7 +258,7 @@ const AI_INTENTS: {
         id: "greeting",
         keywords: ["hi", "hello", "hey", "marhaba", "salam", "good morning", "good evening", "good day", "assalam"],
         en: () => "Hello, welcome to Colours. We're an events, exhibitions, interiors and media house based in Bahrain with 17 years of experience. What would you like to know?",
-        ar: () => "مرحباً بكم في كلرز. نحن بيت خبرة في الفعاليات والمعارض والتصميم الداخلي والإعلام في مملكة البحرين بخبرة 17 عاماً. بماذا يمكنني مساعدتكم؟",
+        ar: () => "مرحباً بكم في كلرز. نحن مؤسسة مختصة في الفعاليات والمعارض والتصميم الداخلي والإعلام في مملكة البحرين بخبرة 17 عاماً. كيف يمكنني مساعدتكم؟",
         suggestionsEn: ["What services do you offer?", "Tell me about your team", "Show me past projects"],
         suggestionsAr: ["ما هي خدماتكم؟", "أخبرني عن فريقكم", "أرني مشاريعكم السابقة"]
     },
@@ -266,7 +266,7 @@ const AI_INTENTS: {
         id: "about",
         keywords: ["about", "company", "who are you", "colours profile", "history", "established", "founded", "background", "overview", "wll", "how long", "years of operation"],
         en: () => `Colours Events Management Co WLL has been operating in Bahrain for 17 years, with a full-time team of 68 employees. We specialize in event build, event & project management, AV solutions, and custom exhibition stand design & build.`,
-        ar: () => `تعمل شركة كلرز لإدارة الفعاليات في مملكة البحرين منذ 17 عاماً، ويضم فريقنا 68 موظفاً. نحن متخصصون في بناء الفعاليات، وإدارة الفعاليات والمشاريع، وحلول الصوت والصورة.`,
+        ar: () => `تعمل شركة كلرز لإدارة الفعاليات في مملكة البحرين منذ 17 عاماً، ويضم فريقنا 68 موظفاً. نحن متخصصون في بناء الفعاليات، وإدارة الفعاليات والمشاريع، وحلول الصوت والصورة، بالإضافة لتصاميم تصمم وتنفذ خصيصاً لأجنحة المعارض.`,
         suggestionsEn: ["What's your mission?", "Who are your clients?", "How do I contact you?"],
         suggestionsAr: ["ما هي رسالتكم؟", "من هم عملاؤكم؟", "كيف أتواصل معكم؟"]
     },
@@ -274,7 +274,7 @@ const AI_INTENTS: {
         id: "mission_vision",
         keywords: ["mission", "vision", "goal", "goals", "values", "philosophy", "purpose"],
         en: () => `Mission: Deliver exceptional events and exhibitions that create lasting impressions and drive business success through creativity and attention to detail.\n\nVision: To be recognized as a global leader in event and exhibition management.`,
-        ar: () => `رسالتنا: تقديم فعاليات ومعارض استثنائية تترك انطباعاً دائماً وتحقق نجاح الأعمال.\n\nرؤيتنا: أن نكون رواداً عالميين في إدارة الفعاليات والمعارض.`,
+        ar: () => `رسالتنا: تقديم فعاليات ومعارض استثنائية تترك انطباعاً دائماً وتساهم في نجاح المشاريع عن طريق الإبداع والاهتمام بأدق التفاصيل.\n\nرؤيتنا: أن نكون رواداً عالميين في إدارة الفعاليات والمعارض.`,
         suggestionsEn: ["What services do you offer?", "Show me your projects"],
         suggestionsAr: ["ما هي خدماتكم؟", "أرني مشاريعكم"]
     },
@@ -282,7 +282,7 @@ const AI_INTENTS: {
         id: "services",
         keywords: ["service", "services", "what do you offer", "what do you do", "capability", "capabilities", "specialize", "specialise", "what can you do", "solutions", "event build", "exhibition stand"],
         en: () => `Our core services:\n• Event Build – Design & Build Event Setups\n• Event & Project Management\n• AV Solutions\n• Exhibition Stand – Design & Build Custom Stands\n\nWe deliver end-to-end, from concept through manufacturing, installation and on-site management.`,
-        ar: () => `خدماتنا الأساسية:\n• بناء الفعاليات\n• إدارة الفعاليات والمشاريع\n• حلول الصوت والصورة\n• تصميم وبناء أجنحة المعارض`,
+        ar: () => `خدماتنا الأساسية:\n• إدارة وتصميم الفعاليات والمشاريع\n• حلول الصوت والصورة\n• تصميم وبناء أجنحة المعارض`,
         suggestionsEn: ["What's the pricing like?", "Show me past projects", "Contact your team"],
         suggestionsAr: ["ما هي الأسعار؟", "أرني مشاريعكم السابقة", "تواصل مع الفريق"]
     },
@@ -290,7 +290,7 @@ const AI_INTENTS: {
         id: "project_f1",
         keywords: ["formula1", "formula 1", "f1", "bic", "bahrain international circuit", "grand prix", "paddock"],
         en: () => "We're a long-standing partner of the Bahrain International Circuit: the BIC F1 Launch Event (2020), Formula1 Pre-Season Testing (Feb 2025), and paddock lounges for EDB, Gulf Air and Do&Co.",
-        ar: () => "نحن شريك طويل الأمد لحلبة البحرين الدولية، نفذنا فعالية إطلاق فورمولا 1 (2020)، واختبارات ما قبل الموسم (فبراير 2025)، وصالات جناح خاصة لعدة عملاء.",
+        ar: () => "نحن شريك طويل الأمد لحلبة البحرين الدولية، نفذنا فعالية إطلاق فورمولا 1 (2020)، واختبارات ما قبل الموسم (فبراير 2025)، وصالات أجنحة خاصة لعدة عملاء.",
         suggestionsEn: ["Tell me about Fintech Forward", "Who is your team?"],
         suggestionsAr: ["أخبرني عن فينتك فورورد", "من هو فريقكم؟"]
     },
@@ -298,7 +298,7 @@ const AI_INTENTS: {
         id: "project_fintech",
         keywords: ["fintech", "fintech forward", "fintech bay"],
         en: () => "Fintech Forward is our flagship annual project with Bahrain Fintech Bay & the EDB — delivered October 2023 and October 2024, covering full conceptualization, design, manufacturing, AV and event management.",
-        ar: () => "فينتك فورورد هو مشروعنا السنوي الرئيسي مع خليج البحرين للتقنية المالية وهيئة تنمية الاقتصاد، نُفذ في أكتوبر 2023 و2024.",
+        ar: () => "فينتك فورورد هو مشروعنا السنوي الرئيسي مع خليج البحرين للتكنولوجيا المالية ومجلس التنمية الاقتصادية، نُفذ في أكتوبر 2023 و2024.",
         suggestionsEn: ["Show me other projects", "How do I request a quote?"],
         suggestionsAr: ["أرني مشاريع أخرى", "كيف أطلب عرض سعر؟"]
     },
@@ -306,7 +306,7 @@ const AI_INTENTS: {
         id: "projects_general",
         keywords: ["project", "projects", "portfolio", "past work", "case study", "case studies", "clientele events", "done before", "examples of work"],
         en: () => `Some of our recent major projects:\n• Fintech Forward 2024 & 2023 — Bahrain Fintech Bay & EDB\n• Crown Prince Scholarship Award — Jan 2024\n• Mashroo3i Demo Day — Tamkeen, Feb 2025\n• F1 Pre-Season Testing — BIC, Feb 2025\n\nAsk me about any of these by name for more detail.`,
-        ar: () => `من أبرز مشاريعنا:\n• فينتك فورورد 2024 و2023\n• جائزة ولي العهد للمنحة الدراسية — يناير 2024\n• مشروعي ديمو داي — تمكين، فبراير 2025\n• اختبارات فورمولا 1 — فبراير 2025`,
+        ar: () => `من أبرز مشاريعنا:\n• فينتك فورورد 2024 و2023\n• جائزة ولي العهد للمنحة الدراسية — يناير 2024\n• مشروعي ديمو داي — تمكين، فبراير 2025\n• اختبارات فورمولا 1 — فبراير 2025\n\nلمزيد من التفاصيل، اسألني عن أياً من هذه المشاريع.`,
         suggestionsEn: ["Tell me about Formula 1 projects", "Who is on the project team?"],
         suggestionsAr: ["أخبرني عن مشاريع فورمولا 1", "من هو فريق المشروع؟"]
     },
@@ -314,7 +314,7 @@ const AI_INTENTS: {
         id: "team",
         keywords: ["team", "staff", "employee", "employees", "who works", "management", "director", "manager", "leadership", "organization", "who runs"],
         en: () => `Colours is led by Managing Director Devadas Chozhiyattil Kumaran and General Manager Noel George, supported by 68 employees. Key project leads: Vibin Hari (Business Head, Events & Exhibitions), Marc Ortega (Senior Project Manager, 15+ yrs), Suresh Vasu (Production Manager, 18+ yrs).`,
-        ar: () => `تُدار كلرز من قبل المدير العام ديفاداس تشوزهياتيل كومران، ويدعمه فريق من 68 موظفاً.`,
+        ar: () => `تُدار كلرز من قبل المدير الإداري ديفاداس تشوزهياتيل كومران، والمدير العام نويل جورج، مدعومين من فريق يتكون من 68 موظفاً.`,
         suggestionsEn: ["What certifications do you hold?", "How can I contact the team?"],
         suggestionsAr: ["ما هي شهاداتكم؟", "كيف أتواصل مع الفريق؟"]
     },
@@ -322,7 +322,7 @@ const AI_INTENTS: {
         id: "clients",
         keywords: ["client", "clients", "partner", "partners", "customer", "brands", "who do you work with", "trusted", "worked with"],
         en: () => `We've worked with some of Bahrain's most prominent organizations, including Bahrain EDB, Gulf Air, DO & CO, The Avenues, Seef Mall, Tamkeen, Marassi, Alba and Bapco.`,
-        ar: () => `عملنا مع بعض أبرز المؤسسات في البحرين، منها هيئة تنمية الاقتصاد، طيران الخليج، ذا أفنيوز، سيف مول، وتمكين.`,
+        ar: () => `عملنا مع بعض أبرز المؤسسات في البحرين، منها مجلس التنمية الاقتصادية، طيران الخليج، ذا أفنيوز، سيف مول، تمكين، مراسي، بابكو، ألبا.`,
         suggestionsEn: ["Show me a specific project", "What services do you offer?"],
         suggestionsAr: ["أرني مشروعاً محدداً", "ما هي خدماتكم؟"]
     },
@@ -338,7 +338,7 @@ const AI_INTENTS: {
         id: "contact",
         keywords: ["contact", "email", "e-mail", "phone", "call", "reach you", "address", "location", "where are you", "office", "khobar", "saudi office", "manama office"],
         en: () => `Phone: +973 17295917\nEmail: info@coloursbahrain.com\nBahrain Office: Unit 7, Building 2568, Road 4450, Block 744, Manama\nSaudi Office: Bldg 7073, Khobar\n\nOr submit a brief in the "Direct Uplink" tab and our strategy team will follow up.`,
-        ar: () => `الهاتف: 17295917 973+\nالبريد الإلكتروني: info@coloursbahrain.com\nمكتب البحرين: الوحدة 7، مبنى 2568، طريق 4450، مجمع 744، المنامة`,
+        ar: () => `الهاتف: 17295917 973+\nالبريد الإلكتروني: info@coloursbahrain.com\nمكتب البحرين: الوحدة 7، مبنى 2568، طريق 4450، مجمع 744، المنامة\nمكتب السعودية: مبنى 7073، الخبر.\n\nأو أرسل موجز مشروعك من خلال "اتصال مباشر" وسيتواصل معكم فريق التخطيط الاستيراتيجي للمتابعة.`,
         suggestionsEn: ["What are your working hours?", "I'd like to request a quote"],
         suggestionsAr: ["ما هي ساعات العمل؟", "أرغب بطلب عرض سعر"]
     },
@@ -346,7 +346,7 @@ const AI_INTENTS: {
         id: "pricing",
         keywords: ["price", "pricing", "cost", "quote", "quotation", "budget", "how much", "estimate"],
         en: () => "Pricing depends on scope, scale and location. The fastest way to get an accurate quote is submitting your project brief through the \"Direct Uplink\" tab — our team responds with tailored costing after reviewing your requirements.",
-        ar: () => "تعتمد التكلفة على حجم ونطاق ومكان الفعالية. أسرع طريقة للحصول على عرض سعر دقيق هي إرسال موجز مشروعكم.",
+        ar: () => "تعتمد التكلفة على حجم ونطاق ومكان الفعالية. أسرع طريقة للحصول على عرض سعر دقيق هي إرسال موجز مشروعكم من خلال \"اتصال مباشر\" وسيتواصل معكم فريقنا بتكلفة محددة بعد مراجعة المتطلبات.",
         suggestionsEn: ["What services do you offer?", "How do I submit a brief?"],
         suggestionsAr: ["ما هي خدماتكم؟", "كيف أرسل موجز المشروع؟"]
     },
@@ -394,7 +394,7 @@ function getLocalAIResponse(rawInput: string, isAr: boolean, t: typeof TEXT_EN):
 
     return {
         text: isAr
-            ? "لم أجد إجابة دقيقة لهذا السؤال ضمن بيانات الشركة المتوفرة لدي. جربوا أحد الأسئلة أدناه، أو أرسلوا موجز مشروعكم مباشرة."
+            ? "لم أجد إجابة دقيقة لهذا السؤال ضمن بيانات الشركة المتوفرة لدي. جربوا أحد الأسئلة أدناه، أو أرسلوا موجز مشروعكم مباشرة وسيتواصل معكم فريقنا."
             : "I don't have an exact answer to that yet. Try one of the topics below, or submit a project brief directly and our team will follow up personally.",
         suggestions: isAr ? DEFAULT_SUGGESTIONS_AR : DEFAULT_SUGGESTIONS_EN
     };
