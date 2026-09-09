@@ -341,9 +341,9 @@ export default function GalleryPage() {
                 dir={isAr ? "rtl" : "ltr"}
             >
                 {/* SIDE DEVELOPER BADGE */}
-                <div className={`fixed ${isAr ? "left-4" : "right-4"} top-1/2 -translate-y-1/2 ${isAr ? "-rotate-90" : "rotate-90"} origin-center text-[10px] text-white/30 tracking-[0.3em] uppercase mix-blend-difference hidden xl:block z-50 pointer-events-none`}>
+                {/* <div className={`fixed ${isAr ? "left-4" : "right-4"} top-1/2 -translate-y-1/2 ${isAr ? "-rotate-90" : "rotate-90"} origin-center text-[10px] text-white/30 tracking-[0.3em] uppercase mix-blend-difference hidden xl:block z-50 pointer-events-none`}>
                     {t.developedBy}
-                </div>
+                </div> */}
 
                 {/* 1. CINEMATIC BACKGROUND */}
                 <div className="fixed inset-0 pointer-events-none z-0">
@@ -536,9 +536,9 @@ export default function GalleryPage() {
 
                     <div className="relative z-10 max-w-[1800px] w-full mx-auto flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-white/10 text-white/40 text-[10px] uppercase tracking-widest">
                         <p>&copy; {new Date().getFullYear()} Colours. {t.rights}</p>
-                        <div className="flex items-center gap-2">
+                        {/* <div className="flex items-center gap-2">
                             <p>{t.developedBy}</p>
-                        </div>
+                        </div> */}
                     </div>
                 </section>
 
